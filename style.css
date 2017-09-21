@@ -1,0 +1,258 @@
+body{
+    /*background-image: url("background.jpg");*/
+    background: linear-gradient(90deg, #FF5F6D, #FFC371);
+    opacity: 50%;
+    background-size: cover;
+    font-family: Trebuchet MS;
+}
+
+@-webkit-keyframes typing { from { width: 0; } }
+@-webkit-keyframes blink-caret { 50% { border-color: transparent; } }
+
+h1{
+    font-weight: 200;
+    font-size: 30px;
+    text-align: center;
+    font size: 3.5em;
+    font-family: Andale Mono, monospace;
+}
+
+.txt-rotate{
+    font-weight: 400;
+    font-size: 30px;
+    text-align: center;
+    font size: 3.5em;
+    font-family: Andale Mono, monospace;
+    color:  #FFD700;
+}
+
+.form-group{
+    position:absolute;
+    top: 25%;
+    left: 35%;
+    margin-top:-145px;
+    margin-left: -280px;
+    width: 1000px;
+    height: 610px;
+    /*background: linear-gradient(-90deg, #FF5F6D, #FFC371);;*/
+    /*box-shadow: 10px 10px black;*/
+    /*border-radius: 10px;*/
+}
+
+#startlbl{
+    margin-left: 140px;
+    font-family: Trebuchet MS;
+    font-size: 18px;
+}
+
+#endlbl{
+    margin-left: 144px;
+    font-family: Trebuchet MS;
+    font-size: 18px;
+}
+
+#label1{
+    font-size: 18px;
+    margin-left: 200px;
+    width: 150px;
+    text-align: center;
+}
+
+#label4, #label7{
+    font-size: 18px;
+    margin-left: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+#label2{
+    font-size: 18px;
+    text-align: center;
+    margin-left: 70px;
+    margin-right: 20px;
+    width: 150px;
+}
+
+#label5, #label8{
+    font-size: 18px;
+    text-align: center;
+    margin-left: 70px;
+    margin-right: 20px;
+    width: 150px;
+}
+
+#label3{
+    font-size: 18px;
+    margin-left: 50px;
+    margin-right: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+#label6, #label9{
+    font-size: 18px;
+    margin-left: 50px;
+    margin-right: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+.button{
+    padding: 10px 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    font-style: oblique;
+    font-size: 15px;
+    margin-left: 260px;
+    margin-right: -80px;
+    display: inline;
+}
+
+.button:hover{
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+     transform: scale(1.2);
+     transition-timing-function: ease-in-out;
+     transition-delay: 0.2s;
+}
+
+#date{
+    padding: 5px 10px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-style: groove;
+    width: 200px;
+}
+
+#date:active{
+    border-color: black;
+}
+
+#display1{
+    background: linear-gradient(-90deg, #403B4A, #E7E9BB);
+    box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 5px;
+    width: 600px;
+    height: 285px;
+    margin-left: 220px;
+    text-align: center;
+    /*align-content: center;*/
+    font-family: Trebuchet MS;
+    font-size: 20px;
+    text-shadow: 1px 1px gray;
+}
+
+#display2{
+    background: linear-gradient(-90deg, #FF5F6D, #FFC371);
+    width: 600px;
+    height: 285px;
+    margin-left: 240px;
+    text-align: center;
+    /*align-content: center;*/
+    font-family: Trebuchet MS;
+    font-size: 20px;
+    text-shadow: 1px 1px gray;
+}
+
+#displayText{
+    text-align: center;
+    font-size: 30px;
+    margin-top: 30px;
+    font-family: Trebuchet MS;
+    display: none;
+}
+
+.tab: hover #displayText{
+    display: block;
+}
+
+/* ========================== FOR TABS ======================= */
+
+div.tab {
+    overflow: hidden;
+    /*border: 1px solid #ccc;*/
+    /*background-color: #AD5D5D;*/
+    /*border-radius: 10px;*/
+    /*background: linear-gradient(0deg, #AD5D5D, #F7CAC9 )*/
+}
+
+div.tab button {
+    background-color: inherit;
+    /*float: right;*/
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-left: 175px;
+    color: white;
+
+}
+
+div.tab button:hover {
+    background-color: #403B4A;
+    border-radius: 10px;
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+     transform: scale(1.2);
+     transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1);
+     transition-delay: 0.2s;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+}
+
+#line{
+    margin-left: 70px;
+    width: 850px;
+    height: 3px;
+    border-bottom: 1px solid black;
+    position: absolute;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#demo1, #demo2{
+    text-align: center;
+}
+
+/* ================== For Count-Down Timer ========================= */
+
+.container {
+  color: #333;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: normal;
+}
+
+h1 span {
+  font-size: 2rem;
+}
+
+li {
+  display: inline-block;
+  font-size: 1.5em;
+  list-style-type: none;
+  padding: 1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+li span {
+  display: block;
+  font-size: 4.5rem;
+}

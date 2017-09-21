@@ -1,0 +1,13 @@
+{
+  "name": "Age Calculator",
+  "description": "This application gives you a calculation of how old are you today, since the day you were born.",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons": { "128": "calendar-128.png" }
+  "author" : "Miral Kumbhani"
+}
