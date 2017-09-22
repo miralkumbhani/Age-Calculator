@@ -23,7 +23,20 @@
             <button class="tablinks" onclick="openTab(event, 'diffDates')">Different Dates Age Calculator</button>
             <div id="line"></div>
         </div>
-    <div id = "contentwindow">
+
+
+        <a href="#openModal">Link</a>
+                    <div id="openModal" class="modalDialog">
+                        <div>
+                            <a href="#close" title="Close" class="close">X</a>
+                                <span id="zsigndisplay"></span><br>
+                                <span id="birthrange"></span><br>
+                                <span id="attribute"></span>
+                        </div>
+                    </div>
+
+
+
         <div id="ageCalculator" class="tabcontent">
             <h1>Age
                 <span class="txt-rotate" data-period="2500"
@@ -124,8 +137,6 @@
                     <p><strong>You are this old today... </strong>&nbsp;<span id="demo2"></span></p>
                     <p><strong>Next birthday count-down: </strong>&nbsp;<span id="countdown2"></span></p>
             </div>
-
-        </div>
     </div>
 </body>
 </html>
