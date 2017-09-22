@@ -479,29 +479,9 @@ function getDataAgeDiff(){
 }
 
 
-/* ===================================== FOR TAB ========================================= */
+/* ======================================= FOR TAB ============================================ */
 
-//function to display text on the tab
-function displayText(buttontype){
-    if(buttontype === button1){
-        var str = 'Press this! Enter your birthdate and get your age today!';
-
-        document.getElementById("displayText").innerHTML = str;
-    }
-    else if(buttontype === button2){
-        var str = 'Press this! Enter your birthdate and select a date to calculate the difference between two dates!'
-
-        document.getElementById("displayText").innerHTML = str;
-    }
-}
-
-
-function eraseText(){
-    let string1 = '';
-
-    document.getElementById("displayText").innerHTML = string1;
-}
-
+//function to siplay the content and changing the content onClick of tabs
 
 //function to open the tab when clicked
 function openTab(evt, tabname){
