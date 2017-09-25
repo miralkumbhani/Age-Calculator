@@ -27,7 +27,7 @@ function fetchMonth(){
     let monthDropdown = $("#month_label");
     $.each(monthArray, function(i, idx){
         // console.log('each i', idx);
-        monthDropdown.append(`<option value="${i}">${idx}</option>`);
+        monthDropdown.append(`<option value="${i+1}">${idx}</option>`);
     });
 }
 
@@ -46,31 +46,30 @@ function fetchYear(){
 }
 
 $(document).ready(function () {
- $('#diffDates').hide();
+$('.tabcontent').eq(0).show();
 fetchDate();
 fetchMonth();
 fetchYear();
 
 const currDate = new Date();
-const zodiac = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+const zodiacName = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 console.log("currDate", currDate);
 
 
-const daysInMili = 1000 * 60 * 60 * 24;
+const dayInMili = 1000 * 60 * 60 * 24;
 
-$('#birth_age').on('click', function() {
-    $('#diffDates').hide();
-    $('#ageCalculator').show();
+$('.tab').on('click', '.tablinks', function() {
+    // console.log('tab clicked');
+    let display = $(this).data('display');
+    // console.log("content", content);
+    let index = $(this).index();
+    $(this).siblings().removeClass('active');
+    $(this).addClass('active');
+    $('#tab_content').children().hide();
+    $('#tab_content').children('#' + display).show();
+    // event.preventDefault;
 });
-
-$('#diff_age').on('click', function() {
-    $('#diffDates').show();
-    $('#ageCalculator').hide();
-});
-
 /* ========================== FOR TAB1: Birth Date Age Calculator ============================= */
-
-
 //function to display the output of age calculator
 const display = function(currDate, years, numOfMon, diffDays) {
     $("#getDate").html(currDate);
@@ -78,83 +77,44 @@ const display = function(currDate, years, numOfMon, diffDays) {
     $("#ageMonths").html(numOfMon);
     $("#ageDays").html(diffDays);
 };
-
-
 //function to calculate the zodiac sign based on birth date
 // @return
 function zodiac(day, month){
-
     let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
     return (day > last_day[month]) ? zodiac[month*1 + 1] : zodiac[month];
 }
 
-//function that will display the date calculated from today in the same page
-function getHumanReadableDate(id, ageYears, ageMonths, ageDays){
-
-    var theDiv = document.getElementById(id);
-
-    var isEmpty = document.getElementById(id).innerHTML === "";
-
-    if(isEmpty === false) document.getElementById(id).innerHTML = "";
-
-    let valueYr, valueMon, valueDay, outputYr, outputMon, outputDay, contentYr, contentMon, contentDay, outSp;
-
-    if (ageYears > 0) {
-        valueYr = document.createTextNode(ageYears);
-        theDiv.appendChild(valueYr);
-        outputYr = (ageYears === 1) ?  ' year' : ' years';
-        contentYr = document.createTextNode(outputYr);
-        theDiv.appendChild(contentYr);
-    }
-
-    if(ageMonths > 0){
-        outSp = document.createTextNode(", ");
-        theDiv.appendChild(outSp);
-
-        valueMon = document.createTextNode(ageMonths);
-        theDiv.appendChild(valueMon);
-        outputMon = (ageMonths === 1) ? ' month' : ' months';
-        contentMon = document.createTextNode(outputMon);
-        theDiv.appendChild(contentMon);
-    }
-
-    if(ageDays > 0){
-        outSp = document.createTextNode(", ");
-        theDiv.appendChild(outSp);
-
-        valueDay = document.createTextNode(ageDays);
-        theDiv.appendChild(valueDay);
-        outputDay = (ageDays === 1) ? ' day' : ' days';
-        contentDay = document.createTextNode(outputDay);
-        theDiv.appendChild(contentDay);
-    }
-}
-
+$(document).on('click', 'button#get_age', function () {
+    getAge();
+});
 
 //function to calculate the age in years, days and months
 function getAge()
 {
-    var b_day = parseInt(document.forms[0].txtBday.value, 10);
-    var b_month = parseInt(document.forms[0].txtBmo.value, 10);
-    var b_year = parseInt(document.forms[0].txtByr.value, 10);
+    let u_date = $('#date_label').val();
+    let u_month = $('#month_label').val();
+    let u_year = $('#year_label').val();
 
-    let userDateString = `${b_month}-${b_day}-${b_year}`;
+    let userDateString = `${u_month}-${u_date}-${u_year}`;
+    console.log("userDateString", userDateString);
     let userDate = new Date(userDateString);
+    console.log("userDate", userDate);
 
-    var age;
-
-    console.log('userDate', userDate);
+    $("#todayDate").html(currDate);
 
     if(isFinite(userDate)) {
-
         //code for calculating age in years
-        var years = currDate.getUTCFullYear() - userDate.getUTCFullYear();
-
+        var diffYears = currDate.getUTCFullYear() - userDate.getUTCFullYear();
         //code for calculating age in months
-        var numOfMon = (currDate.getUTCFullYear() - userDate.getUTCFullYear()) * 12 + (currDate.getMonth() - userDate.getMonth());
-
+        var diffMonths = diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
         //code for calculating age in days
-        var diffDays = Math.floor((currDate - userDate) / cal);
+        var diffDays = Math.floor((currDate - userDate) / dayInMili);
+        $("#userDate").html(userDate);
+        $("#ageYears").html(diffYears);
+        $("#ageMonths").html(diffMonths);
+        $("#ageDays").html(diffDays);
+        getTrueAge(userDate);
+        getCountdownTime(userDate);
     }
     else {
         alert('Invalid Date, try again.');
@@ -162,101 +122,86 @@ function getAge()
     }
 
     //function call for displaying the output of age calculator
-    display(currDate, years, numOfMon, diffDays);
+    // display(currDate, years, numOfMon, diffDays);
 
     //function call for zodiac sign
-    var z_sign = zodiac(userDate.getDay(), userDate.getMonth());
-    alert(z_sign);
+    //var z_sign = zodiac(userDate.getDay(), userDate.getMonth());
+}
 
-    //function to get the countdown to next birthday
-    var dlDay = userDate.getDate();
-    var dlMon = userDate.getMonth();
-    var dlYr = currDate.getFullYear() + 1;
+const getCountdownTime = function (inputDate) {
+ //function to get the countdown to next birthday
+    let userDate = inputDate;
+    let dlDay = userDate.getDate();
+    let dlMon = userDate.getMonth();
+    let dlYr = currDate.getFullYear() + 1;
 
-    var deadline = new Date();
+    let deadline = new Date();
+    console.log("deadline", deadline);
     deadline.setDate(dlDay);
     deadline.setMonth(dlMon);
     deadline.setYear(dlYr);
 
-    var countDownDate = new Date(deadline).getTime();
+    let interval = setInterval(function() {
+        let currentTime = new Date().getTime();
+        console.log("currentTime", currentTime);
+        let countdownTime = new Date(deadline).getTime();
+        console.log("countdownTime", countdownTime);
+        let diffInTime = countdownTime - currentTime;
 
-    var x = setInterval(function(){
-        var now = new Date().getTime();
+        let days = Math.floor(diffInTime / dayInMili);
+        let hours = Math.floor((diffInTime % (dayInMili)) / (1000 * 60 * 60));
+        let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((diffInTime % (1000 * 60)) / 1000);
 
-        var distance = countDownDate - now;
-
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("countdown1").innerHTML = days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds ";
-        if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("countdown1").innerHTML = "EXPIRED";
+        let countdownString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds.`;
+        if(diffInTime > 0){
+            $('#countdown').html(countdownString);
+        } else {
+            clearInterval(interval);
+            $('#countdown').html("EXPIRED");
         }
     }, 1000);
-}
+};
 
-
-//function to calculate age from today (What is my age today?)
-function getDataAge(){
-
-    var b_day = parseInt(document.forms[0].txtBday.value,10);
-    var b_month = parseInt(document.forms[0].txtBmo.value, 10);
-    var b_year = parseInt(document.forms[0].txtByr.value, 10);
-
-    let userDateString = `${b_month}-${b_day}-${b_year}`;
-    let userDate = new Date(userDateString);
-
-    var days, ageYears, ageMonths, ageDays;
-
+function getTrueAge(inputDate){
+    console.log("getTrueAge", inputDate);
+    let userDate = inputDate;
+    let ageYears, ageMonths, ageDays;
     //days calculation from today
-    days = Math.floor((currDate - userDate) / cal);
-
+    let totalDays = Math.floor((currDate - userDate) / dayInMili);
+    // console.log("totalDays", totalDays);
     //years calculation from today
-    ageYears = Math.floor(days / 365);
-
+    ageYears = Math.floor(totalDays / 365);
+    // console.log("ageYears", ageYears);
     //months calculation from today
     var diffMonth = currDate.getMonth() - userDate.getMonth();
     if(diffMonth >= 0){
         ageMonths = currDate.getMonth() - userDate.getMonth();
-    }
-    else if(diffMonth < 0){
+    } else {
         ageMonths = 12 - Math.abs((currDate.getMonth() - userDate.getMonth()));
     }
-
     //days calculation from today
-    var diffDay = currDate.getDate() - userDate.getDate();
-    var y = userDate.getFullYear();
-
-    if(userDate.getMonth() == 1 || userDate.getMonth() == 2) {
-        var conValue = confirm("If date entered is greater than 29 (for leap year) or 28 for FEBRUARY month, the age will be calculated automatically considering 1st March of the concerned year! Do you wish to continue?");
-        if(conValue == true){
-            if( (0 == y % 4) && (0 != y % 100) || (0 == y % 400)){
-                ageDays = 29 - Math.abs(diffDay);
-            }
-            else{
-                ageDays = 28 - Math.abs(diffDay);
-            }
-        }
-        else if(conValue == false){
-            return false;
-        }
-    }
-    if(diffDay < 0){
+    let diffDay = currDate.getDate() - userDate.getDate();
+    let currentYear = userDate.getFullYear();
+    if(diffDay >= 0){
+        ageDays = diffDay;
+    } else {
         ageMonths--;
         ageDays = 31 - Math.abs(diffDay);
     }
-    if(diffDay >= 0){
-        ageDays = diffDay;
-    }
 
-    //function call for displaying the total age from today
-    var id = "demo1";
-    getHumanReadableDate(id, ageYears, ageMonths, ageDays);
+    let dayString = maybePluralize(ageDays, 'day');
+    // console.log("dayString", dayString);
+    let monthString = maybePluralize(ageMonths, 'month');
+    // console.log("monthString", monthString);
+    let yearString = maybePluralize(ageYears, 'year');
+    // console.log("yearString", yearString);
+    let totalAge = `${yearString}, ${monthString}, ${dayString}`;
+    // console.log("total Age: ", totalAge);
+    $('#fullAge').html(totalAge);
 }
 
+const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
 
 /* =========================== FOR TAB2: Different Dates Age Calculator ======================= */
 
@@ -493,102 +438,4 @@ function getDataAgeDiff(){
     getHumanReadableDate(id, ageYears, ageMonths, ageDays);
 }
 
-
-/* ===================================== FOR TAB ========================================= */
-
-//function to display text on the tab
-function displayText(buttontype){
-    if(buttontype === button1){
-        var str = 'Press this! Enter your birthdate and get your age today!';
-
-        document.getElementById("displayText").innerHTML = str;
-    }
-    else if(buttontype === button2){
-        var str = 'Press this! Enter your birthdate and select a date to calculate the difference between two dates!'
-
-        document.getElementById("displayText").innerHTML = str;
-    }
-}
-
-
-function eraseText(){
-    let string1 = '';
-
-    document.getElementById("displayText").innerHTML = string1;
-}
-
-
-//function to open the tab when clicked
-function openTab(evt, tabname){
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabname).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
-/* ================================== TEXT EDITING FOR TITLE ================================== */
-
-var TxtRotate = function(el, toRotate, period) {
-  this.toRotate = toRotate;
-  this.el = el;
-  this.loopNum = 0;
-  this.period = parseInt(period, 10) || 2000;
-  this.txt = '';
-  this.tick();
-  this.isDeleting = false;
-};
-
-TxtRotate.prototype.tick = function() {
-  var i = this.loopNum % this.toRotate.length;
-  var fullTxt = this.toRotate[i];
-
-  if (this.isDeleting) {
-    this.txt = fullTxt.substring(0, this.txt.length - 1);
-  } else {
-    this.txt = fullTxt.substring(0, this.txt.length + 1);
-  }
-
-  this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
-
-  var that = this;
-  var delta = 300 - Math.random() * 100;
-
-  if (this.isDeleting) { delta /= 2; }
-
-  if (!this.isDeleting && this.txt === fullTxt) {
-    delta = this.period;
-    this.isDeleting = true;
-  } else if (this.isDeleting && this.txt === '') {
-    this.isDeleting = false;
-    this.loopNum++;
-    delta = 500;
-  }
-
-  setTimeout(function() {
-    that.tick();
-  }, delta);
-};
-
-window.onload = function() {
-  var elements = document.getElementsByClassName('txt-rotate');
-  for (var i=0; i<elements.length; i++) {
-    var toRotate = elements[i].getAttribute('data-rotate');
-    var period = elements[i].getAttribute('data-period');
-    if (toRotate) {
-      new TxtRotate(elements[i], JSON.parse(toRotate), period);
-    }
-  }
-  // INJECT CSS
-  var css = document.createElement("style");
-  css.type = "text/css";
-  css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
-  document.body.appendChild(css);
-};
 });

@@ -27,7 +27,7 @@ h1{
 }
 
 .form-group{
-    position:absolute;
+    position:relative;
     top: 25%;
     left: 35%;
     margin-top:-145px;
@@ -166,17 +166,13 @@ h1{
 
 /* ========================== FOR TABS ======================= */
 
-div.tab {
+ul.tab {
     overflow: hidden;
-    /*border: 1px solid #ccc;*/
-    /*background-color: #AD5D5D;*/
-    /*border-radius: 10px;*/
-    /*background: linear-gradient(0deg, #AD5D5D, #F7CAC9 )*/
+    display: inline-block;
 }
 
-div.tab button {
+.tab button {
     background-color: inherit;
-    /*float: right;*/
     border: none;
     outline: none;
     cursor: pointer;
@@ -185,23 +181,22 @@ div.tab button {
     font-size: 17px;
     margin-left: 175px;
     color: white;
-
 }
 
-div.tab button:hover {
+.tab button:hover, .tab button.active {
     background-color: #403B4A;
     border-radius: 10px;
     -webkit-transform: scale(0.5);
     -ms-transform: scale(0.5);
-     transform: scale(1.2);
-     transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1);
-     transition-delay: 0.2s;
+    transform: scale(1.2);
 }
+
 .hide {
     display: none;
 }
 
 .tabcontent {
+    display: none;
     padding: 6px 12px;
     -webkit-animation: fadeEffect 1s;
     animation: fadeEffect 1s;
