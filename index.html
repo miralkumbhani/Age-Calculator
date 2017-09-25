@@ -24,19 +24,6 @@
             <div id="line"></div>
         </div>
 
-
-        <a href="#openModal">Link</a>
-                    <div id="openModal" class="modalDialog">
-                        <div>
-                            <a href="#close" title="Close" class="close">X</a>
-                                <span id="zsigndisplay"></span><br>
-                                <span id="birthrange"></span><br>
-                                <span id="attribute"></span>
-                        </div>
-                    </div>
-
-
-
         <div id="ageCalculator" class="tabcontent">
             <h1>Age
                 <span class="txt-rotate" data-period="2500"
@@ -64,7 +51,18 @@
 
                     <button type="button" class="button" onclick="getAge()">Calculate Your Age!</button>
 
+                    <a id="linkButton" href="#openModal">Your Zodiac Info!</a>
+                        <div id="openModal" class="modalDialog">
+                        <div>
+                            <a href="#close" title="Close" class="close">X</a>
+                                <span id="zsigndisplay"></span><br>
+                                <span id="birthrange"></span><br>
+                                <span id="attribute"></span>
+                        </div>
+                    </div>
+
                     <button type="button" class="button" onclick="getDataAge()">Your Age Today!</button>
+
 
                 </form>
 
