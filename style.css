@@ -17,16 +17,7 @@ h1{
     font-family: Andale Mono, monospace;
 }
 
-.txt-rotate{
-    font-weight: 400;
-    font-size: 30px;
-    text-align: center;
-    font size: 3.5em;
-    font-family: Andale Mono, monospace;
-    color:  #FFD700;
-}
-
-.form-group{
+.content{
     position:absolute;
     top: 25%;
     left: 35%;

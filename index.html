@@ -4,137 +4,116 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Age Calculator</title>
-
-    <link rel="stylesheet" type="text/css" href="style.css">
-
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
-    <script type="text/javascript" src="background.js">
-    </script>
-
+    <script type="text/javascript" src="background.js"></script>
 </head>
 
 <body>
-    <div class = "form-group">
-        <div class="tab">
+    <div id="content">
+        <section class="tab">
             <button class="tablinks" onclick="openTab(event, 'ageCalculator')">Birth Date Age Calculator</button>
             <button class="tablinks" onclick="openTab(event, 'diffDates')">Different Dates Age Calculator</button>
-            <div id="line"></div>
-        </div>
+        </section>
 
-        <div id="ageCalculator" class="tabcontent">
-            <h1>Age
-                <span class="txt-rotate" data-period="2500"
-            data-rotate='["Calculator", "Evaluator", "Keeper" ]';></span>
-            </h1>
-
-            <br>
-                <form action="#" method="POST" name="dateForm">
-                        <select class="form-control" id="label1" name="txtBday">
-                            <option hidden>Birth Date</option>
-                            <script>fetchDate();</script>
+        <section id="tab_content">
+            <div id="birth_age" class="tabcontent">
+                    <h1>Age Calculator</h1>
+                    <div id="data_input">
+                        <select class="form-control" id="date_label" name="user_date">
+                            <option readonly disabled>Birth Date</option>
                         </select>
 
-                        <select class="form-control" id="label2" name="txtBmo">
-                            <option hidden>Birth Month</option>
-                            <script>fetchMonth();</script>
+                        <select class="form-control" id="month_label" name="user_month">
+                            <option readonly disabled>Birth Month</option>
                         </select>
 
-                        <select class="form-control" id="label3" name="txtByr">
-                            <option hidden>Birth Year</option>
-                            <script>fetchYear();</script>
+                       <select class="form-control" id="year_label" name="user_year">
+                            <option readonly disabled>Birth Year</option>
                         </select>
-
-                    <br><br><br>
-
-                    <button type="button" class="button" onclick="getAge()">Calculate Your Age!</button>
-
+                    </div>
+                    <br>
+                    <button type="button" class="button" id="get_age()">Calculate Your Age!</button>
                     <a id="linkButton" href="#openModal">Your Zodiac Info!</a>
                         <div id="openModal" class="modalDialog">
-                        <div>
-                            <a href="#close" title="Close" class="close">X</a>
-                                <span id="zsigndisplay"></span><br>
-                                <span id="birthrange"></span><br>
-                                <span id="attribute"></span>
+                            <div>
+                                <a href="#close" title="Close" class="close">X</a>
+                                    <span id="zsigndisplay"></span><br>
+                                    <span id="birthrange"></span><br>
+                                    <span id="attribute"></span>
+                            </div>
                         </div>
+                    <button type="button" class="button" id="get_fullage">Your Age Today!</button>
+                    <br>
+                    <div id="data_output">
+                        <p><label>Today's Date:</label><span id="todayDate"></span></p>
+                        <p><label>Birth Date:</label><span id="userDate"></span></p>
+                        <h2>Your Age</h2>
+                        <p><label>In years:</label><span id="ageYears"></span> </p>
+                        <p><label>In months:</label><span id="ageMonths"></span> </p>
+                        <p><label>In days:</label><span id="ageDays"></span></p>
+                        <p><label>You are this old today...</label><span id="fullAge"></span></p>
+                        <p><label>Next birthday count-down:</label><span id="countdown"></span></p>
                     </div>
+            </div>
+            <div id="diff_age" class="tabcontent">
+                <h1>Date Duration Calculator"</h1>
+                <br>
 
-                    <button type="button" class="button" onclick="getDataAge()">Your Age Today!</button>
+                <form action="#" method="POST" name="dateForm">
+                            <label id="startlbl">Start Date: </label>
+                            <select class="form-control" id="label4" name="txtBday2">
+                                <option hidden>Birth Date</option>
+                                <script>fetchBDate();</script>
+                            </select>
 
+                            <select class="form-control" id="label5" name="txtBmo2">
+                                <option hidden>Birth Month</option>
+                                <script>fetchBMonth();</script>
+                            </select>
 
+                            <select class="form-control" id="label6" name="txtByr2">
+                                <option hidden>Birth Year</option>
+                                <script>fetchBYear();</script>
+                            </select>
+
+                            <br><br>
+
+                            <label id="endlbl">End  Date: </label>
+                            <select class="form-control" id="label7" name="txtSday">
+                                <option hidden>Selected Date</option>
+                                <script>fetchSDate();</script>
+                            </select>
+
+                            <select class="form-control" id="label8" name="txtSmon">
+                                <option hidden>Selected Month</option>
+                                <script>fetchSMonth();</script>
+                            </select>
+
+                            <select class="form-control" id="label9" name="txtSyr">
+                                <option hidden>Selected Year</option>
+                                <script>fetchSYear();</script>
+                            </select>
                 </form>
 
                 <br>
 
-                <div id="display1">
-                    <p><strong>Today's Date:</strong>&nbsp;<span id="getDate"></span></p>
-                    <p><strong>Your age (in years): </strong>&nbsp;<span id="ageYears"></span> </p>
-                    <p><strong>Your age (in months): </strong>&nbsp;<span id="ageMonths"></span> </p>
-                    <p><strong>Your age (in days): </strong>&nbsp;<span id="ageDays"></span></p>
-                    <p><strong>You are this old today... </strong>&nbsp;<span id="demo1"></span></p>
-                    <p><strong>Next birthday count-down: </strong>&nbsp;<span id="countdown1"></span></p>
+                <button type="button" class="button" onclick="getAgeDiff()">Calculate Your Age!</button>
+                <button type="button" class="button" onclick="getDataAgeDiff()">Your Age Today!</button>
+
+                <div id="display2">
+                        <p><strong>Today's Date:</strong>&nbsp;<span id="getDate2"></span></p>
+                        <p><strong>Your age (in years): </strong>&nbsp;<span id="ageYears2"></span> </p>
+                        <p><strong>Your age (in months): </strong>&nbsp;<span id="ageMonths2"></span> </p>
+                        <p><strong>Your age (in days): </strong>&nbsp;<span id="ageDays2"></span></p>
+                        <p><strong>You are this old today... </strong>&nbsp;<span id="demo2"></span></p>
+                        <p><strong>Next birthday count-down: </strong>&nbsp;<span id="countdown2"></span></p>
                 </div>
-        </div>
-
-        <div id="diffDates" class="tabcontent">
-            <h1>Date Duration
-                <span class="txt-rotate" data-period="2500"
-            data-rotate='["Keeper", "Evaluator", "Calculator" ]';></span>
-            </h1>
-
-            <br>
-
-            <form action="#" method="POST" name="dateForm">
-                        <label id="startlbl">Start Date: </label>
-                        <select class="form-control" id="label4" name="txtBday2">
-                            <option hidden>Birth Date</option>
-                            <script>fetchBDate();</script>
-                        </select>
-
-                        <select class="form-control" id="label5" name="txtBmo2">
-                            <option hidden>Birth Month</option>
-                            <script>fetchBMonth();</script>
-                        </select>
-
-                        <select class="form-control" id="label6" name="txtByr2">
-                            <option hidden>Birth Year</option>
-                            <script>fetchBYear();</script>
-                        </select>
-
-                        <br><br>
-
-                        <label id="endlbl">End  Date: </label>
-                        <select class="form-control" id="label7" name="txtSday">
-                            <option hidden>Selected Date</option>
-                            <script>fetchSDate();</script>
-                        </select>
-
-                        <select class="form-control" id="label8" name="txtSmon">
-                            <option hidden>Selected Month</option>
-                            <script>fetchSMonth();</script>
-                        </select>
-
-                        <select class="form-control" id="label9" name="txtSyr">
-                            <option hidden>Selected Year</option>
-                            <script>fetchSYear();</script>
-                        </select>
-            </form>
-
-            <br>
-
-            <button type="button" class="button" onclick="getAgeDiff()">Calculate Your Age!</button>
-            <button type="button" class="button" onclick="getDataAgeDiff()">Your Age Today!</button>
-
-            <div id="display2">
-                    <p><strong>Today's Date:</strong>&nbsp;<span id="getDate2"></span></p>
-                    <p><strong>Your age (in years): </strong>&nbsp;<span id="ageYears2"></span> </p>
-                    <p><strong>Your age (in months): </strong>&nbsp;<span id="ageMonths2"></span> </p>
-                    <p><strong>Your age (in days): </strong>&nbsp;<span id="ageDays2"></span></p>
-                    <p><strong>You are this old today... </strong>&nbsp;<span id="demo2"></span></p>
-                    <p><strong>Next birthday count-down: </strong>&nbsp;<span id="countdown2"></span></p>
             </div>
-    </div>
+        </div>
+    </section>
+</div>
+
 </body>
 </html>
