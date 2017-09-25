@@ -6,72 +6,87 @@
 // userBDate : Birth Date of user       (Start Date)
 'use strict';
 
-const currDate = new Date();
-
-const cal = 1000 * 60 * 60 * 24;
-
-/* ========================== FOR TAB1: Birth Date Age Calculator ============================= */
-
+// making default date month and year
 //function to display days for select-list
 function fetchDate(){
-    var myArray = [];
-    for(var j = 1; j < 32; j++){
-        myArray.push(j);
+    let dateArray = [];
+    for(let j = 1; j < 32; j++){
+        dateArray.push(j);
     }
-    var dropdown = document.getElementById("label1");
-
-    for(var i = 0; i < myArray.length; ++i){
-        dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-    }
+    let dateLabel = $('#date_label');
+    // console.log("dateLabel", dateLabel);
+    $.each(dateArray, function(i,idx){
+        // adding +1 as array index start from 0
+        dateLabel.append(`<option value="${i+1}">${idx}</option>`);
+    });
 }
-
 
 //function to display months for select-list
 function fetchMonth(){
-    var myArray = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-    var key = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-    var dropdown = document.getElementById("label2");
-
-    for(var i = 0; i < myArray.length; ++i){
-        dropdown[dropdown.length] = new Option(myArray[i], key[i]);
-    }
+    let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let monthDropdown = $("#month_label");
+    $.each(monthArray, function(i, idx){
+        // console.log('each i', idx);
+        monthDropdown.append(`<option value="${i}">${idx}</option>`);
+    });
 }
-
 
 //function to display years for the select-list
 function fetchYear(){
-    var myArray = [];
-    for(var j = 2017; j > 1919; j--){
-        myArray.push(j);
+    let yearArray = [];
+    let endYear = new Date().getYear(); // return 117 : new JS feature
+    for(let j = endYear; j > 0; j--){
+        yearArray.push(1900 + j);
     }
-    var dropdown = document.getElementById("label3");
-
-    for(var i = 0; i < myArray.length; ++i){
-        dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-    }
+    // console.log("yearArray", yearArray);
+    let yearDropdown = $("#year_label");
+    $.each(yearArray, function(i, idx){
+        yearDropdown.append(`<option value="${idx}">${idx}</option>`);
+    });
 }
+
+$(document).ready(function () {
+ $('#diffDates').hide();
+fetchDate();
+fetchMonth();
+fetchYear();
+
+const currDate = new Date();
+const zodiac = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+console.log("currDate", currDate);
+
+
+const daysInMili = 1000 * 60 * 60 * 24;
+
+$('#birth_age').on('click', function() {
+    $('#diffDates').hide();
+    $('#ageCalculator').show();
+});
+
+$('#diff_age').on('click', function() {
+    $('#diffDates').show();
+    $('#ageCalculator').hide();
+});
+
+/* ========================== FOR TAB1: Birth Date Age Calculator ============================= */
 
 
 //function to display the output of age calculator
-function display(currDate, years, numOfMon, diffDays)
-{
-    document.getElementById("getDate").innerHTML = currDate;      //code for today's date
-
-    document.getElementById("ageYears").innerHTML = years;        //code for age in years
-
-    document.getElementById("ageMonths").innerHTML = numOfMon;    //code for age in months
-
-    document.getElementById("ageDays").innerHTML = diffDays;      //code for age in days
-}
+const display = function(currDate, years, numOfMon, diffDays) {
+    $("#getDate").html(currDate);
+    $("#ageYears").html(years);
+    $("#ageMonths").html(numOfMon);
+    $("#ageDays").html(diffDays);
+};
 
 
-//function to calculate the zodiac sign
+//function to calculate the zodiac sign based on birth date
+// @return
 function zodiac(day, month){
-    var zodiac = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
-    var last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
-        return (day > last_day[month]) ? zodiac[month*1 + 1] : zodiac[month];
-}
 
+    let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+    return (day > last_day[month]) ? zodiac[month*1 + 1] : zodiac[month];
+}
 
 //function that will display the date calculated from today in the same page
 function getHumanReadableDate(id, ageYears, ageMonths, ageDays){
@@ -576,3 +591,4 @@ window.onload = function() {
   css.innerHTML = ".txt-rotate > .wrap { border-right: 0.08em solid #666 }";
   document.body.appendChild(css);
 };
+});

@@ -197,9 +197,11 @@ div.tab button:hover {
      transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1);
      transition-delay: 0.2s;
 }
+.hide {
+    display: none;
+}
 
 .tabcontent {
-    display: none;
     padding: 6px 12px;
     -webkit-animation: fadeEffect 1s;
     animation: fadeEffect 1s;
