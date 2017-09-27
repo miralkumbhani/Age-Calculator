@@ -9,28 +9,67 @@ h1{
   font-size: 30px;
   text-align: center;
   font-family: Andale Mono, monospace;
-}
-
-.tab{
-  overflow: hidden;
-  display: inline-block;
   margin-top: 10px;
 }
 
-.tab button{
-  background-color: inherit;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  font-size: 17px;
-  margin-left: 300px;
-  margin-top: 5px;
+hr{
+    width: 900px;
+    margin-right: 150px;
+    border-style: solid;
+    background-color: #403B4A;
+}
+
+/*for TABS and their display*/
+ul.tab {
+    overflow: hidden;
+    display: inline-block;
+}
+
+.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-left: 300px;
+    margin-top: 10px;
+    color: white;
+}
+
+.tab button:hover, .tab button.active {
+    background-color: #403B4A;
+    border-radius: 10px;
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+    transform: scale(1.2);
+}
+
+.hide {
+    display: none;
+}
+
+.edit-title{
+    color: gold;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
 }
 
 #birth_age{
   margin-left: 60px;
+  margin-top: 10px;
+}
+
+.label-control{
+    text-align: center;
+    width: 150px;
+    margin-top: 5px;
 }
 
 #start_label{
@@ -48,64 +87,49 @@ h1{
 #date_label{
     font-size: 18px;
     margin-left: 320px;
-    width: 150px;
-    text-align: center;
 }
 
 #user_date_label, #select_date_label{
   font-size: 18px;
   margin-left: 20px;
-  width: 150px;
-  text-align: center;
 }
 
 #month_label{
   font-size: 18px;
-  text-align: center;
   margin-left: 70px;
   margin-right: 20px;
-  width: 150px;
 }
 
 #user_month_label, #select_month_label{
   font-size: 18px;
-  text-align: center;
   margin-left: 70px;
   margin-right: 20px;
-  width: 150px;
 }
 
 #year_label{
   font-size: 18px;
   margin-left: 50px;
   margin-right: 20px;
-  width: 150px;
-  text-align: center;
 }
 
 #user_year_label, #select_year_label{
   font-size: 18px;
   margin-left: 50px;
   margin-right: 20px;
-  width: 150px;
-  text-align: center;
-}
-
-#date_click_button{
-  margin-top: 40px;
-  margin-left: 440px;
 }
 
 .button {
-  position: relative;
-  overflow: hidden;
-  width: 110px;
-  height: 50px;
-  font-size: 17px;
-  display: inline;
-  border-radius: 5px;
-  text-decoration: none;
-  text-align: center;
+    margin-top: 25px;
+    margin-left: 565px;
+    position: relative;
+    overflow: hidden;
+    width: 110px;
+    height: 50px;
+    font-size: 17px;
+    display: inline;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
 }
 
 .button:after {
@@ -144,33 +168,36 @@ h1{
 #date_linkButton{
   overflow: hidden;
   color: black;
-  padding: 10px 15px;
+  margin-top: 10px;
+  margin-left: 545px;
   text-align: center;
   text-decoration: none;
-  display: inline;
+  display: inline-block;
   position: relative;
-  display: inline;
+  padding: 10px 15px;
+  border-style: groove;
   border-radius: 5px;
   text-decoration: none;
   text-align: center;
 }
 
-#date_data_output{
-    background: linear-gradient(-90deg, #403B4A, #E7E9BB);
+label{
+    font-weight: bold;
+}
+
+.output {
+    background: linear-gradient(-90deg, #f4ff71, #ffe1ed);
     box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 5px;
     width: 600px;
-    height: 310px;
-
-    margin-top: 30px;
+    height: 300px;
+    margin-top: 10px;
     margin-left: 330px;
-
     font-family: Trebuchet MS;
     font-size: 18px;
     text-shadow: 1px 1px gray;
     text-align: center;
 }
-
 
 #diff_data_output{
     background: linear-gradient(-90deg, #FF5F6D, #FFC371);
@@ -183,58 +210,3 @@ h1{
     font-size: 20px;
     text-shadow: 1px 1px gray;
 }
-
-/* ============================= FOR MODAL BOX ================================== */
-.modalDialog {
-    position: fixed;
-    font-family: Arial, Helvetica, sans-serif;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 99999;
-    opacity:0;
-    -webkit-transition: opacity 400ms ease-in;
-    -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;
-    pointer-events: none;
-}
-
-.modalDialog:target {
-    opacity:1;
-    pointer-events: auto;
-}
-
-.modalDialog > div {
-    width: 400px;
-    position: relative;
-    margin: 30px auto;
-    padding: 0px 20px 13px 20px;
-    border-radius: 10px;
-    background: #fff;
-    background: -moz-linear-gradient(#fff, #999);
-    background: -webkit-linear-gradient(#fff, #999);
-    background: -o-linear-gradient(#fff, #999);
-}
-
-.close {
-    background: #606061;
-    color: #FFFFFF;
-    line-height: 25px;
-    position: absolute;
-    right: -12px;
-    text-align: center;
-    top: -10px;
-    width: 24px;
-    text-decoration: none;
-    font-weight: bold;
-    -webkit-border-radius: 12px;
-    -moz-border-radius: 12px;
-    border-radius: 12px;
-    -moz-box-shadow: 1px 1px 3px #000;
-    -webkit-box-shadow: 1px 1px 3px #000;
-    box-shadow: 1px 1px 3px #000;
-}
-
-.close:hover { background: #00d9ff; }

@@ -8,6 +8,6 @@
       "scripts": ["background.js"]
     }
   },
-  "icons": { "128": "calendar-128.png" }
+  "icons": { "128": "calendar-128.png" },
   "author" : "Miral Kumbhani"
 }
