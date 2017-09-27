@@ -14,6 +14,7 @@ h1{
 .tab{
   overflow: hidden;
   display: inline-block;
+  margin-top: 10px;
 }
 
 .tab button{
@@ -26,6 +27,10 @@ h1{
   font-size: 17px;
   margin-left: 300px;
   margin-top: 5px;
+}
+
+#birth_age{
+  margin-left: 60px;
 }
 
 #start_label{
@@ -42,7 +47,7 @@ h1{
 
 #date_label{
     font-size: 18px;
-    margin-left: 200px;
+    margin-left: 320px;
     width: 150px;
     text-align: center;
 }
@@ -86,6 +91,11 @@ h1{
   text-align: center;
 }
 
+#date_click_button{
+  margin-top: 40px;
+  margin-left: 440px;
+}
+
 .button {
   position: relative;
   overflow: hidden;
@@ -94,16 +104,9 @@ h1{
   font-size: 17px;
   display: inline;
   border-radius: 5px;
-
-  margin-left: 230px;
-  margin-right: -120px;
   text-decoration: none;
   text-align: center;
 }
-
-/*.button:nth-child(1) { background: cornflowerblue; }
-.button:nth-child(2) { background: salmon; }
-.button:nth-child(3) { background: gray; }*/
 
 .button:after {
   content: "";
@@ -138,19 +141,36 @@ h1{
   opacity: 0;
 }
 
+#date_linkButton{
+  overflow: hidden;
+  color: black;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  position: relative;
+  display: inline;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+}
+
 #date_data_output{
     background: linear-gradient(-90deg, #403B4A, #E7E9BB);
     box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 5px;
     width: 600px;
-    height: 285px;
-    margin-left: 220px;
-    /*text-align: center;*/
-    /*align-content: center;*/
+    height: 310px;
+
+    margin-top: 30px;
+    margin-left: 330px;
+
     font-family: Trebuchet MS;
-    font-size: 20px;
+    font-size: 18px;
     text-shadow: 1px 1px gray;
+    text-align: center;
 }
+
 
 #diff_data_output{
     background: linear-gradient(-90deg, #FF5F6D, #FFC371);
@@ -163,3 +183,58 @@ h1{
     font-size: 20px;
     text-shadow: 1px 1px gray;
 }
+
+/* ============================= FOR MODAL BOX ================================== */
+.modalDialog {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 400px;
+    position: relative;
+    margin: 30px auto;
+    padding: 0px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }

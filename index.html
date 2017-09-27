@@ -13,8 +13,8 @@
 <body>
     <div id="main_content">
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'ageCalculator')">Birth Date Age Calculator</button>
-            <button class="tablinks" onclick="openTab(event, 'diffDates')">Different Dates Age Calculator</button>
+            <button class="tablinks" data-display="birth_age">Birth Date Age Calculator</button>
+            <button class="tablinks" data-display="diff_age">Different Dates Age Calculator</button>
         </div>
         <div class="tab-content" id="birth_age">
             <h1>Age Calculator</h1>
@@ -29,8 +29,9 @@
                     <option readonly disabled>Birth Year</option>
                 </select>
             </div>
-            <button type="button" class="button" id="date_getAge">Calculate Your Age!</button>
-            <a id="date_linkButton" href="#openModal">Your Zodiac Info!</a>
+            <div id="date_click_button">
+                <button type="button" class="button" id="date_getAge">Calculate Your Age!</button>
+                <a id="date_linkButton" href="#openModal">Your Zodiac Info!</a>
                 <div id="date_openModal" class="modalDialog">
                     <div>
                         <a href="#close" title="Close" class="close">X</a>
@@ -39,19 +40,21 @@
                             <span id="date_attribute"></span>
                     </div>
                 </div>
-            <button type="button" class="button" id="date_getFullAge">Your Age Today!</button>
+                <button type="button" class="button" id="date_getFullAge">Your Age Today!</button>
+            </div>
+
             <div id="date_data_output">
-                <p><label>Today's Date: </label><span id="date_today_date"></span></p>
-                <p><label>Birth Date: </label><span id="user_date"></span></p>
-                <p><h4>Your Age</h4></p>
-                <p><label>In Years: </label><span id="user_ageYears"></span></p>
-                <p><label>In Months: </label><span id="user_ageMonths"></span></p>
-                <p><label>In Days: </label><span id="user_ageDays"></span></p>
-                <p><label>Your Age Today: </label><span id="user_todayAge"></span></p>
-                <p><label>Next Birthday Count-Down: </label><span id="user_countdown"></span></p>
+                <p>Today's Date: <span id="date_today_date"></span></p>
+                <p>Birth Date: <span id="user_date"></span></p>
+                <p><strong>Your Age</strong></p>
+                <p>In Years: <span id="user_ageYears"></span></p>
+                <p>In Months: <span id="user_ageMonths"></span></p>
+                <p>In Days: <span id="user_ageDays"></span></p>
+                <p>Your Age Today: <span id="user_todayAge"></span></p>
+                <p>Next Birthday Count-Down: <span id="user_countdown"></span></p>
             </div>
         </div>
-        <div class="tab-content" id="diff_age">
+        <!-- <div class="tab-content" id="diff_age">
             <h1>Date Duration Calculator</h1>
             <div id="diff_data_input">
                 <label id="start_label">Start Date: </label>
@@ -95,7 +98,7 @@
                 <p><label>In Days: </label><span id="select_ageDays"></span></p>
                 <p><label>Your Age Today: </label><span id="select_todayAge"></span></p>
             </div>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>
