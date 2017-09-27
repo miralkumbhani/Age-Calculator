@@ -89,7 +89,7 @@ $(document).ready(function() {
             getTrueAge(userDate);
             getCountdownTime(userDate);
             let z_sign = zodiac(userDate.getDate(), userDate.getMonth());
-            // console.log('z_sign', z_sign);
+            console.log('z_sign', z_sign);
             let zodiac_info = getZodiacModal(z_sign);
             console.log(zodiac_info);
             $('#zodiac_name').html(zodiac_info.zsign);
@@ -186,25 +186,25 @@ $(document).ready(function() {
         let dlYr = currDate.getFullYear() + 1;
 
         let deadline = new Date();
-        //console.log("deadline", deadline);
         deadline.setDate(dlDay);
         deadline.setMonth(dlMon);
         deadline.setYear(dlYr);
 
         let interval = setInterval(function() {
             let currentTime = new Date().getTime();
-            //console.log("currentTime", currentTime);
+            console.log("currentTime", currentTime);
             let countdownTime = new Date(deadline).getTime();
-            //console.log("countdownTime", countdownTime);
+            console.log("countdownTime", countdownTime);
             let diffInTime = countdownTime - currentTime;
+            console.log(diffInTime)
 
             let days = Math.floor(diffInTime / dayInMilli);
             let hours = Math.floor((diffInTime % (dayInMilli)) / (1000 * 60 * 60));
             let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((diffInTime % (1000 * 60)) / 1000);
 
-            let countdownString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds.`;
             if (diffInTime > 0) {
+                let countdownString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds.`;
                 $('#countdown').html(countdownString);
             } else {
                 clearInterval(interval);
