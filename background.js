@@ -1,109 +1,41 @@
 'use strict';
 
-function getUserDate() {
+// @return array = [1,...31]
+function _setDay() {
     let dateArray = [];
     for (let j = 1; j < 32; j++) {
         dateArray.push(j);
     }
-    let dateDropdown = $('#date_label');
+    let dateDropdown = [];
     $.each(dateArray, function(i, idx) {
-        dateDropdown.append(`<option value="${i+1}">${idx}</option>`);
+        dateDropdown.push(`<option value="${i+1}">${idx}</option>`);
     });
+    return dateDropdown;
 }
 
-function getUserMonth() {
+function _setMonth() {
     let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let monthDropdown = $('#month_label');
+    let monthDropdown = [];
     $.each(monthArray, function(i, idx) {
-        monthDropdown.append(`<option value="${i+1}">${idx}</option>`);
+        monthDropdown.push(`<option value="${i+1}">${idx}</option>`);
     });
+    return monthDropdown;
 }
 
-function getUserYear() {
+function _setYear() {
     let yearArray = [];
     let endYear = new Date().getFullYear();
     for (let j = endYear; j > 0; j--) {
         yearArray.push(j);
     }
-    let yearDropdown = $('#year_label');
+    let yearDropdown = [];
     $.each(yearArray, function(i, idx) {
-        yearDropdown.append(`<option value="${idx}">${idx}</option>`);
+        yearDropdown.push(`<option value="${idx}">${idx}</option>`);
     });
+    return yearDropdown;
 }
 
-$(document).ready(function() {
-    $('.tab-content').eq(0).show();
-    getUserDate();
-    getUserMonth();
-    getUserYear();
-
-    const currDate = new Date();
-    const dayInMilli = 1000 * 60 * 60 * 24;
-
-    $('.tab').on('click', '.tablinks', function() {
-        let display = $(this).data('display');
-        let index = $(this).index();
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('#tab_content').children().hide();
-        $('#tab_content').children('#' + display).show();
-        // event.preventDefault;
-    });
-
-    /* ========================= FOR TAB1: Birth Date Age Calculator =========================== */
-    //function to calculate the zodiac sign based on birth date
-    // @return
-    function zodiac(day, month) {
-        console.log('zodiac', day, month);
-        let zodiacName = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
-        let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
-        return (day > last_day[month]) ? zodiacName[month * 1 + 1] : zodiacName[month];
-    }
-
-    $(document).on('click', 'button#date_getFullAge', function() {
-        getAge();
-    });
-
-    //function to calculate the age in years, days and months
-    function getAge() {
-        let u_date = $('#date_label').val();
-        let u_month = $('#month_label').val();
-        let u_year = $('#year_label').val();
-
-        let userDateString = `${u_month}-${u_date}-${u_year}`;
-        let userDate = new Date(userDateString);
-
-        if (isFinite(userDate)) {
-            //code for calculating age in years
-            let user_diffYears = currDate.getUTCFullYear() - userDate.getUTCFullYear();
-            //code for calculating age in months
-            let user_diffMonths = user_diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
-            //code for calculating age in days
-            let user_diffDays = Math.floor((currDate - userDate) / dayInMilli);
-
-            $('#date_today_date').html(currDate);
-            $("#user_date").html(userDate);
-            $("#user_ageYears").html(user_diffYears);
-            $("#user_ageMonths").html(user_diffMonths);
-            $("#user_ageDays").html(user_diffDays);
-            getTrueAge(userDate);
-            getCountdownTime(userDate);
-            let z_sign = zodiac(userDate.getDate(), userDate.getMonth());
-            console.log('z_sign', z_sign);
-            let zodiac_info = getZodiacModal(z_sign);
-            console.log(zodiac_info);
-            $('#zodiac_name').html(zodiac_info.zsign);
-            $('#zodiac_birthrange').html(zodiac_info.birthrange);
-            $('#zodiac_attributes').html(zodiac_info.attribute);
-        } else {
-            alert('Invalid Date, try again.');
-            return false;
-        }
-    }
-
-    function getZodiacModal(z_sign) {
-        console.log("Zodiac Sign:", z_sign);
-        let zodiacArray = [{
+ const zodiacArray = [{
                 zsign: "Aries",
                 birthrange: "March 21 - April 19",
                 attribute: "Aries are fire signs and those born under this element are regarded in astrology as adventurous, active and outgoing. It won't matter where you go or how remote or unusual it is - from the Outback to the Antarctic - you can be sure that an Aries has been there before you (or at the very least you will meet one along the way!) Aries is a uniquely naive sign. Although they are independent, outgoing and assertive they are also surprisingly trusting, often innocently walking into the lion's den at times. No matter what upheaval, challenge or triumph they confront - an Aries has a wonderful ability to bounce back. Their faith in life and the future remains untouched by hardship. Their gift is that they are always children at heart and the world is always a magical place for them. Many famous sports people are born under this sign. Aries is regarded as the most physical sign and because of its Mar's rulership; it is also one of the most highly charged masculine energy signs in astrology. No wonder women born under Aries are forceful, dynamic and aggressive, and as a result these Aries women frequently find themselves with dilemmas surrounding their romantic relationships. For them, a man has to be a 'real man' to deal with an Aries woman, otherwise she intimidates him. And conversely for the Aries male, a woman has to be a real woman to deal with him, because he is looking for many balancing component traits (his true feminine side) in his partner. She has to run the gamut in his support system, from the Aries man's best friend, true companion, through to his muse, and yet she must never ever answer him back!"
@@ -164,20 +96,48 @@ $(document).ready(function() {
                 attribute: "People born under the sign of Leo are natural born leaders. They are dramatic, creative self-confident, dominant and extremely difficult to resist. They can achieve anything they want, whether it's about work or time spent will family and friends."
             }
         ];
-        // debugger;
-        let selected_zodiac = zodiacArray.find(function(zodiac){
-            // console.log("Zodiac: ", zodiac, z_sign);
-            if(zodiac.zsign === z_sign){
-                console.log("inside if", zodiac);
-                return zodiac;
-            } else {
-                // console.log("inside else");
-            }
-        });
-        return selected_zodiac;
-        // console.log(zodiacArray, filteredArray);
-    }
 
+$(document).ready(function() {
+    //debugger;
+    $('.tabcontent').eq(0).show();
+
+    let dd_day = _setDay();
+    $('#date_label').html(dd_day.join(''));
+
+    let dd_month = _setMonth();
+    $('#month_label').html(dd_month.join(''));
+
+    let dd_year = _setYear();
+    $('#year_label').html(dd_year.join(''));
+
+    const currDate = new Date();
+    const dayInMilli = 1000 * 60 * 60 * 24;
+
+    $('.tab').on('click', '.tablinks', function() {
+        //debugger;
+        let display = $(this).data('display');
+        console.log($(this));
+        console.log("Display:", display);
+        let index = $(this).index();
+        console.log("index:", index);
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $('#tab_data').children().hide();
+        $('#tab_data').children('#' + display).show();
+        //event.preventDefault;
+    });
+
+    //function to calculate the zodiac sign based on birth date
+    const zodiac = function(day, month) {
+        let zodiacName = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+        let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+        return (day > last_day[month]) ? zodiacName[month * 1 + 1] : zodiacName[month];
+    };
+
+    //function to display the output properly
+    const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
+
+    //function for the countdown time for birthday
     const getCountdownTime = function(inputDate) {
         //function to get the countdown to next birthday
         let userDate = inputDate;
@@ -192,12 +152,10 @@ $(document).ready(function() {
 
         let interval = setInterval(function() {
             let currentTime = new Date().getTime();
-            console.log("currentTime", currentTime);
             let countdownTime = new Date(deadline).getTime();
-            console.log("countdownTime", countdownTime);
             let diffInTime = countdownTime - currentTime;
-            console.log(diffInTime)
 
+            //console.log("Hour n Min:", varHr, varMin);
             let days = Math.floor(diffInTime / dayInMilli);
             let hours = Math.floor((diffInTime % (dayInMilli)) / (1000 * 60 * 60));
             let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
@@ -213,6 +171,27 @@ $(document).ready(function() {
         }, 1000);
     };
 
+    //function to get zodiac name, birth-range and attributes
+    const getZodiacInfo = function(z_sign) {
+
+        console.log(zodiacArray);
+        let selected_zodiac = zodiacArray.find(function(zodiac) {
+            if (zodiac.zsign === z_sign) {
+                return zodiac;
+            }
+        });
+        return selected_zodiac;
+    };
+
+    /* ========================= FOR TAB1: Birth Date Age Calculator =========================== */
+
+    $('#user_date_label').html(dd_day.join(''));
+    $('#month_label').html(dd_month.join(''));
+
+    // let dd_year = _setYear();
+    // $('#year_label').html(dd_year.join(''));
+
+    //function to get complete age from today
     function getTrueAge(inputDate) {
         let userDate = inputDate;
         let ageYears, ageMonths, ageDays;
@@ -238,140 +217,141 @@ $(document).ready(function() {
         }
 
         let dayString = maybePluralize(ageDays, 'day');
-        // console.log("dayString", dayString);
         let monthString = maybePluralize(ageMonths, 'month');
-        // console.log("monthString", monthString);
         let yearString = maybePluralize(ageYears, 'year');
-        // console.log("yearString", yearString);
         let totalAge = `${yearString}, ${monthString}, ${dayString}`;
-        // console.log("total Age: ", totalAge);
         $('#user_todayAge').html(totalAge);
     }
 
-    const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
+    $(document).on('click', 'button#getAge', function() {
+        getAge();
+    });
+
+    //function to calculate the age in years, days and months
+    function getAge() {
+        let u_date = $('#date_label').val();
+        let u_month = $('#month_label').val();
+        let u_year = $('#year_label').val();
+
+        let userDateString = `${u_month}-${u_date}-${u_year}`;
+        let userDate = new Date(userDateString);
+
+        if (isFinite(userDate)) {
+            //code for calculating age in years
+            let user_diffYears = currDate.getUTCFullYear() - userDate.getUTCFullYear();
+            //code for calculating age in months
+            let user_diffMonths = user_diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
+            //code for calculating age in days
+            let user_diffDays = Math.floor((currDate - userDate) / dayInMilli);
+
+            $('#today_date').html(currDate);
+            $("#user_date").html(userDate);
+            $("#user_ageYears").html(user_diffYears);
+            $("#user_ageMonths").html(user_diffMonths);
+            $("#user_ageDays").html(user_diffDays);
+            getTrueAge(userDate);
+            getCountdownTime(userDate);
+            let z_sign = zodiac(userDate.getDate(), userDate.getMonth());
+            let zodiac_info = getZodiacInfo(z_sign);
+            $('#zodiac_name').html(zodiac_info.zsign);
+            $('#zodiac_birthrange').html(zodiac_info.birthrange);
+            $('#zodiac_attributes').html(zodiac_info.attribute);
+        } else {
+            alert('Invalid Date, try again.');
+            return false;
+        }
+    }
 
     /* =========================== FOR TAB2: Different Dates Age Calculator ======================= */
+    $(document).on('click', 'button#getDiff', function() {
+        getDateDiff();
+    });
 
-    //function to display the days (birth date) for select-list
-    function fetchBDate() {
-        var myArray = [];
-        for (var j = 1; j < 32; j++) {
-            myArray.push(j);
-        }
-        var dropdown = document.getElementById("label4");
+    //function to calculate age from today (What is my age?)
+    function getDiffTrueAge(inputDate) {
+        let userDate = inputDate;
+        let start_day = $('#user_date_label').val();
+        var start_month = $('#user_month_label').val();
+        var start_year = $('#user_year_label').val();
 
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-        }
-    }
-
-
-    //function to display the months (birth date) for select-list
-    function fetchBMonth() {
-        var myArray = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        var key = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-        var dropdown = document.getElementById("label5");
-
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], key[i]);
-        }
-    }
-
-
-    //function to display the years (birth date) for select-list
-    function fetchBYear() {
-        var myArray = [];
-        for (var j = 2017; j > 1900; j--) {
-            myArray.push(j);
-        }
-        var dropdown = document.getElementById("label6");
-
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-        }
-    }
-
-
-    //function to display the days (selected date) for select-list
-    function fetchSDate() {
-        var myArray = [];
-        for (var j = 1; j < 32; j++) {
-            myArray.push(j);
-        }
-        var dropdown = document.getElementById("label7");
-
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-        }
-    }
-
-
-    //function to display the months (selected date) for select-list
-    function fetchSMonth() {
-        var myArray = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        var key = new Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
-        var dropdown = document.getElementById("label8");
-
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], key[i]);
-        }
-    }
-
-
-    //function to display the years (selected date) for select-list
-    function fetchSYear() {
-        var myArray = [];
-        for (var j = 2017; j > 1919; j--) {
-            myArray.push(j);
-        }
-        var dropdown = document.getElementById("label9");
-
-        for (var i = 0; i < myArray.length; ++i) {
-            dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
-        }
-    }
-
-
-    //function to display the output of the age calculator
-    function displayResult(currDate, years, numOfMon, diffDays, daysRemain) {
-
-        document.getElementById("getDate2").innerHTML = currDate; //code for today's date
-
-        document.getElementById("ageYears2").innerHTML = years; //code for age in years
-
-        document.getElementById("ageMonths2").innerHTML = numOfMon; //code for age in months
-
-        document.getElementById("ageDays2").innerHTML = diffDays; //code for age in days
-    }
-
-
-    //function to calculate the age between two dates
-    function getAgeDiff() {
-        var b_day = parseInt(document.forms[1].txtBday2.value, 10);
-        var b_month = parseInt(document.forms[1].txtBmo2.value, 10);
-        var b_year = parseInt(document.forms[1].txtByr2.value, 10);
-
-        let userBDateString = `${b_month}-${b_day}-${b_year}`;
-        let userBDate = new Date(userBDateString);
-
-        var s_day = parseInt(document.forms[1].txtSday.value, 10);
-        var s_month = parseInt(document.forms[1].txtSmon.value, 10);
-        var s_year = parseInt(document.forms[1].txtSyr.value, 10);
-
-
-        let userSDateString = `${s_month}-${s_day}-${s_year}`;
+        let userSDateString = `${start_month}-${start_day}-${start_year}`;
         let userSDate = new Date(userSDateString);
 
-        if (isFinite(userBDate) && isFinite(userSDate)) {
-            if (s_year > b_year) {
-                //code for calculating age in years
-                var years = userSDate.getUTCFullYear() - userBDate.getUTCFullYear();
+        var end_day = $('#select_date_label').val();
+        var end_month = $('#select_month_label').val();
+        var end_year = $('#select_year_label').val();
 
-                //code for calculating age in months
-                var numOfMon = (userSDate.getUTCFullYear() - userBDate.getUTCFullYear()) * 12 + (userSDate.getMonth() - userBDate.getMonth())
 
-                //code for calculating age in days
-                var diffDays = Math.floor((userSDate - userBDate) / cal);
+        let userEDateString = `${end_month}-${end_day}-${end_year}`;
+        let userEDate = new Date(userEDateString);
+
+        var days, ageYears, ageMonths, ageDays;
+
+        days = Math.ceil((userEDate - userSDate) / (dayInMilli) + 30);
+        ageYears = Math.floor(days / 365);
+        var diffMonth = userEDate.getMonth() - userSDate.getMonth();
+        if (diffMonth >= 0) {
+            ageMonths = userEDate.getMonth() - userSDate.getMonth();
+        } else if (diffMonth < 0) {
+            ageMonths = 12 - Math.abs((userEDate.getMonth() - userSDate.getMonth()));
+        }
+        var diffDay = userEDate.getDate() - userSDate.getDate();
+        var year = userSDate.getFullYear();
+
+        if (userSDate.getMonth() == 1) {
+            if ((0 == year % 4) && (0 != year % 100) || (0 == year % 400)) {
+                ageDays = 29 - Math.abs(diffDay);
+            } else {
+                ageDays = 28 - Math.abs(diffDay);
+            }
+        }
+        if (diffDay >= 0) {
+            ageMonths--;
+            ageDays = 31 - Math.abs(diffDay);
+        }
+        if (diffDay < 0) {
+            ageDays = Math.abs(diffDay);
+        }
+        let dayString = maybePluralize(ageDays, 'day');
+        let monthString = maybePluralize(ageMonths, 'month');
+        let yearString = maybePluralize(ageYears, 'year');
+        let totalAge = `${yearString}, ${monthString}, ${dayString}`;
+        $('#select_todayAge').html(totalAge);
+    }
+
+    //function to calculate the age between two dates
+    function getDateDiff() {
+        let start_date = $('#user_date_label').val();
+        let start_month = $('#user_month_label').val();
+        let start_year = $('#user_year_label').val();
+
+        let userSDateString = `${start_month}-${start_date}-${start_year}`;
+        let userSDate = new Date(userSDateString);
+
+        let end_date = $('#select_date_label').val();
+        let end_month = $('#select_month_label').val();
+        let end_year = $('#select_year_label').val();
+
+        let userEDateString = `${end_month}-${end_date}-${end_year}`;
+        let userEDate = new Date(userEDateString);
+
+        if (isFinite(userSDate) && isFinite(userEDate)) {
+            if (end_year > start_year) {
+                let select_diffYears = userEDate.getFullYear() - userSDate.getFullYear();
+                let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
+                let select_diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
+
+                $('#start_date').html(userSDate);
+                $('#end_date').html(userEDate);
+                $('#select_ageYears').html(select_diffYears);
+                $('#select_ageMonths').html(select_diffMonths);
+                $('#select_ageDays').html(select_diffDays);
+                getDiffTrueAge(userSDate);
+                let zodiac_sign = zodiac(userSDate.getDate(), userSDate.getMonth());
+                let zodiac_info = getZodiacInfo(zodiac_sign);
+                $('#diff_zodiac_name').html(zodiac_info.zsign);
+                $('#diff_zodiac_birthrange').html(zodiac_info.birthrange);
+                $('#diff_zodiac_attributes').html(zodiac_info.attribute);
             } else {
                 alert('The Selected Year should be greater than the Birth year');
                 return false;
@@ -380,102 +360,5 @@ $(document).ready(function() {
             alert('Invalid Date, try again.');
             return false;
         }
-
-        //function call to display the output of age calculator
-        displayResult(currDate, years, numOfMon, diffDays);
-
-        //function call for zodiac sign
-        var z_sign = zodiac(userBDate.getDay(), userBDate.getMonth());
-        alert(z_sign);
-
-        //function to get the countdown to next birthday
-        var dlDay = userBDate.getDate();
-        var dlMon = userBDate.getMonth();
-        var dlYr = userSDate.getFullYear() + 1;
-
-        var deadline = new Date();
-        deadline.setDate(dlDay);
-        deadline.setMonth(dlMon);
-        deadline.setYear(dlYr);
-
-        var countDownDate = new Date(deadline).getTime();
-
-        var x = setInterval(function() {
-            var now = new Date().getTime();
-
-            var distance = countDownDate - now;
-
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown2").innerHTML = days + " days " + hours + " hours " + minutes + " minutes " + seconds + " seconds ";
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown2").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    }
-
-
-    //function to calculate age from today (What is my age?)
-    function getDataAgeDiff() {
-        var b_day = parseInt(document.forms[1].txtBday2.value, 10);
-        var b_month = parseInt(document.forms[1].txtBmo2.value, 10);
-        var b_year = parseInt(document.forms[1].txtByr2.value, 10);
-
-        let userBDateString = `${b_month}-${b_day}-${b_year}`;
-        let userBDate = new Date(userBDateString);
-
-        var s_day = parseInt(document.forms[1].txtSday.value, 10);
-        var s_month = parseInt(document.forms[1].txtSmon.value, 10);
-        var s_year = parseInt(document.forms[1].txtSyr.value, 10);
-
-
-        let userSDateString = `${s_month}-${s_day}-${s_year}`;
-        let userSDate = new Date(userSDateString);
-
-        var days, ageYears, ageMonths, ageDays;
-
-        days = Math.ceil((userSDate - userBDate) / (cal) + 30);
-
-        //years calculation from today
-        ageYears = Math.floor(days / 365);
-
-        //months calculation from today
-        var diffMonth = userSDate.getMonth() - userBDate.getMonth();
-        if (diffMonth >= 0) {
-            ageMonths = userSDate.getMonth() - userBDate.getMonth();
-        } else if (diffMonth < 0) {
-            ageMonths = 12 - Math.abs((userSDate.getMonth() - userBDate.getMonth()));
-        }
-
-        //days calculation from today
-        var diffDay = userSDate.getDate() - userBDate.getDate();
-        var y = userBDate.getFullYear();
-
-        if (userBDate.getMonth() == 1 || userBDate.getMonth() == 2) {
-            var conValue = confirm("If date entered is greater than 29 (for leap year) or 28 for FEBRUARY month, the age will be calculated automatically considering 1st March of the concerned year! Do you wish to continue?");
-            if (conValue == true) {
-                if ((0 == y % 4) && (0 != y % 100) || (0 == y % 400)) {
-                    ageDays = 29 - Math.abs(diffDay);
-                } else {
-                    ageDays = 28 - Math.abs(diffDay);
-                }
-            } else if (conValue == false)
-                return false;
-        }
-        if (diffDay < 0) {
-            ageMonths--;
-            ageDays = 31 - Math.abs(diffDay);
-        }
-        if (diffDay >= 0) {
-            ageDays = diffDay;
-        }
-
-        //function call for displaying the total age from today
-        var id = "demo2";
-        getHumanReadableDate(id, ageYears, ageMonths, ageDays);
     }
 });

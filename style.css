@@ -50,15 +50,25 @@ ul.tab {
     display: none;
 }
 
-.edit-title{
-    color: gold;
-}
-
 .tabcontent {
     display: none;
     padding: 6px 12px;
     -webkit-animation: fadeEffect 1s;
     animation: fadeEffect 1s;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.edit-title{
+    color: gold;
 }
 
 #birth_age{
@@ -73,13 +83,13 @@ ul.tab {
 }
 
 #start_label{
-  margin-left: 140px;
+  margin-left: 270px;
   font-family: Old Standard TT;
   font-size: 18px;
 }
 
 #end_label{
-  margin-left: 144px;
+  margin-left: 277px;
   font-family: Old Standard TT;
   font-size: 18px;
 }
@@ -165,48 +175,27 @@ ul.tab {
   opacity: 0;
 }
 
-#date_linkButton{
-  overflow: hidden;
-  color: black;
-  margin-top: 10px;
-  margin-left: 545px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  position: relative;
-  padding: 10px 15px;
-  border-style: groove;
-  border-radius: 5px;
-  text-decoration: none;
-  text-align: center;
-}
-
 label{
     font-weight: bold;
 }
 
+.section_output {
+    margin: 20px;
+}
 .output {
     background: linear-gradient(-90deg, #f4ff71, #ffe1ed);
     box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 5px;
     width: 600px;
-    height: 300px;
-    margin-top: 10px;
-    margin-left: 330px;
+    min-height: 300px;
     font-family: Trebuchet MS;
     font-size: 18px;
     text-shadow: 1px 1px gray;
     text-align: center;
+    color: black;
+    text-align: left;
 }
 
-#diff_data_output{
-    background: linear-gradient(-90deg, #FF5F6D, #FFC371);
-    width: 600px;
-    height: 285px;
-    margin-left: 240px;
-    text-align: center;
-    /*align-content: center;*/
-    font-family: Trebuchet MS;
-    font-size: 20px;
-    text-shadow: 1px 1px gray;
+.h_500 {
+    height: 500px;
 }
