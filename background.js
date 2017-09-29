@@ -13,6 +13,7 @@ function _setDay() {
     return dateDropdown;
 }
 
+//@return array = [January, ...December]
 function _setMonth() {
     let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let monthDropdown = [];
@@ -22,10 +23,11 @@ function _setMonth() {
     return monthDropdown;
 }
 
+//@return array = [currentYear,....0]
 function _setYear() {
     let yearArray = [];
     let endYear = new Date().getFullYear();
-    for (let j = endYear; j > 0; j--) {
+    for (let j = endYear; j > 1599; j--) {
         yearArray.push(j);
     }
     let yearDropdown = [];
@@ -98,28 +100,23 @@ function _setYear() {
         ];
 
 $(document).ready(function() {
-    //debugger;
     $('.tabcontent').eq(0).show();
 
-    let dd_day = _setDay();
-    $('#date_label').html(dd_day.join(''));
+    let age_day = _setDay();
+    $('#date_label').html(age_day.join(''));
 
-    let dd_month = _setMonth();
-    $('#month_label').html(dd_month.join(''));
+    let age_month = _setMonth();
+    $('#month_label').html(age_month.join(''));
 
-    let dd_year = _setYear();
-    $('#year_label').html(dd_year.join(''));
+    let age_year = _setYear();
+    $('#year_label').html(age_year.join(''));
 
     const currDate = new Date();
     const dayInMilli = 1000 * 60 * 60 * 24;
 
     $('.tab').on('click', '.tablinks', function() {
-        //debugger;
         let display = $(this).data('display');
-        console.log($(this));
-        console.log("Display:", display);
         let index = $(this).index();
-        console.log("index:", index);
         $(this).siblings().removeClass('active');
         $(this).addClass('active');
         $('#tab_data').children().hide();
@@ -155,7 +152,6 @@ $(document).ready(function() {
             let countdownTime = new Date(deadline).getTime();
             let diffInTime = countdownTime - currentTime;
 
-            //console.log("Hour n Min:", varHr, varMin);
             let days = Math.floor(diffInTime / dayInMilli);
             let hours = Math.floor((diffInTime % (dayInMilli)) / (1000 * 60 * 60));
             let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
@@ -173,8 +169,6 @@ $(document).ready(function() {
 
     //function to get zodiac name, birth-range and attributes
     const getZodiacInfo = function(z_sign) {
-
-        console.log(zodiacArray);
         let selected_zodiac = zodiacArray.find(function(zodiac) {
             if (zodiac.zsign === z_sign) {
                 return zodiac;
@@ -184,13 +178,6 @@ $(document).ready(function() {
     };
 
     /* ========================= FOR TAB1: Birth Date Age Calculator =========================== */
-
-    $('#user_date_label').html(dd_day.join(''));
-    $('#month_label').html(dd_month.join(''));
-
-    // let dd_year = _setYear();
-    // $('#year_label').html(dd_year.join(''));
-
     //function to get complete age from today
     function getTrueAge(inputDate) {
         let userDate = inputDate;
@@ -238,7 +225,7 @@ $(document).ready(function() {
 
         if (isFinite(userDate)) {
             //code for calculating age in years
-            let user_diffYears = currDate.getUTCFullYear() - userDate.getUTCFullYear();
+            let user_diffYears = currDate.getFullYear() - userDate.getFullYear();
             //code for calculating age in months
             let user_diffMonths = user_diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
             //code for calculating age in days
@@ -263,95 +250,46 @@ $(document).ready(function() {
     }
 
     /* =========================== FOR TAB2: Different Dates Age Calculator ======================= */
+    $('#start_date_label').html(age_day.join(''));
+    $('#start_month_label').html(age_month.join(''));
+    $('#start_year_label').html(age_year.join(''));
+
+    $('#end_date_label').html(age_day.join(''));
+    $('#end_month_label').html(age_month.join(''));
+    $('#end_year_label').html(age_year.join(''));
+
     $(document).on('click', 'button#getDiff', function() {
         getDateDiff();
     });
 
-    //function to calculate age from today (What is my age?)
-    function getDiffTrueAge(inputDate) {
-        let userDate = inputDate;
-        let start_day = $('#user_date_label').val();
-        var start_month = $('#user_month_label').val();
-        var start_year = $('#user_year_label').val();
-
-        let userSDateString = `${start_month}-${start_day}-${start_year}`;
-        let userSDate = new Date(userSDateString);
-
-        var end_day = $('#select_date_label').val();
-        var end_month = $('#select_month_label').val();
-        var end_year = $('#select_year_label').val();
-
-
-        let userEDateString = `${end_month}-${end_day}-${end_year}`;
-        let userEDate = new Date(userEDateString);
-
-        var days, ageYears, ageMonths, ageDays;
-
-        days = Math.ceil((userEDate - userSDate) / (dayInMilli) + 30);
-        ageYears = Math.floor(days / 365);
-        var diffMonth = userEDate.getMonth() - userSDate.getMonth();
-        if (diffMonth >= 0) {
-            ageMonths = userEDate.getMonth() - userSDate.getMonth();
-        } else if (diffMonth < 0) {
-            ageMonths = 12 - Math.abs((userEDate.getMonth() - userSDate.getMonth()));
-        }
-        var diffDay = userEDate.getDate() - userSDate.getDate();
-        var year = userSDate.getFullYear();
-
-        if (userSDate.getMonth() == 1) {
-            if ((0 == year % 4) && (0 != year % 100) || (0 == year % 400)) {
-                ageDays = 29 - Math.abs(diffDay);
-            } else {
-                ageDays = 28 - Math.abs(diffDay);
-            }
-        }
-        if (diffDay >= 0) {
-            ageMonths--;
-            ageDays = 31 - Math.abs(diffDay);
-        }
-        if (diffDay < 0) {
-            ageDays = Math.abs(diffDay);
-        }
-        let dayString = maybePluralize(ageDays, 'day');
-        let monthString = maybePluralize(ageMonths, 'month');
-        let yearString = maybePluralize(ageYears, 'year');
-        let totalAge = `${yearString}, ${monthString}, ${dayString}`;
-        $('#select_todayAge').html(totalAge);
-    }
-
     //function to calculate the age between two dates
     function getDateDiff() {
-        let start_date = $('#user_date_label').val();
-        let start_month = $('#user_month_label').val();
-        let start_year = $('#user_year_label').val();
+        let start_date = $('#start_date_label').val();
+        let start_month = $('#start_month_label').val();
+        let start_year = $('#start_year_label').val();
 
         let userSDateString = `${start_month}-${start_date}-${start_year}`;
         let userSDate = new Date(userSDateString);
 
-        let end_date = $('#select_date_label').val();
-        let end_month = $('#select_month_label').val();
-        let end_year = $('#select_year_label').val();
+        let end_date = $('#end_date_label').val();
+        let end_month = $('#end_month_label').val();
+        let end_year = $('#end_year_label').val();
 
         let userEDateString = `${end_month}-${end_date}-${end_year}`;
         let userEDate = new Date(userEDateString);
 
+        //debugger;
         if (isFinite(userSDate) && isFinite(userEDate)) {
-            if (end_year > start_year) {
+            if (end-year > start_year) {
                 let select_diffYears = userEDate.getFullYear() - userSDate.getFullYear();
                 let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
                 let select_diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
 
                 $('#start_date').html(userSDate);
                 $('#end_date').html(userEDate);
-                $('#select_ageYears').html(select_diffYears);
-                $('#select_ageMonths').html(select_diffMonths);
-                $('#select_ageDays').html(select_diffDays);
-                getDiffTrueAge(userSDate);
-                let zodiac_sign = zodiac(userSDate.getDate(), userSDate.getMonth());
-                let zodiac_info = getZodiacInfo(zodiac_sign);
-                $('#diff_zodiac_name').html(zodiac_info.zsign);
-                $('#diff_zodiac_birthrange').html(zodiac_info.birthrange);
-                $('#diff_zodiac_attributes').html(zodiac_info.attribute);
+                $('#diff_years').html(select_diffYears);
+                $('#diff_months').html(select_diffMonths);
+                $('#diff_days').html(select_diffDays);
             } else {
                 alert('The Selected Year should be greater than the Birth year');
                 return false;

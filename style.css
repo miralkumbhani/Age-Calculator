@@ -1,5 +1,5 @@
 body{
-  background: linear-gradient(90deg, #FF5F6D, #FFC371);
+  background: linear-gradient(90deg, #FF5F6D, #ffd59b);
   background-size: cover;
   font-family: Old Standard TT;
 }
@@ -13,10 +13,10 @@ h1{
 }
 
 hr{
-    width: 900px;
-    margin-right: 150px;
-    border-style: solid;
-    background-color: #403B4A;
+  width: 900px;
+  margin-right: 150px;
+  border-style: solid;
+  background-color: #403B4A;
 }
 
 /*for TABS and their display*/
@@ -26,49 +26,49 @@ ul.tab {
 }
 
 .tab button {
-    background-color: inherit;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-    margin-left: 300px;
-    margin-top: 10px;
-    color: white;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  margin-left: 300px;
+  margin-top: 10px;
+  color: white;
 }
 
 .tab button:hover, .tab button.active {
-    background-color: #403B4A;
-    border-radius: 10px;
-    -webkit-transform: scale(0.5);
-    -ms-transform: scale(0.5);
-    transform: scale(1.2);
+  background-color: #403B4A;
+  border-radius: 10px;
+  -webkit-transform: scale(0.5);
+  -ms-transform: scale(0.5);
+  transform: scale(1.2);
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .tabcontent {
-    display: none;
-    padding: 6px 12px;
-    -webkit-animation: fadeEffect 1s;
-    animation: fadeEffect 1s;
+  display: none;
+  padding: 6px 12px;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
 }
 
 @-webkit-keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
 @keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
 .edit-title{
-    color: gold;
+  color: gold;
 }
 
 #birth_age{
@@ -77,9 +77,20 @@ ul.tab {
 }
 
 .label-control{
-    text-align: center;
-    width: 150px;
-    margin-top: 5px;
+  text-align: center;
+  width: 150px;
+  margin-top: 5px;
+}
+
+#bdate{
+  margin-left: 170px;
+  font-family: Old Standard TT;
+  font-size: 18px;
+}
+
+#bmonth, #byear{
+  font-family: Old Standard TT;
+  font-size: 18px;
 }
 
 #start_label{
@@ -94,52 +105,35 @@ ul.tab {
   font-size: 18px;
 }
 
-#date_label{
-    font-size: 18px;
-    margin-left: 320px;
-}
-
-#user_date_label, #select_date_label{
+#date_label, #start_date_label, #end_date_label{
   font-size: 18px;
-  margin-left: 20px;
-}
-
-#month_label{
-  font-size: 18px;
-  margin-left: 70px;
+  margin-left: 10px;
   margin-right: 20px;
 }
 
-#user_month_label, #select_month_label{
+#month_label, #start_month_label, #end_month_label{
   font-size: 18px;
-  margin-left: 70px;
+  margin-left: 10px;
   margin-right: 20px;
 }
 
-#year_label{
+#year_label, #start_year_label, #end_year_label{
   font-size: 18px;
-  margin-left: 50px;
-  margin-right: 20px;
-}
-
-#user_year_label, #select_year_label{
-  font-size: 18px;
-  margin-left: 50px;
+  margin-left: 10px;
   margin-right: 20px;
 }
 
 .button {
-    margin-top: 25px;
-    margin-left: 565px;
-    position: relative;
-    overflow: hidden;
-    width: 110px;
-    height: 50px;
-    font-size: 17px;
-    display: inline;
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
+  margin: 40px 0px 25px 565px;
+  position: relative;
+  overflow: hidden;
+  width: 110px;
+  height: 50px;
+  font-size: 17px;
+  display: inline;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
 }
 
 .button:after {
@@ -177,25 +171,37 @@ ul.tab {
 
 label{
     font-weight: bold;
+    padding-left: 10px;
+    color: #2F4F4F;
 }
 
 .section_output {
-    margin: 20px;
+    margin-left: 320px;
+    width: 600px;
 }
 .output {
-    background: linear-gradient(-90deg, #f4ff71, #ffe1ed);
-    box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    border-radius: 5px;
-    width: 600px;
-    min-height: 300px;
-    font-family: Trebuchet MS;
-    font-size: 18px;
-    text-shadow: 1px 1px gray;
-    text-align: center;
-    color: black;
-    text-align: left;
+  background: linear-gradient(-90deg, #808080, #E7E9BB);
+  box-shadow: 0 8px 30px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-radius: 5px;
+  min-height: 300px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+  font-family: Trebuchet MS;
+  font-size: 18px;
+  text-shadow: 1px 1px gray;
+  text-align: center;
+  color: black;
+  text-align: left;
+
 }
 
 .h_500 {
-    height: 500px;
+  min-height: 300px;
+  max-height: 570px;
+  margin-top: 15px;
+  padding-left: 15px;
+  padding-right: 10px;
+  text-align: justify;
+  text-justify: inter-word;
+  box-decoration-break: clone;
 }
