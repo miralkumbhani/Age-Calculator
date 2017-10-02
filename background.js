@@ -37,7 +37,39 @@ function _setYear() {
     return yearDropdown;
 }
 
- const zodiacArray = [{
+$(document).ready(function() {
+    $('.tabcontent').eq(0).show();
+
+    let age_day = _setDay();
+    $('#date_label').html(age_day.join(''));
+
+    let age_month = _setMonth();
+    $('#month_label').html(age_month.join(''));
+
+    let age_year = _setYear();
+    $('#year_label').html(age_year.join(''));
+
+    const currDate = new Date();
+    const dayInMilli = 1000 * 60 * 60 * 24;
+
+    $('.tab').on('click', '.tablinks', function() {
+        let display = $(this).data('display');
+        let index = $(this).index();
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $('#tab_data').children().hide();
+        $('#tab_data').children('#' + display).show();
+        //event.preventDefault;
+    });
+
+    //function to calculate the zodiac sign based on birth date
+    const zodiac = function(day, month) {
+        let zodiacName = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+        let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+        return (day > last_day[month]) ? zodiacName[month * 1 + 1] : zodiacName[month];
+    };
+
+    const zodiacArray = [{
                 zsign: "Aries",
                 birthrange: "March 21 - April 19",
                 attribute: "Aries are fire signs and those born under this element are regarded in astrology as adventurous, active and outgoing. It won't matter where you go or how remote or unusual it is - from the Outback to the Antarctic - you can be sure that an Aries has been there before you (or at the very least you will meet one along the way!) Aries is a uniquely naive sign. Although they are independent, outgoing and assertive they are also surprisingly trusting, often innocently walking into the lion's den at times. No matter what upheaval, challenge or triumph they confront - an Aries has a wonderful ability to bounce back. Their faith in life and the future remains untouched by hardship. Their gift is that they are always children at heart and the world is always a magical place for them. Many famous sports people are born under this sign. Aries is regarded as the most physical sign and because of its Mar's rulership; it is also one of the most highly charged masculine energy signs in astrology. No wonder women born under Aries are forceful, dynamic and aggressive, and as a result these Aries women frequently find themselves with dilemmas surrounding their romantic relationships. For them, a man has to be a 'real man' to deal with an Aries woman, otherwise she intimidates him. And conversely for the Aries male, a woman has to be a real woman to deal with him, because he is looking for many balancing component traits (his true feminine side) in his partner. She has to run the gamut in his support system, from the Aries man's best friend, true companion, through to his muse, and yet she must never ever answer him back!"
@@ -98,38 +130,6 @@ function _setYear() {
                 attribute: "People born under the sign of Leo are natural born leaders. They are dramatic, creative self-confident, dominant and extremely difficult to resist. They can achieve anything they want, whether it's about work or time spent will family and friends."
             }
         ];
-
-$(document).ready(function() {
-    $('.tabcontent').eq(0).show();
-
-    let age_day = _setDay();
-    $('#date_label').html(age_day.join(''));
-
-    let age_month = _setMonth();
-    $('#month_label').html(age_month.join(''));
-
-    let age_year = _setYear();
-    $('#year_label').html(age_year.join(''));
-
-    const currDate = new Date();
-    const dayInMilli = 1000 * 60 * 60 * 24;
-
-    $('.tab').on('click', '.tablinks', function() {
-        let display = $(this).data('display');
-        let index = $(this).index();
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('#tab_data').children().hide();
-        $('#tab_data').children('#' + display).show();
-        //event.preventDefault;
-    });
-
-    //function to calculate the zodiac sign based on birth date
-    const zodiac = function(day, month) {
-        let zodiacName = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
-        let last_day = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
-        return (day > last_day[month]) ? zodiacName[month * 1 + 1] : zodiacName[month];
-    };
 
     //function to display the output properly
     const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
@@ -280,7 +280,7 @@ $(document).ready(function() {
 
         //debugger;
         if (isFinite(userSDate) && isFinite(userEDate)) {
-            if (end-year > start_year) {
+            if (end_year > start_year) {
                 let select_diffYears = userEDate.getFullYear() - userSDate.getFullYear();
                 let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
                 let select_diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
