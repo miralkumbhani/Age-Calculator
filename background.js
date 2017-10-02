@@ -230,11 +230,17 @@ $(document).ready(function() {
             let user_diffMonths = user_diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
             //code for calculating age in days
             let user_diffDays = Math.floor((currDate - userDate) / dayInMilli);
+            //code for calculating age in weeks
+            let currTime = currDate.getTime();
+            let userTime = userDate.getTime();
+            let diffTime = Math.abs(currTime - userTime);
+            let user_ageWeeks = Math.floor(diffTime / (dayInMilli * 7));
 
             $('#today_date').html(currDate);
             $("#user_date").html(userDate);
             $("#user_ageYears").html(user_diffYears);
             $("#user_ageMonths").html(user_diffMonths);
+            $('#user_ageWeeks').html(user_ageWeeks);
             $("#user_ageDays").html(user_diffDays);
             getTrueAge(userDate);
             getCountdownTime(userDate);
@@ -282,13 +288,18 @@ $(document).ready(function() {
         if (isFinite(userSDate) && isFinite(userEDate)) {
             if (end_year > start_year) {
                 let select_diffYears = userEDate.getFullYear() - userSDate.getFullYear();
-                let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
+                let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth()) ;
+                let selectTime = userEDate.getTime();
+                let userTime = userSDate.getTime();
+                let diffTime = Math.abs(selectTime - userTime);
+                let select_diffWeeks = Math.floor(diffTime / (dayInMilli * 7));
                 let select_diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
 
                 $('#start_date').html(userSDate);
                 $('#end_date').html(userEDate);
                 $('#diff_years').html(select_diffYears);
                 $('#diff_months').html(select_diffMonths);
+                $('#diff_weeks').html(select_diffWeeks);
                 $('#diff_days').html(select_diffDays);
             } else {
                 alert('The Selected Year should be greater than the Birth year');
