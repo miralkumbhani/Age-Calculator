@@ -24,101 +24,43 @@ $(document).ready(function() {
         $('#tab_data').children('#' + display).show();
     });
 
-    /* ========================= FOR TAB1: Birth Date Age Calculator =========================== */
-    //function to get complete age from today
-    function getTrueAge(inputDate) {
-        let userDate = inputDate;
-        console.log(userDate);
-        let ageYears, ageMonths, ageDays;
-        //days calculation from today
-        let totalDays = Math.floor((currDate - userDate) / dayInMilli);
-        //years calculation from today
-        ageYears = Math.floor(totalDays / 365);
-        //months calculation from today
-        var diffMonth = currDate.getMonth() - userDate.getMonth();
-        if (diffMonth >= 0) {
-            ageMonths = currDate.getMonth() - userDate.getMonth();
-        } else {
-            ageMonths = 12 - Math.abs((currDate.getMonth() - userDate.getMonth()));
-        }
-        //days calculation from today
-        let diffDay = currDate.getDate() - userDate.getDate();
-        let currentYear = userDate.getFullYear();
-        if (diffDay >= 0) {
-            ageDays = diffDay;
-        } else {
-            ageMonths--;
-            ageDays = 31 - Math.abs(diffDay);
-        }
+    $(document).on('click', 'button.funButton', function() {
+        //something happens and add_on gets a code based on either form name or button click
+        if (add_on === true) {
+            let start_date = document.firstForm.start_date.value;
+            let start_month = document.firstForm.start_month.value;
+            let start_year = document.firstForm.start_year.value;
 
-        let dayString = maybePluralize(ageDays, 'day');
-        let monthString = maybePluralize(ageMonths, 'month');
-        let yearString = maybePluralize(ageYears, 'year');
-        let totalAge = `${yearString}, ${monthString}, ${dayString}`;
-        $('#user_todayAge').html(totalAge);
-    }
+            let userSDateString = `${start_month}-${start_date}-${start_year}`;
+            let userSDate = new Date(userSDateString);
 
-    $(document).on('click', 'button.button', function() {
-        getAge();
+            let userEDate = currDate;
+        } else if (add_on === false) {
+            let start_date = document.secondForm.start_date.value;
+            let start_date = document.secondForm.start_month.value;
+            let start_year = document.secondForm.start_year.value;
+
+            let end_date = document.secondForm.end_date.value;
+            let end_month = document.secondForm.end_month.value;
+            let end_year = document.secondForm.end_year.value;
+
+            let userSDateString = `${start_month}-${start_date}-${start_year}`;
+            let userSDate = new Date(userSDateString);
+
+            let userEDateString = `${end_month}-${end_date}-${end_year}`;
+            let userEDate = new Date(userEDateString);
+        }
+        getDiffTime(userSDate, userEDate, add_on); //add_on=true for Age Diff, add_on=false for Time Diff
     });
 
-    //function to calculate the age in years, days and months
-    function getAge() {
-        let u_date = $('#date_label').val();
-        let u_month = $('#month_label').val();
-        let u_year = $('#year_label').val();
 
-        let userDateString = `${u_month}-${u_date}-${u_year}`;
-        let userDate = new Date(userDateString);
-
-        if (isFinite(userDate)) {
-            //code for calculating age in years
-            let user_diffYears = currDate.getFullYear() - userDate.getFullYear();
-            //code for calculating age in months
-            let user_diffMonths = user_diffYears * 12 + (currDate.getMonth() - userDate.getMonth());
-            //code for calculating age in days
-            let user_diffDays = Math.floor((currDate - userDate) / dayInMilli);
-            //code for calculating age in weeks
-            let currTime = currDate.getTime();
-            let userTime = userDate.getTime();
-            let diffTime = Math.abs(currTime - userTime);
-            let user_ageWeeks = Math.floor(diffTime / (dayInMilli * 7));
-
-            $('#today_date').html(currDate);
-            $("#user_date").html(userDate);
-            $("#user_ageYears").html(user_diffYears);
-            $("#user_ageMonths").html(user_diffMonths);
-            $('#user_ageWeeks').html(user_ageWeeks);
-            $("#user_ageDays").html(user_diffDays);
-            getTrueAge(userDate);
-            getCountdownTime(userDate);
-            let z_sign = zodiac(userDate.getDate(), userDate.getMonth());
-            let zodiac_info = [];
-            getZodiacData().then((d) => {
-                zodiac_info = d;
-                let displayZodiac = getZodiacDetails(zodiac_info, z_sign);
-                $('#zodiac_name').html(displayZodiac.zsign);
-                $('#zodiac_birthrange').html(displayZodiac.birthrange);
-                $('#zodiac_attributes').html(displayZodiac.attribute);
-            });
-        } else {
-            alert('Invalid Date, try again.');
-            return false;
-        }
-    }
+    /* ========================= FOR TAB1: Birth Date Age Calculator =========================== */
+    $(document).on('click', 'button.funButton', function() {
+        //getAge(fd, sd , true);
+    });
 
     /* =========================== FOR TAB2: Different Dates Age Calculator ======================= */
-    $('#start_date_label').html(age_day.join(''));
-    $('#start_month_label').html(age_month.join(''));
-    $('#start_year_label').html(age_year.join(''));
-
-    $('#end_date_label').html(age_day.join(''));
-    $('#end_month_label').html(age_month.join(''));
-    $('#end_year_label').html(age_year.join(''));
-
     $(document).on('click', 'button#getDiff', function() {
-        getDateDiff();
+        //getDateDiff(fd, sd, false);
     });
-
-
 });

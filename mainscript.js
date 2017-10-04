@@ -103,44 +103,93 @@ function getZodiacDetails(z, zname) {
     return selected_array;
 }
 
-//function to calculate the age between two dates
-function getDateDiff() {
-    let start_date = $('#start_date_label').val();
-    let start_month = $('#start_month_label').val();
-    let start_year = $('#start_year_label').val();
+//function to get complete age from today
+function getTrueAge(inputDate) {
+    let userDate = inputDate;
+    let ageYears, ageMonths, ageDays;
+    //days calculation from today
+    let totalDays = Math.floor((currDate - userDate) / dayInMilli);
+    //years calculation from today
+    ageYears = Math.floor(totalDays / 365);
+    //months calculation from today
+    var diffMonth = currDate.getMonth() - userDate.getMonth();
+    if (diffMonth >= 0) {
+        ageMonths = currDate.getMonth() - userDate.getMonth();
+    } else {
+        ageMonths = 12 - Math.abs((currDate.getMonth() - userDate.getMonth()));
+    }
+    //days calculation from today
+    let diffDay = currDate.getDate() - userDate.getDate();
+    let currentYear = userDate.getFullYear();
+    if (diffDay >= 0) {
+        ageDays = diffDay;
+    } else {
+        ageMonths--;
+        ageDays = 31 - Math.abs(diffDay);
+    }
 
-    let userSDateString = `${start_month}-${start_date}-${start_year}`;
-    let userSDate = new Date(userSDateString);
+    let dayString = maybePluralize(ageDays, 'day');
+    let monthString = maybePluralize(ageMonths, 'month');
+    let yearString = maybePluralize(ageYears, 'year');
+    let totalAge = `${yearString}, ${monthString}, ${dayString}`;
+    $('#user_todayAge').html(totalAge);
+}
 
-    let end_date = $('#end_date_label').val();
-    let end_month = $('#end_month_label').val();
-    let end_year = $('#end_year_label').val();
-
-    let userEDateString = `${end_month}-${end_date}-${end_year}`;
-    let userEDate = new Date(userEDateString);
+/* ====================================================================================================== */
+//one common function for getting Age Diff and Time Diff
+function getDiffTime(initial_date, final_date, op) {
+    let userSDate = initial_date;
+    let userEDate = final_date;
+    let add_on = op;
+    let end_year = final_date.getFullYear();
+    let start_year = initial_date.getFullYear();
 
     if (isFinite(userSDate) && isFinite(userEDate)) {
         if (end_year > start_year) {
-            let select_diffYears = userEDate.getFullYear() - userSDate.getFullYear();
-            let select_diffMonths = (select_diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
+            //for calculating diff in years
+            let diffYears = userEDate.getFullYear() - userSDate.getFullYear();
+            //for calculating diff in months
+            let diffMonths = (diffYears) * 12 + (userEDate.getMonth() - userSDate.getMonth());
+            //for calculating diff in weeks
             let selectTime = userEDate.getTime();
             let userTime = userSDate.getTime();
             let diffTime = Math.abs(selectTime - userTime);
-            let select_diffWeeks = Math.floor(diffTime / (dayInMilli * 7));
-            let select_diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
+            let diffWeeks = Math.floor(diffTime / (dayInMilli * 7));
+            //for calculating diff in days
+            let diffDays = Math.floor((userEDate - userSDate) / dayInMilli);
 
-            $('#start_date').html(userSDate);
-            $('#end_date').html(userEDate);
-            $('#diff_years').html(select_diffYears);
-            $('#diff_months').html(select_diffMonths);
-            $('#diff_weeks').html(select_diffWeeks);
-            $('#diff_days').html(select_diffDays);
-        } else {
-            alert('The Selected Year should be greater than the Birth year');
-            return false;
+            if (add_on === true) {
+                $('#today_date').html(currDate);
+                $('#user_date').html(userSDate);
+                $('#user_ageYears').html(diffYears);
+                $('#user_ageMonths').html(diffMonths);
+                $('#user_ageWeeks').html(diffWeeks);
+                $('#user_ageDays').html(diffDays);
+                getTrueAge(userSDate);
+                getCountdownTime(userSDate);
+                let z_sign = zodiac(userSDate.getDate(), userSDate.getMonth());
+                let zodiac_info = [];
+                getZodiacData().then((d) => {
+                    zodiac_info = d;
+                    let displayZodiac = getZodiacDetails(zodiac_info, z_sign);
+                    $('#zodiac_name').html(displayZodiac.zsign);
+                    $('#zodiac_birthrange').html(displayZodiac.birthrange);
+                    $('#zodiac_attributes').html(displayZodiac.attribute);
+                });
+            } else if (add_on === false) {
+                $('#start_date').html(userSDate);
+                $('#end_date').html(userEDate);
+                $('#diff_years').html(diffYears);
+                $('#diff_months').html(diffMonths);
+                $('#diff_weeks').html(diffWeeks);
+                $('#diff_days').html(diffDays);
+            }
         }
     } else {
-        alert('Invalid Date, try again.');
+        alert('The Selected Year should be greater than the Birth year');
         return false;
     }
+} else {
+    alert('Invalid Date, try again.');
+    return false;
 }
