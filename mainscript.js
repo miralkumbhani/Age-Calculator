@@ -95,7 +95,8 @@ const getZodiacInfo = (initial_date) => {
 };
 
 const displayCountdown = (finalTime) => {
-    // console.log("displayCountdown", finalTime);
+    //console.log("displayCountdown", finalTime);
+    let diff = finalTime - currDate;
     let initialTime = new Date().getTime();
     let diffInTime = finalTime - initialTime;
 
@@ -103,9 +104,8 @@ const displayCountdown = (finalTime) => {
     let hours = Math.floor((diffInTime % (dayInMilli)) / (1000 * 60 * 60));
     let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
     let seconds = Math.floor((diffInTime % (1000 * 60)) / 1000);
-    // console.log("diff in time:", diffInTime);
+
     let countdownString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds.`;
-    // console.log("countdownString", countdownString);
     $('#countdown').html(countdownString)
 }
 
@@ -198,13 +198,11 @@ const calculateDifference = (sd, ed, what) => {
 
 //one common function for getting Age Diff and Time Diff
 const setDifference = (initial_date, final_date, diff) => {
-    // console.log('getDiffTime==>', initial_date, final_date, op);
     let current_birthday = initial_date;
-    let start_year = current_birthday.getFullYear();
-    let next_birthday = new Date(initial_date); // necessary step to make Date object again
-    //console.log(start_year + 1);
-    next_birthday.setFullYear(start_year + 1);
+    let start_year = initial_date.getFullYear();
     let end_year = final_date.getFullYear();
+    let next_birthday = new Date(initial_date); // necessary step to make Date object again
+    next_birthday.setFullYear(end_year + 1);
 
     if (isFinite(initial_date) && isFinite(final_date)) {
         if (end_year >= start_year) {
