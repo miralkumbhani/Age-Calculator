@@ -14,8 +14,6 @@ let _setDay = new Promise((resolve, reject) => {
         dateList.push(`<option value="${i+1}">${idx}</option>`);
     });
     resolve(dateList);
-    // let rr = {rj:'this is gone'};
-    // reject(rr);
 });
 
 //@return array = [January, ...December]
@@ -42,8 +40,15 @@ let _setYear = new Promise((resolve, reject) => {
     resolve(yearList);
 });
 
-//function to display the output properly
-const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
+const getZodiacData = () =>
+    new Promise((resolve, reject) => {
+        $.getJSON("./zodiac.json").done((data) => {
+            resolve(data);
+        }).fail((err) => {
+            console.log('error while parsing json', err);
+            reject(false);
+        });
+    });
 
 //function to calculate the zodiac sign based on birth date
 const getZodiacSign = (day, month) => {
@@ -53,6 +58,37 @@ const getZodiacSign = (day, month) => {
         let zName = (day > last_day[month]) ? zodiacName[month * 1 + 1] : zodiacName[month];
         resolve(zName);
         //reject(false);
+    });
+};
+
+//function for getting zodiac details
+const getZodiacDetails = (zArray, zname) => {
+    return new Promise((resolve, reject) => {
+        let zodiacName = zname;
+        return zArray.find(function(zArray) {
+            if (zArray.zsign === zname) {
+                resolve(zArray);
+            }
+        });
+    });
+}
+
+const getZodiacInfo = (initial_date) => {
+    return getZodiacData().then((result) => {
+        let birthDate = initial_date.getDate();
+        let birthMonth = initial_date.getMonth();
+        let zodiac_info = result;
+        getZodiacSign(birthDate, birthMonth).then((result) => {
+            getZodiacDetails(zodiac_info, result).then((result) => {
+                $('#zodiac_name').html(result.zsign);
+                $('#zodiac_birthrange').html(result.birthrange);
+                $('#zodiac_attributes').html(result.attribute);
+            });
+        }).catch((err) => {
+            console.log("Promise 1 was rejected", err);
+        });
+    }).catch((err) => {
+        console.log("Promise 2 was rejected", err);
     });
 };
 
@@ -78,28 +114,8 @@ const getCountdownTime = (nextBirthDate) => {
     }, 1000);
 };
 
-const getZodiacData = () =>
-    new Promise((resolve, reject) => {
-        $.getJSON("./zodiac.json").done((data) => {
-            resolve(data);
-        }).fail((err) => {
-            console.log('error while parsing json', err);
-            reject(false);
-        });
-    });
-
-//function for getting zodiac details
-const getZodiacDetails = (z, zname) => {
-    return new Promise((resolve, reject) => {
-        let zArray = z;
-        let zodiacName = zname;
-        return zArray.find(function(z) {
-            if (z.zsign === zname) {
-                resolve(z);
-            }
-        });
-    });
-}
+//function to display the output properly
+const maybePluralize = (count, noun, suffix = 's') => `${count} ${noun}${count !== 1 ? suffix : ''}`;
 
 //function to get complete age from today
 const getTrueAge = (inputDate) => {
@@ -133,29 +149,29 @@ const getTrueAge = (inputDate) => {
     $('#user_todayAge').html(totalAge);
 }
 
-//function to get data for calculating the time diff
-const getDataDiff = (formName) => {
-    let diff = (formName === 'firstForm') ? false : true;
-    // console.log(' sdv', document[formName].start_date.value);
-
-    let startDate = document[formName].start_date.value;
-    let startMonth = document[formName].start_month.value;
-    let startYear = document[formName].start_year.value;
-    let startDay = new Date(`${startMonth}-${startDate}-${startYear}`);
-    let endDay = new Date();
-
-    // console.log("startDay", startDay);
+//function to display thte output
+const display = (initial_date, final_date, diff, diffYears, diffMonths, diffWeeks, diffDays) => {
     if (diff) {
-        let endDate = document.secondForm.end_date.value;
-        let endMonth = document.secondForm.end_month.value;
-        let endYear = document.secondForm.end_year.value;
-        endDay = new Date(`${endMonth}-${endDate}-${endYear}`);
+        //for tab-2 diff = true
+        $('#start_date').html(initial_date);
+        $('#end_date').html(final_date);
+        $('#diff_years').html(diffYears);
+        $('#diff_months').html(diffMonths);
+        $('#diff_weeks').html(diffWeeks);
+        $('#diff_days').html(diffDays);
+    } else {
+        //for tab-1 diff = false
+        $('#user_date').html(initial_date);
+        $('#today_date').html(final_date);
+        $('#user_ageYears').html(diffYears);
+        $('#user_ageMonths').html(diffMonths);
+        $('#user_ageWeeks').html(diffWeeks);
+        $('#user_ageDays').html(diffDays);
     }
-
-    getDiffTime(startDay, endDay, diff);
 }
 
-const getDiff = (sd, ed, what) => {
+//function for calculating the age in years, months, weeks, days
+const getDiffCal = (sd, ed, what) => {
     let output;
     switch (what) {
         case 'year':
@@ -176,50 +192,8 @@ const getDiff = (sd, ed, what) => {
         default:
     }
 
-    // diffrence in what
     return output;
 };
-
-const getZodiacInfo = (initial_date) => {
-    return getZodiacData().then((result) => {
-        console.log("result 1", result);
-        let birthDate = initial_date.getDate();
-        let birthMonth = initial_date.getMonth();
-        let zodiac_info = result;
-        getZodiacSign(birthDate, birthMonth).then((result) => {
-            console.log("result 2", result);
-            getZodiacDetails(zodiac_info, result).then((result) => {
-                console.log("result 3", result);
-                $('#zodiac_name').html(result.zsign);
-                $('#zodiac_birthrange').html(result.birthrange);
-                $('#zodiac_attributes').html(result.attribute);
-            });
-        }).catch((err) => {
-            console.log("Promise 1 was rejected", err);
-        });
-    }).catch((err) => {
-        console.log("Promise 2 was rejected", err);
-    });
-};
-
-const display = (initial_date, final_date, diff, diffYears, diffMonths, diffWeeks, diffDays) => {
-    if (diff) {
-        $('#user_date').html(initial_date);
-        $('#today_date').html(final_date);
-        $('#user_ageYears').html(diffYears);
-        $('#user_ageMonths').html(diffMonths);
-        $('#user_ageWeeks').html(diffWeeks);
-        $('#user_ageDays').html(diffDays);
-    } else {
-        $('#start_date').html(initial_date);
-        $('#end_date').html(final_date);
-        $('#diff_years').html(diffYears);
-        $('#diff_months').html(diffMonths);
-        $('#diff_weeks').html(diffWeeks);
-        $('#diff_days').html(diffDays);
-    }
-
-}
 
 //one common function for getting Age Diff and Time Diff
 const getDiffTime = (initial_date, final_date, diff) => {
@@ -228,19 +202,17 @@ const getDiffTime = (initial_date, final_date, diff) => {
     let start_year = current_birthday.getFullYear();
     let next_birthday = new Date(initial_date); // necessary step to make Date object again
     next_birthday.setFullYear(start_year + 1);
-    // console.log("next_birthday", current_birthday, next_birthday, start_year);
     let end_year = final_date.getFullYear();
 
     if (isFinite(initial_date) && isFinite(final_date)) {
         if (end_year >= start_year) {
             //for calculating diff in years
-            // let diffInYears = getDiff(sd, ed, 'year');
-            let diffYears = getDiff(initial_date, final_date, 'year');
+            let diffYears = getDiffCal(initial_date, final_date, 'year');
             Promise.resolve(diffYears).then((result) => {
                 let diffYears = result;
-                let diffMonths = diffYears * 12 + getDiff(initial_date, final_date, 'month');
-                let diffWeeks = getDiff(initial_date, final_date, 'week');
-                let diffDays = getDiff(initial_date, final_date, 'day');
+                let diffMonths = diffYears * 12 + getDiffCal(initial_date, final_date, 'month');
+                let diffWeeks = getDiffCal(initial_date, final_date, 'week');
+                let diffDays = getDiffCal(initial_date, final_date, 'day');
                 display(initial_date, final_date, diff, diffYears, diffMonths, diffWeeks, diffDays);
             });
             getTrueAge(initial_date);
@@ -248,11 +220,30 @@ const getDiffTime = (initial_date, final_date, diff) => {
             //the result is giving JSON array as output
             getZodiacInfo(current_birthday);
         } else {
-        alert('The Selected Year should be greater than the Birth year');
+            alert('The Selected Year should be greater than the Birth year');
+            return false;
+        }
+    } else {
+        alert('Invalid Date, try again.');
         return false;
     }
-} else {
-    alert('Invalid Date, try again.');
-    return false;
-}
 };
+
+//function to get data for calculating the time diff
+const getDataDiff = (formName) => {
+    let diff = (formName === 'firstForm') ? false : true;
+
+    let startDate = document[formName].start_date.value;
+    let startMonth = document[formName].start_month.value;
+    let startYear = document[formName].start_year.value;
+    let startDay = new Date(`${startMonth}-${startDate}-${startYear}`);
+    let endDay = new Date();
+
+    if (diff) {
+        let endDate = document.secondForm.end_date.value;
+        let endMonth = document.secondForm.end_month.value;
+        let endYear = document.secondForm.end_year.value;
+        endDay = new Date(`${endMonth}-${endDate}-${endYear}`);
+    }
+    getDiffTime(startDay, endDay, diff);
+}

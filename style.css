@@ -143,12 +143,15 @@ ul.tab {
 }
 
 .output-label{
-  margin-left: 5px;
-  text-decoration: underline;
+  float: none;
+  width: 8em;
+  margin-right: 1em;
+  text-align: left;
+  font-weight: bolder;
 }
 
 .unique{
-  margin-left: 5px;
+  margin-left: 3px;
   text-decoration: none;
   font-weight: normal;
 }
