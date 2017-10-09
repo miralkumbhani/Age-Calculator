@@ -40,6 +40,8 @@ let _setYear = new Promise((resolve, reject) => {
     resolve(yearList);
 });
 
+//function that fecthes data from JSON
+//@return object
 const getZodiacData = () =>
     new Promise((resolve, reject) => {
         $.getJSON("./zodiac.json").done((data) => {
@@ -64,7 +66,6 @@ const getZodiacSign = (day, month) => {
 //function for getting zodiac details
 const getZodiacDetails = (zArray, zname) => {
     return new Promise((resolve, reject) => {
-        let zodiacName = zname;
         return zArray.find(function(zArray) {
             if (zArray.zsign === zname) {
                 resolve(zArray);
@@ -73,22 +74,23 @@ const getZodiacDetails = (zArray, zname) => {
     });
 }
 
+//function for the details of the particular zodiac
+//@returns zodiac name, birth-range, attributes
 const getZodiacInfo = (initial_date) => {
     return getZodiacData().then((result) => {
         let birthDate = initial_date.getDate();
         let birthMonth = initial_date.getMonth();
         let zodiac_info = result;
         getZodiacSign(birthDate, birthMonth).then((result) => {
-            getZodiacDetails(zodiac_info, result).then((result) => {
+            let zodiac_sign = result;
+            getZodiacDetails(zodiac_info, zodiac_sign).then((result) => {
                 $('#zodiac_name').html(result.zsign);
                 $('#zodiac_birthrange').html(result.birthrange);
                 $('#zodiac_attributes').html(result.attribute);
             });
-        }).catch((err) => {
-            console.log("Promise 1 was rejected", err);
         });
     }).catch((err) => {
-        console.log("Promise 2 was rejected", err);
+        console.log("Error while fetching JSON Data.", err);
     });
 };
 
@@ -171,7 +173,7 @@ const display = (initial_date, final_date, diff, diffYears, diffMonths, diffWeek
 }
 
 //function for calculating the age in years, months, weeks, days
-const getDiffCal = (sd, ed, what) => {
+const calculateDifference = (sd, ed, what) => {
     let output;
     switch (what) {
         case 'year':
@@ -191,28 +193,28 @@ const getDiffCal = (sd, ed, what) => {
             break;
         default:
     }
-
     return output;
 };
 
 //one common function for getting Age Diff and Time Diff
-const getDiffTime = (initial_date, final_date, diff) => {
+const setDifference = (initial_date, final_date, diff) => {
     // console.log('getDiffTime==>', initial_date, final_date, op);
     let current_birthday = initial_date;
     let start_year = current_birthday.getFullYear();
     let next_birthday = new Date(initial_date); // necessary step to make Date object again
+    //console.log(start_year + 1);
     next_birthday.setFullYear(start_year + 1);
     let end_year = final_date.getFullYear();
 
     if (isFinite(initial_date) && isFinite(final_date)) {
         if (end_year >= start_year) {
             //for calculating diff in years
-            let diffYears = getDiffCal(initial_date, final_date, 'year');
+            let diffYears = calculateDifference(initial_date, final_date, 'year');
             Promise.resolve(diffYears).then((result) => {
                 let diffYears = result;
-                let diffMonths = diffYears * 12 + getDiffCal(initial_date, final_date, 'month');
-                let diffWeeks = getDiffCal(initial_date, final_date, 'week');
-                let diffDays = getDiffCal(initial_date, final_date, 'day');
+                let diffMonths = diffYears * 12 + calculateDifference(initial_date, final_date, 'month');
+                let diffWeeks = calculateDifference(initial_date, final_date, 'week');
+                let diffDays = calculateDifference(initial_date, final_date, 'day');
                 display(initial_date, final_date, diff, diffYears, diffMonths, diffWeeks, diffDays);
             });
             getTrueAge(initial_date);
@@ -230,7 +232,9 @@ const getDiffTime = (initial_date, final_date, diff) => {
 };
 
 //function to get data for calculating the time diff
-const getDataDiff = (formName) => {
+const getDifference = (formName) => {
+    $('.section_output').show();
+    // other form name is 'secondForm'
     let diff = (formName === 'firstForm') ? false : true;
 
     let startDate = document[formName].start_date.value;
@@ -240,10 +244,11 @@ const getDataDiff = (formName) => {
     let endDay = new Date();
 
     if (diff) {
-        let endDate = document.secondForm.end_date.value;
-        let endMonth = document.secondForm.end_month.value;
-        let endYear = document.secondForm.end_year.value;
+        let endDate = document[formName].end_date.value;
+        let endMonth = document[formName].end_month.value;
+        let endYear = document[formName].end_year.value;
         endDay = new Date(`${endMonth}-${endDate}-${endYear}`);
     }
-    getDiffTime(startDay, endDay, diff);
+
+    setDifference(startDay, endDay, diff);
 }

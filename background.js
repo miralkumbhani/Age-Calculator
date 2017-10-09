@@ -2,8 +2,10 @@
 
 $(document).ready(() => {
     $('.tabcontent').eq(0).show();
+
     // works on top tabs to switch between tabs
     $('.tab').on('click', '.tablinks', function() {
+        $('.section_output').hide();
         let display = $(this).data('display');
         let index = $(this).index();
         $(this).siblings().removeClass('active');
@@ -27,4 +29,5 @@ $(document).ready(() => {
     }).catch((err) => {
         console.log('one of promise rejected', err);
     });
+    //calendar.functionName();
 });

@@ -24,26 +24,28 @@
                 <section class="section_input">
                     <form name="firstForm" id="firstForm" method="POST">
                         <div id="date_data_input">
-                            <label for="date_label" class="label-control ">Birth Date:</label>
+                            <label for="date_label" class="label label-default">Birth Date:</label>
                             <select class="selectpicker start-date ulist" name="start_date"></select>
-                            <label for="month_label" class="label-control">Birth Month:</label>
+                            <label for="month_label" class="label label-default">Birth Month:</label>
                             <select class="selectpicker start-month ulist" name="start_month"></select>
-                            <label for="year_label" class="label-control">Birth Year:</label>
+                            <label for="year_label" class="label label-default">Birth Year:</label>
                             <select class="selectpicker start-year ulist" name="start_year"></select>
                         </div>
-                        <button type="button" class="btn btn-secondary button" onclick="getDataDiff('firstForm')">Your Age Today!</button>
+                        <button type="button" class="btn btn-secondary button" onclick="getDifference('firstForm')">Your Age Today!</button>
                     </form>
                 </section>
                 <section class="section_output">
-                    <div id="date_data_output" class="output">
+                    <div id="common_data" class="common-display">
                         <p>
                             <label class="output-label">Today's Date:</label> <span id="today_date"></span>
                         </p>
                         <p>
                             <label class="output-label">Birth Date:</label> <span id="user_date"></span>
                         </p>
+                    </div>
+                    <div id="date_data_output" class="output">
                         <p>
-                            <label class="output-label unique">Your Age (Total)...</label>
+                            <label class="unique">Your Total Age</label>
                         </p>
                         <p>
                             <label class="output-label">In Years:</label> <span id="user_ageYears"></span>
@@ -66,6 +68,9 @@
                     </div>
                     <div id="zodiac_data_output" class="output h_500">
                         <p>
+                            <label class="unique">Your Zodiac Info</label>
+                        </p>
+                        <p>
                             <label class="output-label">Your Zodiac-Sign:</label> <span id="zodiac_name"></span>
                         </p>
                         <p>
@@ -83,30 +88,32 @@
                 <section class="section_input">
                     <form name="secondForm" id="secondForm" method="POST">
                         <div id="diff_data_input">
-                            <label class="label-control">Start Date: </label>
+                            <label class="label label-default">Start Date: </label>
                             <select class="selectpicker start-date slist" name="start_date"></select>
                             <select class="selectpicker start-month slist" name="start_month"></select>
                             <select class="selectpicker diff start-year slist" name="start_year"></select>
                             <br>
                             <br>
-                            <label class="label-control">End Date:</label>
+                            <label class="label label-default">End Date:</label>
                             <select class="selectpicker start-date slist diff" name="end_date"></select>
                             <select class="selectpicker start-month slist diff" name="end_month"></select>
                             <select class="selectpicker start-year slist diff" name="end_year"></select>
                         </div>
-                        <button type="button" class="btn btn-secondary button" id="getDiff" onclick="getDataDiff('secondForm')">Calculate!</button>
+                        <button type="button" class="btn btn-secondary button" id="getDiff" onclick="getDifference('secondForm')">Calculate!</button>
                     </form>
                 </section>
                 <section class="section_output">
-                    <div id="diff_data_output" class="output">
+                    <div id="common_data" class="common-display diff-common">
                         <p>
                             <label class="output-label">Start Date:</label> <span id="start_date"></span>
                         </p>
                         <p>
                             <label class="output-label">End Date:</label> <span id="end_date"></span>
                         </p>
+                    </div>
+                    <div id="diff_data_output" class="output">
                         <p>
-                            <labeL class="output-label unique">Total Difference In Date...</label>
+                            <labeL class="unique">Duration Between Two Dates</label>
                         </p>
                         <p>
                             <label class="output-label">In Years:</label> <span id="diff_years"></span>
