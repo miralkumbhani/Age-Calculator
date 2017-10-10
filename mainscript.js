@@ -104,7 +104,6 @@ const displayCountdown = (finalTime) => {
     let hours = Math.floor((diffInTime % (dayInMilli)) / (1000 * 60 * 60));
     let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
     let seconds = Math.floor((diffInTime % (1000 * 60)) / 1000);
-
     let countdownString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds.`;
     $('#countdown').html(countdownString)
 }

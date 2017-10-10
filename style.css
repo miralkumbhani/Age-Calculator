@@ -1,7 +1,6 @@
 body {
     background: linear-gradient(90deg, #FF5F6D, #ffd59b);
     background-size: cover;
-    font-family: Old Standard TT;
 }
 
 h1 {
@@ -77,7 +76,9 @@ ul.tab {
     }
 }
 
-.ulist {
+/* for select drop downs */
+
+#date_data_input .selectpicker {
     text-align: center;
     font-size: 20px;
     width: 150px;
@@ -85,23 +86,35 @@ ul.tab {
     margin-left: 2px;
 }
 
-.slist {
+#diff_data_input .selectpicker {
     text-align: center;
     font-size: 20px;
     width: 150px;
     margin-right: 110px;
     margin-left: 3px;
+    float: none;
+    text-align: right;
 }
 
-.diff {
-    margin-left: 6px;
+#endDate .selectpicker {
+    margin-left: 10px;
+    margin-right: 103px;
 }
 
-.label{
+/* for labels */
+
+#diff_data_input label {
+    margin-left: 180px;
+    margin-right: 1em;
+}
+
+.label {
     margin: 20px 3px 5px 180px;
     font-family: Old Standard TT;
     font-size: 16px;
 }
+
+/* for button */
 
 .button {
     margin: 30px 0px 40px 565px;
@@ -112,6 +125,7 @@ ul.tab {
     border-radius: 5px;
     text-decoration: none;
     text-align: center;
+    font-family: default;
 }
 
 .button:after {
@@ -145,6 +159,12 @@ ul.tab {
     opacity: 0;
 }
 
+/* for output display box */
+
+.section_output {
+    display: none;
+}
+
 #date_data_output {
     float: left;
     margin-left: 30px;
@@ -152,10 +172,6 @@ ul.tab {
 
 #diff_data_output {
     margin-left: 350px;
-}
-
-.section_output {
-    display: none;
 }
 
 .output {
@@ -184,9 +200,9 @@ ul.tab {
     color: black;
 }
 
-.diff-common{
-  width: 570px;
-  margin-left: 350px;
+.diff-common {
+    width: 570px;
+    margin-left: 350px;
 }
 
 .output-label {

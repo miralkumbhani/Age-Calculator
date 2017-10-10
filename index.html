@@ -25,11 +25,11 @@
                     <form name="firstForm" id="firstForm" method="POST">
                         <div id="date_data_input">
                             <label for="date_label" class="label label-default">Birth Date:</label>
-                            <select class="selectpicker start-date ulist" name="start_date"></select>
+                            <select class="selectpicker start-date" name="start_date"></select>
                             <label for="month_label" class="label label-default">Birth Month:</label>
-                            <select class="selectpicker start-month ulist" name="start_month"></select>
+                            <select class="selectpicker start-month" name="start_month"></select>
                             <label for="year_label" class="label label-default">Birth Year:</label>
-                            <select class="selectpicker start-year ulist" name="start_year"></select>
+                            <select class="selectpicker start-year" name="start_year"></select>
                         </div>
                         <button type="button" class="btn btn-secondary button" onclick="getDifference('firstForm')">Your Age Today!</button>
                     </form>
@@ -88,16 +88,19 @@
                 <section class="section_input">
                     <form name="secondForm" id="secondForm" method="POST">
                         <div id="diff_data_input">
-                            <label class="label label-default">Start Date: </label>
-                            <select class="selectpicker start-date slist" name="start_date"></select>
-                            <select class="selectpicker start-month slist" name="start_month"></select>
-                            <select class="selectpicker diff start-year slist" name="start_year"></select>
+                            <div id="startDate">
+                                <label class="label label-default">Start Date: </label>
+                                <select class="selectpicker start-date" name="start_date"></select>
+                                <select class="selectpicker start-month" name="start_month"></select>
+                                <select class="selectpicker start-year" name="start_year"></select>
+                            </div>
                             <br>
-                            <br>
-                            <label class="label label-default">End Date:</label>
-                            <select class="selectpicker start-date slist diff" name="end_date"></select>
-                            <select class="selectpicker start-month slist diff" name="end_month"></select>
-                            <select class="selectpicker start-year slist diff" name="end_year"></select>
+                            <div id="endDate">
+                                <label class="label label-default">End Date:</label>
+                                <select class="selectpicker start-date" name="end_date"></select>
+                                <select class="selectpicker start-month" name="end_month"></select>
+                                <select class="selectpicker start-year" name="end_year"></select>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-secondary button" id="getDiff" onclick="getDifference('secondForm')">Calculate!</button>
                     </form>
@@ -113,7 +116,7 @@
                     </div>
                     <div id="diff_data_output" class="output">
                         <p>
-                            <labeL class="unique">Duration Between Two Dates</label>
+                            <label class="unique">Duration Between Two Dates</label>
                         </p>
                         <p>
                             <label class="output-label">In Years:</label> <span id="diff_years"></span>
