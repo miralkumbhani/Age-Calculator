@@ -25,11 +25,11 @@
                     <form name="firstForm" id="firstForm" method="POST">
                         <div id="date_data_input">
                             <label for="date_label" class="badge badge-default">Birth Date:</label>
-                            <select class="selectpicker start-date" name="start_date"></select>
+                            <select class="form-control start-date" name="start_date"></select>
                             <label for="month_label" class="badge badge-default">Birth Month:</label>
-                            <select class="selectpicker start-month" name="start_month"></select>
+                            <select class="form-control start-month" name="start_month"></select>
                             <label for="year_label" class="badge badge-default">Birth Year:</label>
-                            <select class="selectpicker start-year" name="start_year"></select>
+                            <select class="form-control start-year" name="start_year"></select>
                         </div>
                         <button type="button" class="btn btn-primary button" onclick="getDifference('firstForm')">Your Age Today!</button>
                     </form>
@@ -61,9 +61,9 @@
                                     <p class="card-text">
                                         <label class="output-label">In Days:</label> <span id="user_ageDays"></span></p>
                                     <p class="card-text">
-                                        <label class="output-label">Your Age Today:</label> <span id="user_todayAge"></span>p>
-                                        <p class="card-text">
-                                            <label class="output-label">Next Birthday Count-Down:</label> <span id="countdown"></span></p>
+                                        <label class="output-label">Your Age Today:</label> <span id="user_todayAge"></span></p>
+                                    <p class="card-text">
+                                        <label class="output-label">Next Birthday Count-Down:</label> <span id="countdown"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -72,11 +72,11 @@
                                 <h3 class="card-header">Your Zodiac Details</h3>
                                 <div class="card-block">
                                     <p class="card-text">
-                                        <label class="output-label">Your Zodiac-Sign:</label> <span id="zodiac_name"></span></p>
+                                        <label class="output-label">Your Zodiac-Sign:</label><span id="zodiac_name"></span></p>
                                     <p class="card-text">
-                                        <label class="output-label">Birth Range:</label> <span id="zodiac_birthrange"></span></p>
+                                        <label class="output-label">Birth Range:</label><span id="zodiac_birthrange"></span></p>
                                     <p class="card-text">
-                                        <label class="output-label">Attributes:</label> <span id="zodiac_attributes"></span></p>
+                                        <label class="output-label">Attributes:</label><span id="zodiac_attributes"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -91,16 +91,16 @@
                         <div id="diff_data_input">
                             <div id="startDate">
                                 <label class="badge badge-default">Start Date: </label>
-                                <select class="selectpicker start-date" name="start_date"></select>
-                                <select class="selectpicker start-month" name="start_month"></select>
-                                <select class="selectpicker start-year" name="start_year"></select>
+                                <select class="form-control start-date" name="start_date"></select>
+                                <select class="form-control start-month" name="start_month"></select>
+                                <select class="form-control start-year" name="start_year"></select>
                             </div>
                             <br>
                             <div id="endDate">
                                 <label class="badge badge-default">End Date:</label>
-                                <select class="selectpicker start-date" name="end_date"></select>
-                                <select class="selectpicker start-month" name="end_month"></select>
-                                <select class="selectpicker start-year" name="end_year"></select>
+                                <select class="form-control start-date" name="end_date"></select>
+                                <select class="form-control start-month" name="end_month"></select>
+                                <select class="form-control start-year" name="end_year"></select>
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary button" id="getDiff" onclick="getDifference('secondForm')">Calculate!</button>

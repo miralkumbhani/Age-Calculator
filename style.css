@@ -78,25 +78,23 @@ ul.tab {
 
 /* for select drop downs */
 
-#date_data_input .selectpicker {
-    text-align: center;
-    font-size: 20px;
+.form-control{
+    display: inline-block;
+}
+
+#date_data_input .form-control {
     width: 150px;
     margin-right: -100px;
     margin-left: 2px;
 }
 
-#diff_data_input .selectpicker {
-    text-align: center;
-    font-size: 20px;
+#diff_data_input .form-control {
     width: 150px;
     margin-right: 110px;
     margin-left: 3px;
-    float: none;
-    text-align: right;
 }
 
-#endDate .selectpicker {
+#endDate .form-control {
     margin-left: 10px;
     margin-right: 103px;
 }
@@ -193,8 +191,8 @@ ul.tab {
 
 .output-label {
     float: none;
-    width: 8em;
-    margin-right: 1em;
+    width: 9em;
+    margin-right: 2em;
     text-align: left;
     font-weight: bold;
 }

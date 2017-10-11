@@ -3,6 +3,7 @@
 $(document).ready(() => {
     $('.tabcontent').eq(0).show();
 
+
     // works on top tabs to switch between tabs
     $('.tab').on('click', '.tablinks', function() {
         $('.section_output').hide();
@@ -15,7 +16,7 @@ $(document).ready(() => {
     });
 
     // Promise.all will resolve when all promise resolved
-    Promise.all([_setDay, _setMonth, _setYear]).then( (result) => {
+    Promise.all([_setDay, _setMonth, _setYear]).then((result) => {
         // console.log("result", result);
         //creating date option list
         let dayList = result[0].join('');
@@ -29,5 +30,6 @@ $(document).ready(() => {
     }).catch((err) => {
         console.log('one of promise rejected', err);
     });
+
     //calendar.functionName();
 });
