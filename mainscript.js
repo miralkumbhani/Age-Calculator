@@ -67,6 +67,7 @@ const getZodiacSign = (day, month) => {
 const getZodiacDetails = (zArray, zname) => {
     return new Promise((resolve, reject) => {
         return zArray.find(function(zArray) {
+            console.log("zArray", zArray);
             if (zArray.zsign === zname) {
                 resolve(zArray);
             }
@@ -94,7 +95,7 @@ const getZodiacInfo = (initial_date) => {
     });
 };
 
-const displayCountdown = (finalTime, counter) => {
+const displayCountdown = (finalTime) => {
     //console.log("displayCountdown", finalTime);
     let diff = finalTime - currDate;
     let initialTime = new Date().getTime();
@@ -454,4 +455,73 @@ var data = {
 
 data.getDifference();
 data.setDifference();
+*/
+
+/*
+//constructor which has all the variables declared to use (if required, pass object for more variables)
+let calculationFun = () => {
+    let startDate = this.startDate;
+    let startMonth = this.startMonth;
+    let startYear = this.startYear;
+    let startDate = this.startDate;
+    let endDate = this.endDate;
+    let endMonth = this.endMonth;
+    let endYear = this.endYear;
+    let endDay = this.endDay;
+}
+
+calculationFun.prototpe = {
+    getDifference: (formName) => {
+        $('.section_output').show();
+        // other form name is 'secondForm'
+        let diff = (formName === 'firstForm') ? false : true;
+
+        startDate = document[formName].start_date.value;
+        startMonth = document[formName].start_month.value;
+        startYear = document[formName].start_year.value;
+        startDay = new Date(`${startMonth}-${startDate}-${startYear}`);
+        endDay = new Date();
+
+        if (diff) {
+            endDate = document[formName].end_date.value;
+            endMonth = document[formName].end_month.value;
+            endYear = document[formName].end_year.value;
+            endDay = new Date(`${endMonth}-${endDate}-${endYear}`);
+        }
+
+        setDifference(startDay, endDay, diff);
+    }
+
+    setDifference: (initial_date, final_date, diff) => {
+        let current_birthday = initial_date;
+        let start_year = initial_date.getFullYear();
+        let end_year = final_date.getFullYear();
+        let next_birthday = new Date(initial_date); // necessary step to make Date object again
+        next_birthday.setFullYear(end_year + 1);
+
+        if (isFinite(initial_date) && isFinite(final_date)) {
+            if (end_year >= start_year) {
+                //for calculating diff in years
+                let diffYears = calculateDifference(initial_date, final_date, 'year');
+                Promise.resolve(diffYears).then((result) => {
+                    let diffYears = result;
+                    let diffMonths = diffYears * 12 + calculateDifference(initial_date, final_date, 'month');
+                    let diffWeeks = calculateDifference(initial_date, final_date, 'week');
+                    let diffDays = calculateDifference(initial_date, final_date, 'day');
+                    display(initial_date, final_date, diff, diffYears, diffMonths, diffWeeks, diffDays);
+                });
+                getTrueAge(initial_date);
+                getCountdownTime(next_birthday);
+                //the result is giving JSON array as output
+                getZodiacInfo(current_birthday);
+            } else {
+                alert('The Selected Year should be greater than the Birth year');
+                return false;
+            }
+        } else {
+            alert('Invalid Date, try again.');
+            return false;
+        }
+    }
+}
 */

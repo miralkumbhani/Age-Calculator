@@ -31,7 +31,7 @@
                             <label for="year_label" class="badge badge-default">Birth Year:</label>
                             <select class="form-control start-year" name="start_year"></select>
                         </div>
-                        <button type="button" class="btn btn-primary button" onclick="getDifference('firstForm')">Your Age Today!</button>
+                        <button type="button" class="btn btn-primary button" onclick="_cal.getDifference('firstForm')">Your Age Today!</button>
                     </form>
                 </section>
                 <section class="section_output">
@@ -103,7 +103,7 @@
                                 <select class="form-control start-year" name="end_year"></select>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary button" id="getDiff" onclick="getDifference('secondForm')">Calculate!</button>
+                        <button type="button" class="btn btn-primary button" id="getDiff" onclick="_cal.getDifference('secondForm')">Calculate!</button>
                     </form>
                 </section>
                 <section class="section_output">
@@ -144,7 +144,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="background.js"></script>
-    <script src="mainscript.js"></script>
+    <script src="calculate.js"></script>
+    <!-- <script src="mainscript.js"></script> -->
 </body>
 
 </html>
