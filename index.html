@@ -15,67 +15,71 @@
             <button class="tablinks active" data-display="birth_age">Age Calculator</button>
             <button class="tablinks" data-display="diff_age">Date Calculator</button>
         </section>
-        <hr>
         <section id="tab_data">
             <!-- TAB 1 -->
             <div class="tabcontent" id="birth_age">
                 <h1>Age Calculator</h1>
                 <section class="section_input">
-                    <form name="firstForm" id="firstForm" method="POST">
-                        <div id="date_data_input">
-                            <label for="date_label" class="badge badge-default">Birth Date:</label>
-                            <select class="form-control start-date" name="start_date"></select>
-                            <label for="month_label" class="badge badge-default">Birth Month:</label>
-                            <select class="form-control start-month" name="start_month"></select>
-                            <label for="year_label" class="badge badge-default">Birth Year:</label>
-                            <select class="form-control start-year" name="start_year"></select>
-                        </div>
+                    <form name="firstForm" id="firstForm" method="POST" class="form-inline">
+                            <label for="start_date" >Birth Date:</label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-date" id="start_date" name="start_date">
+                                <option selected disabled>Birth Date</option>
+                            </select>
+                            <label for="start_month" >Birth Month:</label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-month" id="start_month" name="start_month">
+                                <option selected disabled>Birth Month</option>
+                            </select>
+                            <label for="start_year" >Birth Year:</label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-year" id="start_year" name="start_year">
+                                <option selected disabled>Birth Year</option>
+                            </select>
                         <button type="button" class="btn btn-primary button" onclick="_cal.getDifference('firstForm')">Your Age Today!</button>
                     </form>
                 </section>
-                <section class="section_output">
-                    <div id="common_data" class="common-display">
-                        <div class="card card-inverse card-primary mb-3 text-center">
-                            <div class="card-block">
-                                <blockquote class="card-blockquote">
-                                    <p>
-                                        <label class="output-label">Today's Date:</label> <span id="today_date"></span></p>
-                                    <p>
-                                        <label class="output-label">Birth Date:</label> <span id="user_date"></span></p>
-                                </blockquote>
+                <section class="container section_output">
+                    <div class="bg-inverse ">
+                        <div class="col-md-12">
+                            <div class="d-flex p-2">
+                                <label class="text-white">Today's Date: </label>&nbsp;<span class="text-success" id="today_date"></span>
+                            </div>
+                            <div class="d-flex p-2">
+                                <label class="text-white">Birth Date: </label>&nbsp;<span class="text-success" id="user_date"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="card-output">
-                        <div id="date_data_output" class="output">
+                    <div class="row mt-1">
+                        <div class="col-md-6">
                             <div class="card">
                                 <h3 class="card-header">Your Total Age</h3>
                                 <div class="card-block">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><b>In Years: </b><span id="user_ageYears"></span>&nbsp;Years</li>
+                                        <li class="list-group-item"><b>In Months: </b><span id="user_ageMonths"></span>&nbsp;Months</li>
+                                        <li class="list-group-item"><b>In Weeks: </b><span id="user_ageWeeks"></span>&nbsp;Weeks</li>
+                                        <li class="list-group-item"><b>In Days: </b><span id="user_ageDays"></span>&nbsp;Days</li>
+                                    </ul>
                                     <p class="card-text">
-                                        <label class="output-label">In Years:</label> <span id="user_ageYears"></span></p>
+                                        <b>Your Age Today:</b>&nbsp;<span id="user_todayAge"></span>
+                                    </p>
                                     <p class="card-text">
-                                        <label class="output-label">In Months:</label> <span id="user_ageMonths"></span></p>
-                                    <p class="card-text">
-                                        <label class="output-label">In Weeks:</label> <span id="user_ageWeeks"></span></p>
-                                    <p class="card-text">
-                                        <label class="output-label">In Days:</label> <span id="user_ageDays"></span></p>
-                                    <p class="card-text">
-                                        <label class="output-label">Your Age Today:</label> <span id="user_todayAge"></span></p>
-                                    <p class="card-text">
-                                        <label class="output-label">Next Birthday Count-Down:</label> <span id="countdown"></span></p>
+                                        <b>Next Birthday Count-Down:</b>&nbsp;<span id="countdown"></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <div id="zodiac_data_output" class="output h_500">
+                        <div class="col-md-6">
                             <div class="card">
                                 <h3 class="card-header">Your Zodiac Details</h3>
                                 <div class="card-block">
                                     <p class="card-text">
-                                        <label class="output-label">Your Zodiac-Sign:</label><span id="zodiac_name"></span></p>
+                                        <label class="output-label">Your Zodiac-Sign:</label><span id="zodiac_name"></span>
+                                    </p>
                                     <p class="card-text">
-                                        <label class="output-label">Birth Range:</label><span id="zodiac_birthrange"></span></p>
+                                        <label class="output-label">Birth Range:</label><span id="zodiac_birthrange"></span>
+                                    </p>
                                     <p class="card-text">
-                                        <label class="output-label">Attributes:</label><span id="zodiac_attributes"></span></p>
+                                        <label class="output-label">Attributes:</label><span id="zodiac_attributes"></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -106,15 +110,17 @@
                     </form>
                 </section>
                 <section class="section_output">
-                    <div id="common_data" class="common-display diff-common">
+                    <div id="common_data">
                         <div id="common_data" class="common-display">
-                            <div class="card card-inverse card-primary mb-3 text-center">
+                            <div class="card card-inverse card-primary mb-3">
                                 <div class="card-block">
                                     <blockquote class="card-blockquote">
                                         <p>
-                                            <label class="output-label">Today's Date:</label> <span id="start_date"></span></p>
+                                            <label class="control-label">Start Date:</label> <span id="start_date" class="bg-primary"></span>
+                                        </p>
                                         <p>
-                                            <label class="output-label">Birth Date:</label> <span id="end_date"></span></p>
+                                            <label class="control-label">End Date:</label> <span id="end_date"></span>
+                                        </p>
                                     </blockquote>
                                 </div>
                             </div>
@@ -125,13 +131,17 @@
                             <h3 class="card-header">Duration Between Two Dates</h3>
                             <div class="card-block">
                                 <p class="card-text">
-                                    <label class="output-label">In Years:</label> <span id="diff_years"></span></p>
+                                    <label class="output-label">In Years:</label><span id="diff_years"></span>
+                                </p>
                                 <p class="card-text">
-                                    <label class="output-label">In Months:</label> <span id="diff_months"></span>
-                                    <p class="card-text">
-                                        <label class="output-label">In Weeks:</label> <span id="diff_weeks"></span></p>
-                                    <p class="card-text">
-                                        <label class="output-label">In Days:</label> <span id="diff_days"></span></p>
+                                    <label class="output-label">In Months:</label><span id="diff_months"></span>
+                                </p>
+                                <p class="card-text">
+                                    <label class="output-label">In Weeks:</label><span id="diff_weeks"></span>
+                                </p>
+                                <p class="card-text">
+                                    <label class="output-label">In Days:</label><span id="diff_days"></span>
+                                </p>
                             </div>
                         </div>
                     </div>

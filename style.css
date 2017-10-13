@@ -189,14 +189,6 @@ ul.tab {
     margin-left: 325px;
 }
 
-.output-label {
-    float: none;
-    width: 9em;
-    margin-right: 2em;
-    text-align: left;
-    font-weight: bold;
-}
-
 .unique {
     margin-left: 180px;
     text-decoration: underline;

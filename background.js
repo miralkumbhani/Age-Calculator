@@ -15,7 +15,7 @@ $(document).ready(() => {
     });
 
     // @return array = [1,...31]
-    let _setDay = new Promise((resolve, reject) => {
+    let _setDay = new Promise((resolve) => {
         let dateArray = [];
         for (let j = 1; j < 32; j++) {
             dateArray.push(j);
@@ -28,7 +28,7 @@ $(document).ready(() => {
     });
 
     //@return array = [January, ...December]
-    let _setMonth = new Promise((resolve, reject) => {
+    let _setMonth = new Promise((resolve) => {
         let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let monthList = [];
         $.each(monthArray, function(i, idx) {
@@ -38,7 +38,7 @@ $(document).ready(() => {
     });
 
     //@return array = [currentYear,....0]
-    let _setYear = new Promise((resolve, reject) => {
+    let _setYear = new Promise((resolve) => {
         let yearArray = [];
         let endYear = new Date().getFullYear();
         for (let j = endYear; j > 1857; j--) {
@@ -56,13 +56,13 @@ $(document).ready(() => {
         // console.log("result", result);
         //creating date option list
         let dayList = result[0].join('');
-        $('.start-date').html(dayList);
+        $('.start-date').append(dayList);
         //creating month option list
         let monthList = result[1].join('');
-        $('.start-month').html(monthList);
+        $('.start-month').append(monthList);
         //creating year option list
         let yearList = result[2].join('');
-        $('.start-year').html(yearList);
+        $('.start-year').append(yearList);
     }).catch((err) => {
         console.log('one of promise rejected', err);
     });
