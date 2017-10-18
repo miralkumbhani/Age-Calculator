@@ -11,12 +11,6 @@ h1 {
     margin: 10px;
 }
 
-hr {
-    width: 900px;
-    margin-right: 150px;
-    border-style: solid;
-    background-color: #403B4A;
-}
 
 /*for TABS and their display*/
 
@@ -76,40 +70,13 @@ ul.tab {
     }
 }
 
+
 /* for select drop downs */
 
-.form-control{
+.form-control {
     display: inline-block;
 }
 
-#date_data_input .form-control {
-    width: 150px;
-    margin-right: -100px;
-    margin-left: 2px;
-}
-
-#diff_data_input .form-control {
-    width: 150px;
-    margin-right: 110px;
-    margin-left: 3px;
-}
-
-#endDate .form-control {
-    margin-left: 10px;
-    margin-right: 103px;
-}
-
-/* for labels */
-
-#diff_data_input label {
-    margin-left: 180px;
-    margin-right: 1em;
-}
-
-.badge {
-    margin: 20px 3px 5px 180px;
-    font-size: 16px;
-}
 
 /* for button */
 
@@ -156,52 +123,9 @@ ul.tab {
     opacity: 0;
 }
 
+
 /* for output display box */
 
 .section_output {
     display: none;
-}
-
-#date_data_output {
-    float: left;
-    margin-left: 30px;
-}
-
-#diff_data_output {
-    margin-left: 350px;
-}
-
-.output {
-    min-height: 300px;
-    padding: 3px 0px 1px 10px;
-    text-shadow: 1px 1px gray;
-    text-align: left;
-    width: 570px;
-}
-
-.common-display {
-    width: 93%;
-    margin: 0 0 10px 34px;
-}
-
-.diff-common {
-    width: 600px;
-    margin-left: 325px;
-}
-
-.unique {
-    margin-left: 180px;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-.h_500 {
-    margin-left: 640px;
-    min-height: 300px;
-    max-height: 660px;
-    margin-top: 15px;
-    padding-right: 10px;
-    text-align: justify;
-    text-justify: inter-word;
-    box-decoration-break: clone;
 }

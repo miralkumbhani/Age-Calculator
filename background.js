@@ -56,13 +56,13 @@ $(document).ready(() => {
         // console.log("result", result);
         //creating date option list
         let dayList = result[0].join('');
-        $('.start-date').append(dayList);
+        $('.select-date').append(dayList);
         //creating month option list
         let monthList = result[1].join('');
-        $('.start-month').append(monthList);
+        $('.select-month').append(monthList);
         //creating year option list
         let yearList = result[2].join('');
-        $('.start-year').append(yearList);
+        $('.select-year').append(yearList);
     }).catch((err) => {
         console.log('one of promise rejected', err);
     });

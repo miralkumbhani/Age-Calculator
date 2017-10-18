@@ -19,8 +19,8 @@
     _calculate.prototype = {
         //function to get data for calculating the time diff (setting startDate, endDate )
         getDifference: function(formName) {
-                // console.log("this.countdown", this.countdown);
-            if(this.countdown) {
+            // console.log("this.countdown", this.countdown);
+            if (this.countdown) {
                 clearInterval(this.countdown);
             }
             // other form name is 'secondForm'
@@ -58,7 +58,7 @@
                         this.display(diff);
                     });
                     //display total age in  `X years, Y months, Z days` format
-                    this.getTrueAge();
+                    this.getTrueAge(diff);
                     // display countdown in `(290 days 5 hours 7 minutes 16 seconds)` format
                     let next_birthday = new Date(this.startDate); // necessary step to make new variable of Date object
                     next_birthday.setFullYear(this.endYear + 1);
@@ -122,12 +122,12 @@
         },
 
         ////function to get complete age from today
-        getTrueAge: function() {
+        getTrueAge: function(diff) {
             let ageInYears, ageInMonths, ageInDays;
             let totalDays = Math.floor((this.endDate - this.startDate) / DAY_IN_MS);
             ageInYears = Math.floor(totalDays / 365);
             let diffMonths = this.endMonth - this.startMonth;
-            ageInMonths = (diffMonths >=0) ? diffMonths : 12 - diffMonths;
+            ageInMonths = (diffMonths >= 0) ? diffMonths : 12 - diffMonths;
             let diffDays = this.endDay - this.startDay;
             if (diffDays >= 0) {
                 ageInDays = diffDays;
@@ -140,8 +140,13 @@
             let monthString = this.maybePluralize(ageInMonths, 'month');
             let yearString = this.maybePluralize(ageInYears, 'year');
             let totalAge = `${yearString}, ${monthString}, ${dayString}`;
-            // console.log("totalAge", totalAge);
-            $('#user_todayAge').html(totalAge);
+            console.log("totalAge", totalAge);
+            if (diff === false) {
+                $('#user_todayAge').html(totalAge);
+            } else {
+                $('#diff_todayAge').html(totalAge);
+            }
+
         },
 
         //function to display the output properly

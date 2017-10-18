@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Date Calculator</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -21,18 +22,18 @@
                 <h1>Age Calculator</h1>
                 <section class="section_input">
                     <form name="firstForm" id="firstForm" method="POST" class="form-inline">
-                            <label for="start_date" >Birth Date:</label>
-                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-date" id="start_date" name="start_date">
-                                <option selected disabled>Birth Date</option>
-                            </select>
-                            <label for="start_month" >Birth Month:</label>
-                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-month" id="start_month" name="start_month">
-                                <option selected disabled>Birth Month</option>
-                            </select>
-                            <label for="start_year" >Birth Year:</label>
-                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 start-year" id="start_year" name="start_year">
-                                <option selected disabled>Birth Year</option>
-                            </select>
+                        <label for="start_date">Birth Date: </label>
+                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-date" id="start_date" name="start_date">
+                            <option selected disabled>Birth Date</option>
+                        </select>
+                        <label for="start_month">Birth Month:</label>
+                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-month" id="start_month" name="start_month">
+                            <option selected disabled>Birth Month</option>
+                        </select>
+                        <label for="start_year">Birth Year:</label>
+                        <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-year" id="start_year" name="start_year">
+                            <option selected disabled>Birth Year</option>
+                        </select>
                         <button type="button" class="btn btn-primary button" onclick="_cal.getDifference('firstForm')">Your Age Today!</button>
                     </form>
                 </section>
@@ -57,13 +58,9 @@
                                         <li class="list-group-item"><b>In Months: </b><span id="user_ageMonths"></span>&nbsp;Months</li>
                                         <li class="list-group-item"><b>In Weeks: </b><span id="user_ageWeeks"></span>&nbsp;Weeks</li>
                                         <li class="list-group-item"><b>In Days: </b><span id="user_ageDays"></span>&nbsp;Days</li>
+                                        <li class="list-group-item"><b>Your Age Today: </b><span id="user_todayAge"></span>&nbsp;</li>
+                                        <li class="list-group-item"><b>Next Birthday Count-Down:</b><span id="countdown"></span>&nbsp;</li>
                                     </ul>
-                                    <p class="card-text">
-                                        <b>Your Age Today:</b>&nbsp;<span id="user_todayAge"></span>
-                                    </p>
-                                    <p class="card-text">
-                                        <b>Next Birthday Count-Down:</b>&nbsp;<span id="countdown"></span>
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -71,15 +68,11 @@
                             <div class="card">
                                 <h3 class="card-header">Your Zodiac Details</h3>
                                 <div class="card-block">
-                                    <p class="card-text">
-                                        <label class="output-label">Your Zodiac-Sign:</label><span id="zodiac_name"></span>
-                                    </p>
-                                    <p class="card-text">
-                                        <label class="output-label">Birth Range:</label><span id="zodiac_birthrange"></span>
-                                    </p>
-                                    <p class="card-text">
-                                        <label class="output-label">Attributes:</label><span id="zodiac_attributes"></span>
-                                    </p>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><b>Your Zodiac-Sign:</b><span id="zodiac_name"></span>&nbsp;</li>
+                                        <li class="list-group-item"><b>Birth Range:</b><span id="zodiac_birthrange"></span>&nbsp;</li>
+                                        <li class="list-group-item text-justify"><b>Attributes:</b><span id="zodiac_attributes"></span>&nbsp;</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -90,58 +83,59 @@
             <div class="tabcontent" id="diff_age">
                 <h1>Date Difference</h1>
                 <section class="section_input">
-                    <form name="secondForm" id="secondForm" method="POST">
-                        <div id="diff_data_input">
-                            <div id="startDate">
-                                <label class="badge badge-default">Start Date: </label>
-                                <select class="form-control start-date" name="start_date"></select>
-                                <select class="form-control start-month" name="start_month"></select>
-                                <select class="form-control start-year" name="start_year"></select>
-                            </div>
-                            <br>
-                            <div id="endDate">
-                                <label class="badge badge-default">End Date:</label>
-                                <select class="form-control start-date" name="end_date"></select>
-                                <select class="form-control start-month" name="end_month"></select>
-                                <select class="form-control start-year" name="end_year"></select>
-                            </div>
+                    <form name="secondForm" id="secondForm" method="POST" class="form-inline">
+                        <div id="startDate">
+                            <label>Start Date: </label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-date" id="startDate" name="start_date">
+                                <option selected disabled>Start Date</option>
+                            </select>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-month" id="startMonth" name="start_month">
+                                <option selected disabled>Start Month</option>
+                            </select>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-year" id="startYear" name="start_year">
+                                <option selected disabled>Start Year</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div id="endDate">
+                            <label>End Date:</label>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-date" id="endDate" name="end_date">
+                                <option selected disabled>End Date</option>
+                            </select>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-month" id="endMonth" name="end_month">
+                                <option selected disabled>End Month</option>
+                            </select>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-year" id="endYear" name="end_year">
+                                <option selected disabled>End Year</option>
+                            </select>
                         </div>
                         <button type="button" class="btn btn-primary button" id="getDiff" onclick="_cal.getDifference('secondForm')">Calculate!</button>
                     </form>
                 </section>
-                <section class="section_output">
-                    <div id="common_data">
-                        <div id="common_data" class="common-display">
-                            <div class="card card-inverse card-primary mb-3">
-                                <div class="card-block">
-                                    <blockquote class="card-blockquote">
-                                        <p>
-                                            <label class="control-label">Start Date:</label> <span id="start_date" class="bg-primary"></span>
-                                        </p>
-                                        <p>
-                                            <label class="control-label">End Date:</label> <span id="end_date"></span>
-                                        </p>
-                                    </blockquote>
-                                </div>
+                <section class="container section_output">
+                    <div class="bg-inverse ">
+                        <div class="col-md-12">
+                            <div class="d-flex p-2">
+                                <label class="text-white">Start Date:</label>&nbsp;<span class="text-success" id="start_date"></span>
+                            </div>
+                            <div class="d-flex p-2">
+                                <label class="text-white">End Date:</label>&nbsp;<span class="text-success" id="end_date"></span>
                             </div>
                         </div>
                     </div>
-                    <div id="diff_data_output" class="output">
-                        <div class="card">
-                            <h3 class="card-header">Duration Between Two Dates</h3>
-                            <div class="card-block">
-                                <p class="card-text">
-                                    <label class="output-label">In Years:</label><span id="diff_years"></span>
-                                </p>
-                                <p class="card-text">
-                                    <label class="output-label">In Months:</label><span id="diff_months"></span>
-                                </p>
-                                <p class="card-text">
-                                    <label class="output-label">In Weeks:</label><span id="diff_weeks"></span>
-                                </p>
-                                <p class="card-text">
-                                    <label class="output-label">In Days:</label><span id="diff_days"></span>
-                                </p>
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <h3 class="card-header">Difference Between Dates</h3>
+                                <div class="card-block">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><b>In Years: </b><span id="diff_years"></span>&nbsp;Years</li>
+                                        <li class="list-group-item"><b>In Months: </b><span id="diff_months"></span>&nbsp;Months</li>
+                                        <li class="list-group-item"><b>In Weeks: </b><span id="diff_weeks"></span>&nbsp;Weeks</li>
+                                        <li class="list-group-item"><b>In Days: </b><span id="diff_days"></span>&nbsp;Days</li>
+                                        <li class="list-group-item"><b>Your Age Today: </b><span id="diff_todayAge"></span>&nbsp;</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,9 +143,9 @@
             </div>
         </section>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" ></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
     <script src="background.js"></script>
     <script src="calculate.js"></script>
 </body>
