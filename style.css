@@ -129,3 +129,25 @@ ul.tab {
 .section_output {
     display: none;
 }
+
+.editBdate{
+    margin-left: 150px;
+    padding-right: 5px;
+}
+
+.editDate{
+    margin-left: 100px;
+    padding-right: 5px;
+}
+
+.editLabel{
+    float: none;
+    width: 10em;
+    margin-right: 2em;
+    text-align: left;
+    font-weight: bold;
+}
+
+.displayOutput{
+    margin-left: 300px;
+}
