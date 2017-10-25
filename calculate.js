@@ -148,9 +148,11 @@
 
             ageInYears = Math.floor(this.numOfDays / 365);
             let diffMonths = this.endMonth - this.startMonth;
+            console.log("diffMonths", diffMonths);
             // console.log("this.startMonth", this.startMonth);
             // console.log("this.endMonth", this.endMonth);
-            ageInMonths = (diffMonths >= 0) ? diffMonths : 12 - diffMonths;
+            ageInMonths = (diffMonths >= 0) ? diffMonths : 12 - (-diffMonths);
+            console.log("ageInMonths", ageInMonths);
             // console.log("ageInMonths", ageInMonths);
             let diffDays = this.endDay - this.startDay;
             // console.log("this.startDay", this.startDay);
