@@ -31,7 +31,7 @@
             let startMonth = document[formName].start_month.value;
             let startYear = document[formName].start_year.value;
             this.startDate = new Date(`${startMonth}-${startDay}-${startYear}`);
-            // destructor assignement
+            // destructor assignement typeof: number
             [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()]; //because only startDay, startMonth, startYear will return 'string'
             [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
 
@@ -79,7 +79,7 @@
                     this.getZodiacInfo();
                 }
             } else {
-                alert('Please select date and try again.');
+                alert('Please select appropriate date and try again.');
                 return false;
             }
         },
@@ -150,10 +150,10 @@
         ageBetweenDate: function(diff) {
             let ageInYears, ageInMonths, ageInDays;
 
-
             ageInYears = this.endYear - this.startYear;
             ageInDays = this.endDay - this.startDay; //ageInDays will be thae same for all cases when endDay > startDay
 
+            //common calculation
             let dayCal = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
             let monthDiff = this.endMonth - this.startMonth;
 
