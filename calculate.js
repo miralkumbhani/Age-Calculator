@@ -5,6 +5,7 @@
 
     const ZODIAC_LIST = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
     const ZODIAC_DAY = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+    const LAST_DAY_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     let startDate, endDate, diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds, countdown;
 
@@ -31,7 +32,7 @@
             let startYear = document[formName].start_year.value;
             this.startDate = new Date(`${startMonth}-${startDay}-${startYear}`);
             // destructor assignement
-            [this.startDay, this.startMonth, this.startYear] = [startDay, startMonth, startYear];
+            [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()]; //because only startDay, startMonth, startYear will return 'string'
             [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
 
             if (diff) {
@@ -140,32 +141,91 @@
             }
         },
 
-        // ********************* CHECK ************************** //
-
         //function to get complete age from today
         ageBetweenDate: function(diff) {
             let ageInYears, ageInMonths, ageInDays;
 
-            ageInYears = Math.floor(this.numOfDays / 365);
-            let diffMonths = this.endMonth - this.startMonth;
-            console.log("diffMonths", diffMonths);
-            // console.log("this.startMonth", this.startMonth);
-            // console.log("this.endMonth", this.endMonth);
-            ageInMonths = (diffMonths >= 0) ? diffMonths : 12 - (-diffMonths);
-            console.log("ageInMonths", ageInMonths);
-            // console.log("ageInMonths", ageInMonths);
-            let diffDays = this.endDay - this.startDay;
-            // console.log("this.startDay", this.startDay);
-            // console.log("this.endDay", this.endDay);
-            // console.log("diffDays", diffDays);
-            if (diffDays >= 0) {
-                ageInDays = diffDays;
-                console.log(" >= 0 ageInDays", ageInDays);
-            } else {
-                ageInMonths--;
-                ageInDays = 31 - diffDays;
-                console.log("< 0 ageInDays", ageInDays);
+            if (this.endYear > this.startYear) {
+                ageInYears = this.endYear - this.startYear;
+                if (this.endMonth < this.startMonth) {
+                        ageInYears--;
+                        ageInMonths = 12 - Math.abs(this.endMonth - this.startMonth);
+                    if (this.startDay > this.endDay) {
+                        ageInMonths = (12 - Math.abs(this.endMonth - this.startMonth)) - 1;
+                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
+                    } else if (this.startDay < this.endDay) {
+                        ageInDays = this.endDay - this.startDay;
+                    } else {
+                        ageInDays = 0;
+                    }
+                }
+                if (this.endMonth === this.startMonth) {
+                    if (this.startDay > this.endDay) {
+                        ageInYears--;
+                        ageInMonths = 11;
+                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
+                    } else if (this.startDay < this.endDay) {
+                        ageInMonths = 0;
+                        ageInDays = this.endDay - this.startDay;
+                    } else {
+                        ageInMonths = 0;
+                        ageInDays = 0;
+                    }
+                }
+                if (this.endMonth > this.startMonth) {
+                    ageInMonths = (this.endMonth - this.startMonth);
+                    if (this.startDay < this.endDay) {
+                        ageInDays = this.endDay - this.startDay;
+                    } else if (this.startDay > this.endDay) {
+                        ageInMonths = (this.endMonth - this.startMonth) -1;
+                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
+                    } else {
+                        ageInDays = 0;
+                    }
+                }
             }
+
+            // else if(this.endYear < this.startYear){
+            //     ageInYears = Math.abs(this.endYear - this.startYear);
+            //     let startDDay, startDMonth, startDYear, endDDay, endDMonth, endDYear;
+            //     [startDDay, startDMonth, startDYear] = [this.endDay, this.endMonth, this.endYear];
+            //     [endDDay, endDMonth, endDYear] = [this.startDay, this.startMonth, this.startYear];
+            //     if (endDMonth < startDMonth) {
+            //             ageInYears--;
+            //             ageInMonths = 12 - Math.abs(endDMonth - startDMonth);
+            //         if (startDDay > endDDay) {
+            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
+            //         } else if (startDDay < endDDay) {
+            //             ageInDays = endDDay - startDDay;
+            //         } else {
+            //             ageInDays = 0;
+            //         }
+            //     }
+            //     if (endDMonth === startDMonth) {
+            //         if (startDDay > endDDay) {
+            //             ageInYears--;
+            //             ageInMonths = 11;
+            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
+            //         } else if (startDDay < endDDay) {
+            //             ageInMonths = 0;
+            //             ageInDays = endDDay - startDDay;
+            //         } else {
+            //             ageInMonths = 0;
+            //             ageInDays = 0;
+            //         }
+            //     }
+            //     if (endDMonth > startDMonth) {
+            //         ageInMonths = (endDMonth - startDMonth) + 1;
+            //         if (startDDay < endDDay) {
+            //             ageInDays = endDDay - startDDay;
+            //         } else if (startDDay > endDDay) {
+            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
+            //         } else {
+            //             ageInDays = 0;
+            //         }
+            //     }
+            // }
+
             // adding suffix s based on number of day, month and year
             let dayString = this.maybePluralize(ageInDays, 'day');
             let monthString = this.maybePluralize(ageInMonths, 'month');
