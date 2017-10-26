@@ -62,8 +62,13 @@
                     this.diffSeconds = this.differenceIn('second');
                     this.display(diff);
                 });
-                //display total age in  `X years, Y months, Z days` format
-                this.ageBetweenDate(diff);
+                if (this.endYear >= this.startYear) {
+                    //display total age in  `X years, Y months, Z days` format
+                    this.ageBetweenDate(diff);
+                } else if (this.endYear < this.startYear) {
+                    this.ageBetweenRevDate();
+                }
+
                 //for function calls only for TAB-1
                 if (diff === false) {
                     // display countdown in `(290 days 5 hours 7 minutes 16 seconds)` format
@@ -145,94 +150,55 @@
         ageBetweenDate: function(diff) {
             let ageInYears, ageInMonths, ageInDays;
 
-            if (this.endYear > this.startYear) {
-                ageInYears = this.endYear - this.startYear;
-                if (this.endMonth < this.startMonth) {
-                        ageInYears--;
-                        ageInMonths = 12 - Math.abs(this.endMonth - this.startMonth);
-                    if (this.startDay > this.endDay) {
-                        ageInMonths = (12 - Math.abs(this.endMonth - this.startMonth)) - 1;
-                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
-                    } else if (this.startDay < this.endDay) {
-                        ageInDays = this.endDay - this.startDay;
-                    } else {
-                        ageInDays = 0;
-                    }
-                }
-                if (this.endMonth === this.startMonth) {
-                    if (this.startDay > this.endDay) {
-                        ageInYears--;
-                        ageInMonths = 11;
-                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
-                    } else if (this.startDay < this.endDay) {
-                        ageInMonths = 0;
-                        ageInDays = this.endDay - this.startDay;
-                    } else {
-                        ageInMonths = 0;
-                        ageInDays = 0;
-                    }
-                }
-                if (this.endMonth > this.startMonth) {
-                    ageInMonths = (this.endMonth - this.startMonth);
-                    if (this.startDay < this.endDay) {
-                        ageInDays = this.endDay - this.startDay;
-                    } else if (this.startDay > this.endDay) {
-                        ageInMonths = (this.endMonth - this.startMonth) -1;
-                        ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
-                    } else {
-                        ageInDays = 0;
-                    }
+
+            ageInYears = this.endYear - this.startYear;
+            ageInDays = this.endDay - this.startDay; //ageInDays will be thae same for all cases when endDay > startDay
+
+            let dayCal = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
+            let monthDiff = this.endMonth - this.startMonth;
+
+            if (this.endMonth < this.startMonth) {
+                ageInYears--;
+                ageInMonths = 12 - Math.abs(monthDiff);
+                if (this.startDay > this.endDay) {
+                    ageInMonths = (12 - Math.abs(monthDiff)) - 1;
+                    ageInDays = dayCal;
+                } else {
+                    ageInDays = 0;
                 }
             }
-
-            // else if(this.endYear < this.startYear){
-            //     ageInYears = Math.abs(this.endYear - this.startYear);
-            //     let startDDay, startDMonth, startDYear, endDDay, endDMonth, endDYear;
-            //     [startDDay, startDMonth, startDYear] = [this.endDay, this.endMonth, this.endYear];
-            //     [endDDay, endDMonth, endDYear] = [this.startDay, this.startMonth, this.startYear];
-            //     if (endDMonth < startDMonth) {
-            //             ageInYears--;
-            //             ageInMonths = 12 - Math.abs(endDMonth - startDMonth);
-            //         if (startDDay > endDDay) {
-            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
-            //         } else if (startDDay < endDDay) {
-            //             ageInDays = endDDay - startDDay;
-            //         } else {
-            //             ageInDays = 0;
-            //         }
-            //     }
-            //     if (endDMonth === startDMonth) {
-            //         if (startDDay > endDDay) {
-            //             ageInYears--;
-            //             ageInMonths = 11;
-            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
-            //         } else if (startDDay < endDDay) {
-            //             ageInMonths = 0;
-            //             ageInDays = endDDay - startDDay;
-            //         } else {
-            //             ageInMonths = 0;
-            //             ageInDays = 0;
-            //         }
-            //     }
-            //     if (endDMonth > startDMonth) {
-            //         ageInMonths = (endDMonth - startDMonth) + 1;
-            //         if (startDDay < endDDay) {
-            //             ageInDays = endDDay - startDDay;
-            //         } else if (startDDay > endDDay) {
-            //             ageInDays = LAST_DAY_MONTH[endDMonth + 1] - (startDDay - endDDay);
-            //         } else {
-            //             ageInDays = 0;
-            //         }
-            //     }
-            // }
+            if (this.endMonth === this.startMonth) {
+                if (this.startDay > this.endDay) {
+                    ageInYears--;
+                    ageInMonths = 11;
+                    ageInDays = daycal;
+                } else if (this.startDay < this.endDay) {
+                    ageInMonths = 0;
+                } else {
+                    ageInMonths = 0;
+                    ageInDays = 0;
+                }
+            }
+            if (this.endMonth > this.startMonth) {
+                ageInMonths = (monthDiff);
+                if (this.startDay > this.endDay) {
+                    ageInMonths = (monthDiff) - 1;
+                    ageInDays = dayCal;
+                } else {
+                    ageInDays = 0;
+                }
+            }
 
             // adding suffix s based on number of day, month and year
             let dayString = this.maybePluralize(ageInDays, 'day');
             let monthString = this.maybePluralize(ageInMonths, 'month');
             let yearString = this.maybePluralize(ageInYears, 'year');
             let totalAge = `${yearString}, ${monthString}, ${dayString}`;
-            // console.log("totalAge", totalAge);
+
             if (diff === false) {
+                if(this.startDay === this.endDay && this.startMonth === this.endMonth){
+                    alert("It's your birthday today, celebrate. Happy Birthday!!!");
+                }
                 $('#user_todayAge').html(totalAge);
             } else {
                 $('#diff_todayAge').html(totalAge);
@@ -242,6 +208,16 @@
         //function to display the output properly
         maybePluralize: function(count, noun, suffix = 's') {
             return (`${count} ${noun}${count !== 1 ? suffix : 's'}`);
+        },
+
+        //function which will assign opposite values when startDate > endDate
+        ageBetweenRevDate: function() {
+            let tempSDay, tempSMonth, tempSYear, tempEDay, tempEMonth, tempEYear;
+            [tempSDay, tempSMonth, tempSYear] = [this.endDay, this.endMonth, this.endYear];
+            [tempEDay, tempEMonth, tempEYear] = [this.startDay, this.startMonth, this.startYear];
+            [this.startDay, this.startMonth, this.startYear] = [tempSDay, tempSMonth, tempSYear];
+            [this.endDay, this.endMonth, this.endYear] = [tempEDay, tempEMonth, tempEYear];
+            this.ageBetweenDate();
         },
 
         //function for the countdown time for birthday @param Date next_birthday
