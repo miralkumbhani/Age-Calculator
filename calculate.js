@@ -104,7 +104,7 @@
                     output = Math.abs(this.endMonth - this.startMonth);
                     break;
                 case 'week':
-                    output = this.numOfDays * 7;
+                    output = Math.floor(this.numOfDays / 7 );
                     break;
                 case 'day':
                     output = this.numOfDays;
@@ -167,6 +167,9 @@
                 if (this.startDay > this.endDay) {
                     ageInMonths = (12 - Math.abs(monthDiff)) - 1;
                     ageInDays = dayCal;
+                    console.log("ageInDays", ageInDays);
+                } else if(this.startDay < this.endDay) {
+                    ageInDays = this.endDay - this.startDay;
                 } else {
                     ageInDays = 0;
                 }
@@ -198,6 +201,7 @@
             let monthString = this.maybePluralize(ageInMonths, 'month');
             let yearString = this.maybePluralize(ageInYears, 'year');
             let totalAge = `${yearString}, ${monthString}, ${dayString}`;
+            console.log("totalAge", totalAge);
 
             if (diff === false) {
                 if (this.startDay === this.endDay && this.startMonth === this.endMonth) {
@@ -211,7 +215,7 @@
 
         //function to display the output properly
         maybePluralize: function(count, noun, suffix = 's') {
-            return (`${count} ${noun}${count !== 1 ? suffix : 's'}`);
+            return (`${count} ${noun}${count !== 1 ? suffix : ''}`);
         },
 
         //function which will assign opposite values when startDate > endDate
