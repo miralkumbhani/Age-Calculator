@@ -54,7 +54,13 @@
                 //for calculating diff in years
                 Promise.resolve(this.differenceIn('year')).then((result) => {
                     this.diffYears = result;
-                    this.diffMonths = (result * 12) + this.differenceIn('month');
+                    if(this.endMonth < this.startMonth){
+                        this.diffMonths = (result * 12) - 1;
+                        console.log("diffMonths 1 ", this.diffMonths);
+                    } else if(this.endMonth >= this.startMonth){
+                        this.diffMonths = (result * 12) + this.differenceIn('month');
+                        console.log("diffMonths 2 ", this.diffMonths);
+                    }
                     this.diffWeeks = this.differenceIn('week');
                     this.diffDays = this.differenceIn('day');
                     this.diffHours = this.differenceIn('hour');
@@ -155,10 +161,6 @@
             let ageInYears, ageInMonths, ageInDays;
 
             ageInYears = this.endYear - this.startYear;
-            ageInDays = this.endDay - this.startDay; //ageInDays will be thae same for all cases when endDay > startDay
-
-            //common calculation
-            let dayCal = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
             let monthDiff = this.endMonth - this.startMonth;
 
             if (this.endMonth < this.startMonth) {
@@ -166,8 +168,7 @@
                 ageInMonths = 12 - Math.abs(monthDiff);
                 if (this.startDay > this.endDay) {
                     ageInMonths = (12 - Math.abs(monthDiff)) - 1;
-                    ageInDays = dayCal;
-                    console.log("ageInDays", ageInDays);
+                    ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
                 } else if(this.startDay < this.endDay) {
                     ageInDays = this.endDay - this.startDay;
                 } else {
@@ -178,9 +179,10 @@
                 if (this.startDay > this.endDay) {
                     ageInYears--;
                     ageInMonths = 11;
-                    ageInDays = daycal;
+                    ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
                 } else if (this.startDay < this.endDay) {
                     ageInMonths = 0;
+                    ageInDays = this.endDay - this.startDay;
                 } else {
                     ageInMonths = 0;
                     ageInDays = 0;
@@ -190,8 +192,11 @@
                 ageInMonths = (monthDiff);
                 if (this.startDay > this.endDay) {
                     ageInMonths = (monthDiff) - 1;
-                    ageInDays = dayCal;
-                } else {
+                    ageInDays = LAST_DAY_MONTH[this.endMonth + 1] - (this.startDay - this.endDay);
+                } else if(this.startDay < this.endDay){
+                    ageInDays = this.endDay - this.startDay;
+                }
+                else {
                     ageInDays = 0;
                 }
             }
