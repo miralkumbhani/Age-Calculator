@@ -73,7 +73,11 @@
                 if (diff === false) {
                     // display countdown in `(290 days 5 hours 7 minutes 16 seconds)` format
                     let next_birthday = new Date(this.startDate); // necessary step to make new variable of Date object
-                    next_birthday.setFullYear(this.endYear + 1);
+                    if (this.startMonth > this.endMonth) {
+                        next_birthday.setFullYear(this.endYear);
+                    } else {
+                        next_birthday.setFullYear(this.endYear + 1);
+                    }
                     this.getCountdownTime(next_birthday);
                     //@returns JSON array as output
                     this.getZodiacInfo();
@@ -196,7 +200,7 @@
             let totalAge = `${yearString}, ${monthString}, ${dayString}`;
 
             if (diff === false) {
-                if(this.startDay === this.endDay && this.startMonth === this.endMonth){
+                if (this.startDay === this.endDay && this.startMonth === this.endMonth) {
                     alert("It's your birthday today, celebrate. Happy Birthday!!!");
                 }
                 $('#user_todayAge').html(totalAge);
