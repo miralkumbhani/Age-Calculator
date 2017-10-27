@@ -2,23 +2,15 @@
     'use strict';
 
     const INTERVAL = 1000; // in milliseconds
-    const BASE_TIMEUNIT = 60;
-    const DAY_IN_MS = INTERVAL * BASE_TIMEUNIT * BASE_TIMEUNIT * 24;
-
-    const ZODIAC_LIST = ['Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
-    const ZODIAC_DAY = [19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
-    const LAST_DAY_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
+    const DAY_IN_MS = 1000 * 60 * 60;
 
     let ageFind, startDate, endDate, diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds, countdown;
 
     let startDay, startMonth, startYear;
     let endDay, endMonth, endYear;
 
-    let numOfDays;
-
     const _calculate = function() {
-        console.log('inside constructor');
+        // console.log('inside constructor');
         this.endDate = new Date();
         this.ageFind = true; // for first tab
     };
@@ -26,7 +18,7 @@
     _calculate.prototype = {
         //function to get data for calculating the time diff (setting startDate, endDate )
         init: function(formName) {
-            console.log("getDifference");
+            // console.log("getDifference");
             if (this.countdown) {
                 clearInterval(this.countdown);
             }
@@ -170,7 +162,7 @@
 
         //function to display the output properly
         maybePluralize: function(count, noun, suffix = 's') {
-            return (`${count} ${noun}${count !== 1 ? suffix : 's'}`);
+            return (`${count} ${noun}${count !== 1 ? suffix : ''}`);
         },
 
         //calculate countdown time for next birthday on interval of every second
@@ -191,8 +183,8 @@
         // display countdown in `(290 days 5 hours 7 minutes 16 seconds)` format
         displayCountdown: function(next_birthday) {
             let currentTime = new Date().getTime();
-            let nextBirthdayTime = next_birthday.getTime();
-            let diffInTime = nextBirthdayTime - currentTime;
+            let next_birthday_time = next_birthday.getTime();
+            let diffInTime = next_birthday_time - currentTime;
             let days = Math.floor(diffInTime / DAY_IN_MS);
             let hours = Math.floor((diffInTime % (DAY_IN_MS)) / (1000 * 60 * 60));
             let minutes = Math.floor((diffInTime % (1000 * 60 * 60)) / (1000 * 60));
@@ -206,46 +198,45 @@
         //function for the details of the particular zodiac (@return zodiac name, birth-range, attributes)
         displayZodiacInfo: function() {
             this.getZodiacDetail().then((result) => {
-                    $('#zodiac_name').html(result.zsign);
-                    $('#zodiac_birthrange').html(result.birthrange);
-                    $('#zodiac_attributes').html(result.attribute);
-            }).catch((err) => {
-                    console.error("Error while fetching zodiac details.", err);
+                $('#zodiac_name').html(result.name);
+                $('#zodiac_birthrange').html(result.birthrange);
+                $('#zodiac_attributes').html(result.attribute);
             });
         },
 
         //@return complete array of object in JSON from .json file
-        fetchZodiacData: function() {
+        fetchZodiacList: function() {
             return new Promise((resolve, reject) => {
                 $.getJSON("./zodiac.json").done((data) => {
                     resolve(data);
                 }).fail((err) => {
-                    console.error('error while parsing json', err);
+                    // console.error('error while parsing json', err);
                     reject(false);
                 });
             });
         },
 
-        //function to calculate the zodiac sign based on birth date (@return one Zodiac Sign Name as per user's birthdate)
-        getZodiacSign: function() {
-            return new Promise((resolve) => {
-                let zodiac_name = (this.startDay > ZODIAC_DAY[this.startMonth]) ? ZODIAC_LIST[this.startMonth * 1 + 1] : ZODIAC_LIST[this.startMonth];
-                resolve(zodiac_name);
-            });
-        },
-
         //function for getting zodiac details (@return the object of the particular zodiac ) {name:'', sign:'', attribute:''}
         getZodiacDetail: function() {
-            return this.fetchZodiacData().then((result) => {
+            return this.fetchZodiacList().then((result) => {
                 let zodiac_info = result;
-                return this.getZodiacSign().then((result) => {
-                    let zodiac_sign = result;
-                    return new Promise((resolve) => {
-                        return zodiac_info.find((zodiac) => {
-                            if (zodiac.zsign === zodiac_sign) {
-                                resolve(zodiac);
-                            }
-                        });
+                let z_day_list = result.day; // return array
+                // console.log("z_day_list", z_day_list);
+                z_day_list = [...z_day_list, z_day_list[0]];
+                // console.log("z_day_list", z_day_list);
+                let z_list = result.info
+                var z_name_list = [];
+                z_list.map((z) => {
+                    z_name_list.push(z.name);
+                });
+                z_name_list = [...z_name_list, z_name_list[0]];
+                // console.log("z_name_list", z_name_list);
+                let z_sign = (this.startDay > z_day_list[this.startMonth]) ? z_name_list[this.startMonth * 1 + 1] : z_name_list[this.startMonth];
+                return new Promise((resolve) => {
+                    return z_list.find((zodiac) => {
+                        if (zodiac.name === z_sign) {
+                            resolve(zodiac);
+                        }
                     });
                 });
             }).catch((err) => {
