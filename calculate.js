@@ -2,7 +2,7 @@
     'use strict';
 
     const INTERVAL = 1000; // in milliseconds
-    const DAY_IN_MS = 1000 * 60 * 60;
+    const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
     let ageFind, startDate, endDate, diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds, countdown;
 
@@ -24,7 +24,7 @@
             }
             // other form name is 'secondForm'
             this.ageFind = (formName === 'firstForm') ? true : false;
-            var fd = new FormData(document.getElementById(formName));
+            let fd = new FormData(document.getElementById(formName));
             let startDay = fd.get('start_date');
             let startMonth = fd.get('start_month');
             let startYear = fd.get('start_year');
@@ -37,17 +37,9 @@
                 let endMonth = fd.get('end_month');
                 let endYear = fd.get('end_year');
                 this.endDate = new Date(`${endMonth}-${endDay}-${endYear}`);
-                console.log("this.startDate", this.startDate);
-                console.log("this.endDate", this.endDate);
             }
-            this.isValidDate().then((res) => {
-                console.log('is valid');
-                // console.log("new endDate", this.endDate);
-                // console.log("new startDate", this.startDate);
-                this.calculateDifference();
-            }).catch((err) => {
-                console.error('Invalid date.', err);
-            });
+
+            this.calculateDifference();
         },
 
         isValidDate: function() {
@@ -72,13 +64,16 @@
         //one common function for getting Age Calculator and Date Calculator
         //@returns diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds
         //@param boolean diff=[true|false] false = TAB-1 (birth day) and true = TAB-2 (date diff)
-        calculateDifference: function() {
-            [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
-            [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
-            //for calculating diff in years
-            Promise.resolve(this.differenceIn('year')).then((result) => {
-                this.diffYears = result;
-                this.diffMonths = (result * 12) + this.differenceIn('month');
+        calculateDifference: async function() {
+            try {
+                let isValid = await this.isValidDate();
+                // console.log("isValid", isValid);
+                // console.log("new endDate", this.endDate);
+                // console.log("new startDate", this.startDate);
+                [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
+                [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
+                this.diffYears = await Promise.resolve(this.differenceIn('year'));
+                this.diffMonths = (this.diffYears * 12) + this.differenceIn('month');
                 this.diffWeeks = this.differenceIn('week');
                 this.diffDays = this.differenceIn('day');
                 this.diffHours = this.differenceIn('hour');
@@ -86,11 +81,12 @@
                 this.diffSeconds = this.differenceIn('second');
                 this.displayDifference();
                 this.displayRelativeDifference();
-            });
-            // display differnece between the start date and end date in X days Y months and Z years
-            if (this.ageFind) {
-                this.nextBirthdayCountdown();
-                this.displayZodiacInfo();
+                if (this.ageFind) {
+                    this.nextBirthdayCountdown();
+                    this.displayZodiacInfo();
+                }
+            } catch (e) {
+                throw new Error ('Invalid Date');
             }
         },
 
@@ -145,17 +141,21 @@
         //function to get complete age from today
         displayRelativeDifference: function() {
             // console.log("calculateRelativeDifference");
-            let ageInDays;
+            let ageInDays = 0, ageInMonths = 0, ageInYears = 0;
             let totalDays = Math.floor((this.endDate - this.startDate) / DAY_IN_MS);
-            let ageInYears = Math.floor(totalDays / 365);
-            let diffMonths = this.endMonth - this.startMonth;
-            let ageInMonths = (diffMonths >= 0) ? diffMonths : 12 - diffMonths;
+            // console.log("this.endDate, this.startDate", this.endDate, this.startDate);
+            if(totalDays > 365) {
+                ageInYears = Math.floor(totalDays / 365);
+            }
+            let diffMonths = this.endDate.getMonth() - this.startDate.getMonth();
+            // if month difference is negative than substract from 12
+            ageInMonths = (diffMonths >= 0) ? diffMonths : 12 + diffMonths;
             let diffDays = this.endDay - this.startDay;
             if (diffDays >= 0) {
                 ageInDays = diffDays;
             } else {
                 ageInMonths--;
-                ageInDays = 31 - diffDays;
+                ageInDays = 31 + diffDays;
             }
             // adding suffix s based on number of day, month and year
             let dayString = this.maybePluralize(ageInDays, 'day');
@@ -164,7 +164,7 @@
             let totalAge = `${yearString}, ${monthString}, ${dayString}`;
             // console.log("totalAge", totalAge);
             if (this.ageFind && this.startDay === this.endDay && this.startMonth === this.endMonth) {
-                alert("It's your birthday today, Happy Birthday!!!");
+                alert("!!! Today is your Happy Birthday!!!");
             }
             $('.user_relativeAge').html(totalAge);
         },
@@ -205,12 +205,15 @@
 
         // ===========Zodiac information ====================
         //function for the details of the particular zodiac (@return zodiac name, birth-range, attributes)
-        displayZodiacInfo: function() {
-            this.getZodiacDetail().then((result) => {
+        displayZodiacInfo: async function() {
+            try {
+                let result = await this.getZodiacDetail();
                 $('#zodiac_name').html(result.name);
                 $('#zodiac_birthrange').html(result.birthrange);
                 $('#zodiac_attributes').html(result.attribute);
-            });
+            } catch (e) {
+                throw new Error('Error while fetching zodiac detail.');
+            }
         },
 
         //@return complete array of object in JSON from .json file
@@ -226,15 +229,14 @@
         },
 
         //function for getting zodiac details (@return the object of the particular zodiac ) {name:'', sign:'', attribute:''}
-        getZodiacDetail: function() {
-            return this.fetchZodiacList().then((result) => {
-                let zodiac_info = result;
-                let z_day_list = result.day; // return array
+        getZodiacDetail: async function() {
+                let zoidac_list = await this.fetchZodiacList();
+                let z_day_list = zoidac_list.day; // return array
                 // console.log("z_day_list", z_day_list);
                 z_day_list = [...z_day_list, z_day_list[0]];
                 // console.log("z_day_list", z_day_list);
-                let z_list = result.info
-                var z_name_list = [];
+                let z_list = zoidac_list.info
+                let z_name_list = [];
                 z_list.map((z) => {
                     z_name_list.push(z.name);
                 });
@@ -248,9 +250,6 @@
                         }
                     });
                 });
-            }).catch((err) => {
-                console.error("Error while fetching JSON data.", err);
-            });
         }
     };
 

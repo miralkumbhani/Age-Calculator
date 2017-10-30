@@ -58,7 +58,7 @@ let _setYear = new Promise((resolve) => {
     let yearList = [];
     $.each(yearArray, function(i, idx) {
         // set current year auto selected
-        let selected = (i === 0) ? "selected='true'" : "";
+        let selected = (i === yearArray.length-1) ? "selected='true'" : "";
         yearList.push(`<option value="${idx}" ${selected} >${idx}</option>`);
     });
     // console.log("yearList", yearList);
