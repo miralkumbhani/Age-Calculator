@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Age Calculator</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
@@ -24,88 +24,20 @@
                 <br>
                 <section class="section_input ">
                     <form name="firstForm" id="firstForm" method="POST" class="form-inline">
-                        <label for="start_date" >Birth Date: </label>
+                        <label for="start_date">Birth Date: </label>
                         <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-date" id="start_date" name="start_date">
                             <option selected disabled>Birth Date</option>
                         </select>
-                        <label for="start_month" >Birth Month:</label>
+                        <label for="start_month">Birth Month:</label>
                         <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-month" id="start_month" name="start_month">
                             <option selected disabled>Birth Month</option>
                         </select>
-                        <label for="start_year" >Birth Year:</label>
+                        <label for="start_year">Birth Year:</label>
                         <select class="custom-select mb-2 mr-sm-2 mb-sm-0 select-year" id="start_year" name="start_year">
                             <option selected disabled>Birth Year</option>
                         </select>
                         <button type="button" class="btn btn-primary button" onclick="_cal.init('firstForm')">Your Age Today!</button>
                     </form>
-                </section>
-                <section class="container section_output">
-                    <div class="bg-inverse ">
-                        <div class="col-md-12">
-                            <div class="d-flex p-2">
-                                <label class="text-white editLabel">Today's Date: </label>&nbsp;<span class="text-success end-date"></span>
-                            </div>
-                            <div class="d-flex p-2">
-                                <label class="text-white editLabel">Birth Date: </label>&nbsp;<span class="text-success start-date"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h3 class="card-header">Your Total Age</h3>
-                                <div class="card-block">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Years: </label>
-                                            <span class="diff-years"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Months: </label>
-                                            <span class="diff-months"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Weeks: </label>
-                                            <span class="diff-weeks"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Days: </label>
-                                            <span class="diff-days"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Hours: </label>
-                                            <span class="diff-hours"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Minutes: </label>
-                                            <span class="diff-minutes"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Seconds: </label>
-                                            <span class="diff-seconds"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">Your Age Today: </label>
-                                            <span class="user_relativeAge"></span>
-                                        </li>
-                                        <li class="list-group-item"><label><b>Upcoming Birthday Count-Down:</b></label><br><span id="countdown"></span>&nbsp;</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h3 class="card-header">Your Zodiac Details</h3>
-                                <div class="card-block">
-                                    <ul class="list-group">
-                                        <li class="list-group-item"><label class="editLabel">Zodiac-Sign:</label><span id="zodiac_name"></span>&nbsp;</li>
-                                        <li class="list-group-item"><label class="editLabel">Birth Range:</label><span id="zodiac_birthrange"></span>&nbsp;</li>
-                                        <li class="list-group-item text-justify"><label class="editLabel">Attributes:</label><span id="zodiac_attributes"></span>&nbsp;</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </section>
             </div>
             <!-- TAB 2 -->
@@ -137,69 +69,100 @@
                         <button type="button" class="btn btn-primary button" id="getDiff" onclick="_cal.init('secondForm')">Calculate!</button>
                     </form>
                 </section>
-                <section class="container section_output">
-                    <div class="bg-inverse ">
+            </div>
+            <section class="container section_output none">
+                <div class="bg-inverse ">
+                    <div class="col-md-12" id="birthdate-input">
+                        <div class="d-flex p-2">
+                            <label class="text-white editLabel">Today's Date: </label>&nbsp;<span class="text-success end-date"></span>
+                        </div>
+                        <div class="d-flex p-2">
+                            <label class="text-white editLabel">Birth Date: </label>&nbsp;<span class="text-success start-date"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-inverse" id="diff-input">
+                    <div class="col-md-12">
+                        <div class="d-flex p-2">
+                            <label class="text-white editLabel">End Date: </label>&nbsp;<span class="text-success end-date"></span>
+                        </div>
+                        <div class="d-flex p-2">
+                            <label class="text-white editLabel">Start Date: </label>&nbsp;<span class="text-success start-date"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <h3 class="card-header">Your Total Age</h3>
+                            <div class="card-block">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Years: </label>
+                                        <span class="diff-years"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Months: </label>
+                                        <span class="diff-months"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Weeks: </label>
+                                        <span class="diff-weeks"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Days: </label>
+                                        <span class="diff-days"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Hours: </label>
+                                        <span class="diff-hours"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Minutes: </label>
+                                        <span class="diff-minutes"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">In Seconds: </label>
+                                        <span class="diff-seconds"></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">Your Age Today: </label>
+                                        <span class="user_relativeAge"></span>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Zodiac -->
+                    <div class="col-lg-6 none" id="zodiac-data">
+                        <div class="card">
+                            <h3 class="card-header">Your Zodiac Details</h3>
+                            <div class="card-block">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <label class="editLabel">Zodiac-Sign:</label><span id="zodiac_name"></span>&nbsp;</li>
+                                    <li class="list-group-item">
+                                        <label class="editLabel">Birth Range:</label><span id="zodiac_birthrange"></span>&nbsp;</li>
+                                    <li class="list-group-item text-justify">
+                                        <label class="editLabel">Attributes:</label><span id="zodiac_attributes"></span>&nbsp;</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Countdown time -->
+                    <div class="bg-inverse none" id="countdown-data" >
                         <div class="col-md-12">
                             <div class="d-flex p-2">
-                                <label class="text-white editLabel">Start Date:</label>&nbsp;<span class="text-success start-date"></span>
-                            </div>
-                            <div class="d-flex p-2">
-                                <label class="text-white editLabel">End Date:</label>&nbsp;<span class="text-success end-date"></span>
+                                <label class="text-white">Upcoming Birthday's Countdown: </label>&nbsp;<span class="text-success" id="countdown"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <h3 class="card-header">Difference Between Dates</h3>
-                                <div class="card-block">
-                                   <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Years: </label>
-                                            <span class="diff-years"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Months: </label>
-                                            <span class="diff-months"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Weeks: </label>
-                                            <span class="diff-weeks"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Days: </label>
-                                            <span class="diff-days"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Hours: </label>
-                                            <span class="diff-hours"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Minutes: </label>
-                                            <span class="diff-minutes"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">In Seconds: </label>
-                                            <span class="diff-seconds"></span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <label class="editLabel">Relative Difference: </label>
-                                            <span class="user_relativeAge"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-    </div>
-
-</div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <script src="background.js"></script>
-    <script src="calculate.js"></script>
+                </div>
+            </section>
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+            <script src="background.js"></script>
+            <script src="calculate.js"></script>
 </body>
+
 </html>

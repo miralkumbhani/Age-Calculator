@@ -70,14 +70,6 @@ ul.tab {
     }
 }
 
-
-/* for select drop downs */
-
-.form-control {
-    display: inline-block;
-}
-
-
 /* for button */
 
 .button {
@@ -125,13 +117,21 @@ ul.tab {
 
 
 .section_input {
-    margin: 20px;;
+    margin: 20px;
 }
 
 /* for output display box */
 
 .section_output {
+    margin-top: 10px;
+}
+
+.none{
     display: none;
+}
+
+.card{
+    margin-top: 10px;
 }
 
 .editBdate{
