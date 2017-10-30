@@ -1,8 +1,8 @@
 'use strict';
 
+
 $(document).ready(() => {
     $('.tabcontent').eq(0).show();
-
     // works on top tabs to switch between tabs
     $('.tab').on('click', '.tablinks', function() {
         $('.section_output').hide();
