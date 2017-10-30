@@ -4,39 +4,39 @@
 
     class dateFinder {
         constructor() {
-            this.startDate = '',
-                this.endDate = new Date();
+            this.startDate;
+            this.endDate = new Date();
+            this.differenceObj = {};
             this.ageFind = true; // for first tab
             this.countdown = null;
         }
 
         init(formName) {
             // console.log("init");
-            let endDate, diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds;
             if (this.countdown) {
                 clearInterval(this.countdown);
             }
             // other form name is 'secondForm'
             this.ageFind = (formName === 'firstForm') ? true : false;
             let fd = new FormData(document.getElementById(formName));
-            let startDay = fd.get('start_date');
-            let startMonth = fd.get('start_month');
-            let startYear = fd.get('start_year');
+            let form_startDay = fd.get('start_date');
+            let form_startMonth = fd.get('start_month');
+            let form_startYear = fd.get('start_year');
             // create Date('MM-DD-YYYY') object
-            this.startDate = new Date(`${startMonth}-${startDay}-${startYear}`);
+            this.startDate = new Date(`${form_startMonth}-${form_startDay}-${form_startYear}`);
             // console.log("this.startDate", this.startDate);
 
             if (!this.ageFind) {
-                let endDay = fd.get('end_date');
-                let endMonth = fd.get('end_month');
-                let endYear = fd.get('end_year');
-                this.endDate = new Date(`${endMonth}-${endDay}-${endYear}`);
+                let form_endDay = fd.get('end_date');
+                let form_endMonth = fd.get('end_month');
+                let form_endYear = fd.get('end_year');
+                this.endDate = new Date(`${form_endMonth}-${form_endDay}-${form_endYear}`);
             }
             this.calculateDifference();
         }
         // check date are valid and if start date is greater than end date than swap the dates
         isValidDate() {
-            console.log("validateDate", this.startDate, this.endDate);
+            // console.log("validateDate", this.startDate, this.endDate);
             let self = this;
             return new Promise(function(resolve, reject) {
                 // console.log('inside promise');
@@ -65,13 +65,15 @@
                 // console.log("new startDate", this.startDate);
                 [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
                 [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
-                this.diffYears = await Promise.resolve(this.differenceIn('year'));
-                this.diffMonths = (this.diffYears * 12) + this.differenceIn('month');
-                this.diffWeeks = this.differenceIn('week');
-                this.diffDays = this.differenceIn('day');
-                this.diffHours = this.differenceIn('hour');
-                this.diffMinutes = this.differenceIn('minute');
-                this.diffSeconds = this.differenceIn('second');
+
+                let diffYears = await Promise.resolve(this.differenceIn('year'));
+                let diffMonths = (diffYears * 12) + this.differenceIn('month');
+                let diffWeeks = this.differenceIn('week');
+                let diffDays = this.differenceIn('day');
+                let diffHours = this.differenceIn('hour');
+                let diffMinutes = this.differenceIn('minute');
+                let diffSeconds = this.differenceIn('second');
+                this.differenceObj = {diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds};
                 this.displayDifference();
                 this.displayRelativeDifference();
                 if (this.ageFind) {
@@ -118,17 +120,19 @@
 
         //function to display the output (displays age in cards)
         displayDifference() {
+            // console.log("displayDifference", this.differenceObj);
+
             $('.section_output').show();
             $('.start-date').html(this.startDate);
             $('.end-date').html(this.endDate);
             // display difference
-            $('.diff-years').html(this.diffYears);
-            $('.diff-months').html(this.diffMonths);
-            $('.diff-weeks').html(this.diffWeeks);
-            $('.diff-days').html(this.diffDays);
-            $('.diff-hours').html(this.diffHours);
-            $('.diff-minutes').html(this.diffMinutes);
-            $('.diff-seconds').html(this.diffSeconds);
+            $('.diff-years').html(this.differenceObj.diffYears);
+            $('.diff-months').html(this.differenceObj.diffMonths);
+            $('.diff-weeks').html(this.differenceObj.diffWeeks);
+            $('.diff-days').html(this.differenceObj.diffDays);
+            $('.diff-hours').html(this.differenceObj.diffHours);
+            $('.diff-minutes').html(this.differenceObj.diffMinutes);
+            $('.diff-seconds').html(this.differenceObj.diffSeconds);
         }
 
         //function to get complete age from today
