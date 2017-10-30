@@ -24,65 +24,74 @@
             }
             // other form name is 'secondForm'
             this.ageFind = (formName === 'firstForm') ? true : false;
-            let startDay = document[formName].start_date.value;
-            let startMonth = document[formName].start_month.value;
-            let startYear = document[formName].start_year.value;
+            var fd = new FormData(document.getElementById(formName));
+            let startDay = fd.get('start_date');
+            let startMonth = fd.get('start_month');
+            let startYear = fd.get('start_year');
+            // create Date('MM-DD-YYYY') object
             this.startDate = new Date(`${startMonth}-${startDay}-${startYear}`);
             // console.log("this.startDate", this.startDate);
 
             if (!this.ageFind) {
-                let endDay = document[formName].end_date.value;
-                let endMonth = document[formName].end_month.value;
-                let endYear = document[formName].end_year.value;
+                let endDay = fd.get('end_date');
+                let endMonth = fd.get('end_month');
+                let endYear = fd.get('end_year');
                 this.endDate = new Date(`${endMonth}-${endDay}-${endYear}`);
+                console.log("this.startDate", this.startDate);
+                console.log("this.endDate", this.endDate);
             }
-            // console.log("this.endDate", this.endDate);
-            if(this.isValidDate()) {
-                 // console.log("new endDate", this.endDate);
-                 // console.log("new startDate", this.startDate);
-                 this.calculateDifference();
-            }
+            this.isValidDate().then((res) => {
+                console.log('is valid');
+                // console.log("new endDate", this.endDate);
+                // console.log("new startDate", this.startDate);
+                this.calculateDifference();
+            }).catch((err) => {
+                console.error('Invalid date.', err);
+            });
         },
 
         isValidDate: function() {
             // console.log("validateDate", this.startDate, this.endDate);
-             if (isFinite(this.startDate) && isFinite(this.endDate)) {
-                var [startTimeStamp, endTimeStamp] = [this.startDate.getTime(), this.endDate.getTime()];
-                // console.log("startTimeStamp, endTimeStamp", startTimeStamp, endTimeStamp);
-                // exchange the date if `end date` is smaller than `start date`
-                if (endTimeStamp < startTimeStamp) {
-                    [this.startDate, this.endDate] = [this.endDate, this.startDate];
+            let self = this;
+            return new Promise( function(resolve, reject) {
+                // console.log('inside promise');
+                if (isFinite(self.startDate) && isFinite(self.endDate)) {
+                    var [startTimeStamp, endTimeStamp] = [self.startDate.getTime(), self.endDate.getTime()];
+                    // console.log("startTimeStamp, endTimeStamp", startTimeStamp, endTimeStamp);
+                    // swap the date if `end date` is smaller than `start date`
+                    if (endTimeStamp < startTimeStamp) {
+                        [self.startDate, self.endDate] = [self.endDate, self.startDate];
+                    }
+                    resolve(true);
+                } else {
+                    reject(false);
                 }
-                return true;
-             } else {
-                alert('Please select appropriate date and try again.');
-                return false;
-            }
+            });
         },
 
         //one common function for getting Age Calculator and Date Calculator
         //@returns diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds
         //@param boolean diff=[true|false] false = TAB-1 (birth day) and true = TAB-2 (date diff)
         calculateDifference: function() {
-                [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
-                [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
-                //for calculating diff in years
-                Promise.resolve(this.differenceIn('year')).then((result) => {
-                    this.diffYears = result;
-                    this.diffMonths = (result * 12) + this.differenceIn('month');
-                    this.diffWeeks = this.differenceIn('week');
-                    this.diffDays = this.differenceIn('day');
-                    this.diffHours = this.differenceIn('hour');
-                    this.diffMinutes = this.differenceIn('minute');
-                    this.diffSeconds = this.differenceIn('second');
-                    this.displayDifference();
-                    this.displayRelativeDifference();
-                });
-                // display differnece between the start date and end date in X days Y months and Z years
-                if (this.ageFind) {
-                    this.nextBirthdayCountdown();
-                    this.displayZodiacInfo();
-                }
+            [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
+            [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
+            //for calculating diff in years
+            Promise.resolve(this.differenceIn('year')).then((result) => {
+                this.diffYears = result;
+                this.diffMonths = (result * 12) + this.differenceIn('month');
+                this.diffWeeks = this.differenceIn('week');
+                this.diffDays = this.differenceIn('day');
+                this.diffHours = this.differenceIn('hour');
+                this.diffMinutes = this.differenceIn('minute');
+                this.diffSeconds = this.differenceIn('second');
+                this.displayDifference();
+                this.displayRelativeDifference();
+            });
+            // display differnece between the start date and end date in X days Y months and Z years
+            if (this.ageFind) {
+                this.nextBirthdayCountdown();
+                this.displayZodiacInfo();
+            }
         },
 
         //function for calculating the age in years, months, weeks, days, hours, minutes, seconds (switch case)
@@ -168,12 +177,12 @@
         //calculate countdown time for next birthday on interval of every second
         nextBirthdayCountdown: function() {
             // console.log("inside countdown time");
-             let next_birthday = new Date(this.startDate); // necessary step to make new variable of Date object
-             if (this.startMonth > this.endMonth) {
+            let next_birthday = new Date(this.startDate); // necessary step to make new variable of Date object
+            if (this.startMonth > this.endMonth) {
                 next_birthday.setFullYear(this.endYear);
-             } else {
+            } else {
                 next_birthday.setFullYear(this.endYear + 1);
-             }
+            }
             // assignment is necessary to cancel the interval on next submit
             this.countdown = setInterval(() => {
                 this.displayCountdown(next_birthday);
