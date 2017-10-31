@@ -13,62 +13,67 @@ $(document).ready(() => {
         $('#tab_data').children().hide();
         $('#tab_data').children('#' + display).show();
     });
-
-    // @return array = [1,...31]
-    let _setDay = new Promise((resolve) => {
-        let dateArray = [];
-        for (let j = 1; j < 32; j++) {
-            dateArray.push(j);
-        }
-        let dateList = [];
-        $.each(dateArray, function(i, idx) {
-            let selected = (i === 0)  ? "selected='true'" : "";
-            dateList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
-        });
-        resolve(dateList);
-    });
-
-    //@return array = [January, ...December]
-    let _setMonth = new Promise((resolve) => {
-        let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let monthList = [];
-        $.each(monthArray, function(i, idx) {
-            // set 1st month auto selected
-            let selected = (i === 0)  ? "selected='true'" : "";
-            monthList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
-        });
-        resolve(monthList);
-    });
-
-    //@return array = [currentYear,....0]
-    let _setYear = new Promise((resolve) => {
-        let yearArray = [];
-        let endYear = new Date().getFullYear();
-        for (let j = endYear; j > 1857; j--) {
-            yearArray.push(j);
-        }
-        let yearList = [];
-        $.each(yearArray, function(i, idx) {
-            // set current year auto selected
-            let selected = (i === 0)  ? "selected='true'" : "";
-            yearList.push(`<option value="${idx}" ${selected} >${idx}</option>`);
-        });
-        resolve(yearList);
-    });
-
-    // Promise.all will resolve when all promise resolved
-    Promise.all([_setDay, _setMonth, _setYear]).then((result) => {
-        // console.log("result", result);
-        //creating date option list
-        let dayList = result[0].join('');
-        $('.select-date').append(dayList);
-        //creating month option list
-        let monthList = result[1].join('');
-        $('.select-month').append(monthList);
-        //creating year option list
-        let yearList = result[2].join('');
-        $('.select-year').append(yearList);
-    }).catch((err) => {
-        console.log('one of promise rejected', err);
-    });
 });
+
+// generator method
+function* range(start, end, step = 1) {
+    while (start <= end) {
+        yield start;
+        start += step;
+    }
+}
+
+// @return array = [1,...31]
+let _setDay = new Promise((resolve) => {
+    let dateArray = Array.from(range(1, 31));
+    let dateList = [];
+    $.each(dateArray, function(i, idx) {
+        // set first date auto selected
+        let selected = (i === 0) ? "selected='true'" : "";
+        dateList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
+    });
+    // console.log("dateList", dateList);
+    resolve(dateList);
+});
+
+//@return array = [January, ...December]
+let _setMonth = new Promise((resolve) => {
+    const monthNameArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let monthList = [];
+    $.each(monthNameArray, function(i, idx) {
+        // set first month auto selected
+        let selected = (i === 0) ? "selected='true'" : "";
+        monthList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
+    });
+    // console.log("monthList", monthList);
+    resolve(monthList);
+});
+
+//@return array = [currentYear,....0]
+let _setYear = new Promise((resolve) => {
+    let startYear = 1947;
+    let endYear = new Date().getFullYear();
+    const yearArray = Array.from(range(startYear, endYear));
+    // console.log("yearArray", yearArray);
+    let yearList = [];
+    $.each(yearArray, function(i, idx) {
+        // set current year auto selected
+        let selected = (i === yearArray.length-1) ? "selected='true'" : "";
+        yearList.push(`<option value="${idx}" ${selected} >${idx}</option>`);
+    });
+    // console.log("yearList", yearList);
+    resolve(yearList);
+});
+
+const populateData = async() => {
+    try {
+        let [dayList, monthList, yearList] = await Promise.all([_setDay, _setMonth, _setYear]);
+        $('.select-date').append(dayList.join(''));
+        $('.select-month').append(monthList.join(''));
+        $('.select-year').append(yearList.join(''));
+    } catch (e) {
+        throw new Error('some promise not resolved', e);
+    };
+};
+
+populateData();

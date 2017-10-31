@@ -130,24 +130,27 @@ ul.tab {
     display: none;
 }
 
-.card{
+/*.card{
     margin-top: 10px;
-}
+}*/
 
-.editBdate{
-    margin-left: 150px;
-    padding-right: 5px;
-}
-
-.editDate{
-    margin-left: 100px;
-    padding-right: 5px;
-}
-
-.editLabel{
+.edit-label{
     float: none;
     width: 10em;
     margin-right: 2em;
     text-align: left;
     font-weight: bold;
+}
+
+#flex-container{
+    display: flex;
+    flex-direction: row;
+}
+
+#flex-container > .card-data-item{
+    flex: auto;
+}
+
+#flex-container > .zodiac-data-item{
+    margin-left: 50px;
 }
