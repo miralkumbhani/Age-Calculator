@@ -18,6 +18,8 @@
     _calculate.prototype = {
         //function to get data for calculating the time diff (setting startDate, endDate)
         init: function(formName) {
+            this.startDate;
+            this.endDate = new Date();
             // console.log("getDifference");
             if (this.countdown) {
                 clearInterval(this.countdown);
@@ -75,7 +77,7 @@
                 // console.log("new startDate", this.startDate);
                 [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
                 [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
-                this.diffYears = await Promise.resolve(this.differenceIn('year'));
+                this.diffYears = this.differenceIn('year');
                 this.diffMonths = this.differenceIn('month');
                 this.diffWeeks = this.differenceIn('week');
                 this.diffDays = this.differenceIn('day');
@@ -105,7 +107,7 @@
                     output = Math.trunc(numOfDays / 365);
                     break;
                 case 'month':
-                    output = (this.diffYears * 12) + Math.ceil((numOfDays - (this.diffYears * 365)) / 31) ;
+                    output = (Math.trunc(numOfDays / 365) * 12) + Math.trunc((numOfDays % 365) / 30);
                     break;
                 case 'week':
                     output = Math.floor(numOfDays / 7);
