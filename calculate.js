@@ -48,7 +48,7 @@
             // console.log("validateDate", this.startDate, this.endDate);
 
             let self = this;
-            return new Promise( function(resolve, reject) {
+            return new Promise(function(resolve, reject) {
                 // console.log('inside promise');
                 if (isFinite(self.startDate) && isFinite(self.endDate)) {
                     var [startTimeStamp, endTimeStamp] = [self.startDate.getTime(), self.endDate.getTime()];
@@ -76,7 +76,7 @@
                 [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
                 [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
                 this.diffYears = await Promise.resolve(this.differenceIn('year'));
-                this.diffMonths = (this.diffYears * 12) + this.differenceIn('month');
+                this.diffMonths = this.differenceIn('month');
                 this.diffWeeks = this.differenceIn('week');
                 this.diffDays = this.differenceIn('day');
                 this.diffHours = this.differenceIn('hour');
@@ -89,7 +89,7 @@
                     this.displayZodiacInfo();
                 }
             } catch (e) {
-                throw new Error ('Invalid Date');
+                throw new Error('Invalid Date');
             }
         },
 
@@ -99,13 +99,13 @@
             //for giving correct output even if the date is given in reverse order
             let [endTime, startTime] = [this.endDate.getTime(), this.startDate.getTime()];
             let numOfDays = Math.floor((endTime - startTime) / DAY_IN_MS);
-            // console.log("numOfDays", numOfDays);
+            console.log("numOfDays", numOfDays);
             switch (what) {
                 case 'year':
-                    output = this.endYear - this.startYear;
+                    output = Math.trunc(numOfDays / 365);
                     break;
                 case 'month':
-                    output = this.endMonth - this.startMonth;
+                    output = (this.diffYears * 12) + Math.ceil((numOfDays - (this.diffYears * 365)) / 31) ;
                     break;
                 case 'week':
                     output = Math.floor(numOfDays / 7);
@@ -151,10 +151,12 @@
         //function to get complete age from today
         displayRelativeDifference: function() {
             // console.log("calculateRelativeDifference");
-            let ageInDays = 0, ageInMonths = 0, ageInYears = 0;
+            let ageInDays = 0,
+                ageInMonths = 0,
+                ageInYears = 0;
             let totalDays = Math.floor((this.endDate - this.startDate) / DAY_IN_MS);
             // console.log("this.endDate, this.startDate", this.endDate, this.startDate);
-            if(totalDays > 365) {
+            if (totalDays > 365) {
                 ageInYears = Math.floor(totalDays / 365);
             }
             let diffMonths = this.endDate.getMonth() - this.startDate.getMonth();
@@ -224,11 +226,8 @@
                 $('#zodiac-data').show();
                 let result = await this.getZodiacDetail();
                 $('#zodiac_name').html(result.name);
-                console.log("result.name", result.name);
                 $('#zodiac_birthrange').html(result.birthrange);
-                console.log("result.birthrange", result.birthrange);
                 $('#zodiac_attributes').html(result.attribute);
-                console.log("result.attribute", result.attribute);
             } catch (e) {
                 throw new Error('Error while fetching zodiac detail.');
             }
@@ -248,26 +247,27 @@
 
         //function for getting zodiac details (@return the object of the particular zodiac ) {name:'', sign:'', attribute:''}
         getZodiacDetail: async function() {
-                let zoidac_list = await this.fetchZodiacList();
-                let z_day_list = zoidac_list.day; // return array
-                // console.log("z_day_list", z_day_list);
-                z_day_list = [...z_day_list, z_day_list[0]];
-                // console.log("z_day_list", z_day_list);
-                let z_list = zoidac_list.info
-                let z_name_list = [];
-                z_list.map((z) => {
-                    z_name_list.push(z.name);
+            let zodiac_list = await this.fetchZodiacList();
+            let z_day_list = zodiac_list.day; // return array
+            // console.log("z_day_list", z_day_list);
+            z_day_list = [...z_day_list, z_day_list[0]];
+            // console.log("z_day_list", z_day_list);
+            let z_list = zodiac_list.info
+            let z_name_list = [];
+            z_list.map((z) => {
+                z_name_list.push(z.name);
+                console.log("z_name_list", z_name_list);
+            });
+            z_name_list = [...z_name_list, z_name_list[0]];
+            // console.log("z_name_list", z_name_list);
+            let z_sign = (this.startDay > z_day_list[this.startMonth]) ? z_name_list[this.startMonth * 1 + 1] : z_name_list[this.startMonth];
+            return new Promise((resolve) => {
+                return z_list.find((zodiac) => {
+                    if (zodiac.name === z_sign) {
+                        resolve(zodiac);
+                    }
                 });
-                z_name_list = [...z_name_list, z_name_list[0]];
-                // console.log("z_name_list", z_name_list);
-                let z_sign = (this.startDay > z_day_list[this.startMonth]) ? z_name_list[this.startMonth * 1 + 1] : z_name_list[this.startMonth];
-                return new Promise((resolve) => {
-                    return z_list.find((zodiac) => {
-                        if (zodiac.name === z_sign) {
-                            resolve(zodiac);
-                        }
-                    });
-                });
+            });
         }
     };
 
