@@ -1,11 +1,13 @@
+/*eslint-disable no-console*/
+'use strict';
 (function() {
     const INTERVAL = 1000; // in milliseconds
     const DAY_IN_MS = 1000 * 60 * 60 * 24;
-
     class dateFinder {
         constructor() {
+            // console.log('this.startDate', this.startDate);
             this.startDate;
-            this.endDate = new Date();
+            this.endDate;
             this.differenceObj = {};
             this.ageFind = true; // for first tab
             this.countdown = null;
@@ -17,6 +19,8 @@
                 clearInterval(this.countdown);
             }
             // other form name is 'secondForm'
+            $('.date-swap').hide();
+            $('.date-input').show();
             this.ageFind = (formName === 'firstForm') ? true : false;
             let fd = new FormData(document.getElementById(formName));
             let form_startDay = fd.get('start_date');
@@ -25,7 +29,8 @@
             // create Date('MM-DD-YYYY') object
             this.startDate = new Date(`${form_startMonth}-${form_startDay}-${form_startYear}`);
             // console.log("this.startDate", this.startDate);
-
+            // edn date is current date in case of birthday calculation
+            this.endDate = new Date();
             if (!this.ageFind) {
                 let form_endDay = fd.get('end_date');
                 let form_endMonth = fd.get('end_month');
@@ -34,16 +39,19 @@
             }
             this.calculateDifference();
         }
+
         // check date are valid and if start date is greater than end date than swap the dates
         isValidDate() {
             // console.log("validateDate", this.startDate, this.endDate);
             let self = this;
             return new Promise(function(resolve, reject) {
-                // console.log('inside promise');
+                // console.log('inside promise', this.startDate, this.endDate, self.startDate, self.endDate);
                 if (isFinite(self.startDate) && isFinite(self.endDate)) {
                     let [startTimeStamp, endTimeStamp] = [self.startDate.getTime(), self.endDate.getTime()];
                     // swap the date if `end date` is smaller than `start date`
                     if (endTimeStamp < startTimeStamp) {
+                        // console.log('swap');
+                        $('.date-swap').show();
                         [self.startDate, self.endDate] = [self.endDate, self.startDate];
                     }
                     resolve(true);
@@ -58,16 +66,17 @@
         //@returns diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds
         //@param boolean diff=[true|false] false = TAB-1 (birth day) and true = TAB-2 (date diff)
         async calculateDifference() {
+            // console.log('calculateDifference', this);
             try {
-                let isValid = await this.isValidDate();
+                await this.isValidDate();
                 // console.log("isValid", isValid);
                 // console.log("new endDate", this.endDate);
                 // console.log("new startDate", this.startDate);
                 [this.startDay, this.startMonth, this.startYear] = [this.startDate.getDate(), this.startDate.getMonth(), this.startDate.getFullYear()];
                 [this.endDay, this.endMonth, this.endYear] = [this.endDate.getDate(), this.endDate.getMonth(), this.endDate.getFullYear()];
 
-                let diffYears = await Promise.resolve(this.differenceIn('year'));
-                let diffMonths = (diffYears * 12) + this.differenceIn('month');
+                let diffYears = this.differenceIn('year');
+                let diffMonths = this.differenceIn('month');
                 let diffWeeks = this.differenceIn('week');
                 let diffDays = this.differenceIn('day');
                 let diffHours = this.differenceIn('hour');
@@ -81,7 +90,7 @@
                     this.displayZodiacInfo();
                 }
             } catch (e) {
-                throw new Error('Invalid Date');
+                throw new Error('Invalid Date', e);
             }
         }
 
@@ -94,10 +103,10 @@
             // console.log("numOfDays", numOfDays);
             switch (what) {
                 case 'year':
-                    output = this.endYear - this.startYear;
+                    output = Math.trunc(numOfDays / 365);
                     break;
                 case 'month':
-                    output = this.endMonth - this.startMonth;
+                    output = (Math.trunc(numOfDays/365) *12) + Math.trunc((numOfDays%365)/30);
                     break;
                 case 'week':
                     output = Math.floor(numOfDays / 7);
@@ -113,6 +122,7 @@
                     break;
                 case 'second':
                     output = numOfDays * 24 * 60 * 60;
+                    break;
                 default:
             }
             return output;
@@ -121,10 +131,21 @@
         //function to display the output (displays age in cards)
         displayDifference() {
             // console.log("displayDifference", this.differenceObj);
-
-            $('.section_output').show();
-            $('.start-date').html(this.startDate);
-            $('.end-date').html(this.endDate);
+            let fd_, sd_;
+             if (this.ageFind) {
+                fd_ = 'Birth Date';
+                sd_ = 'Current Date';
+            } else {
+                fd_ = 'Start Date';
+                sd_ = 'End Date';
+                $('.zodiac').hide();
+                $('.countdown').hide();
+            }
+            $('.first-date-text').html(fd_);
+            $('.second-date-text').html(sd_);
+            $('.output').show();
+            $('#start-date').html(this.startDate);
+            $('#end-date').html(this.endDate);
             // display difference
             $('.diff-years').html(this.differenceObj.diffYears);
             $('.diff-months').html(this.differenceObj.diffMonths);
@@ -138,6 +159,8 @@
         //function to get complete age from today
         displayRelativeDifference() {
             // console.log("calculateRelativeDifference");
+            let text = (this.ageFind) ? 'Your age today': 'Relative Diffrence between dates';
+            $('.relative-age').html(text);
             let ageInDays = 0,
                 ageInMonths = 0,
                 ageInYears = 0;
@@ -165,7 +188,7 @@
             if (this.ageFind && this.startDay === this.endDay && this.startMonth === this.endMonth) {
                 alert("!!! Today is your Happy Birthday!!!");
             }
-            $('.user_relativeAge').html(totalAge);
+            $('#relative').html(totalAge);
         }
 
         //function to display the output properly
@@ -176,6 +199,7 @@
         //calculate countdown time for next birthday on interval of every second
         nextBirthdayCountdown() {
             // console.log("inside countdown time");
+            $('.countdown').show();
             let next_birthday = new Date(this.startDate); // necessary step to make new variable of Date object
             if (this.startMonth > this.endMonth) {
                 next_birthday.setFullYear(this.endYear);
@@ -187,6 +211,8 @@
                 this.displayCountdown(next_birthday);
             }, INTERVAL);
         }
+
+
 
         // display countdown in `(290 days 5 hours 7 minutes 16 seconds)` format
         displayCountdown(next_birthday) {
@@ -207,6 +233,7 @@
         async displayZodiacInfo() {
             try {
                 let result = await this.getZodiacDetail();
+                $('.zodiac').show();
                 $('#zodiac_name').html(result.name);
                 $('#zodiac_birthrange').html(result.birthrange);
                 $('#zodiac_attributes').html(result.attribute);
@@ -221,7 +248,7 @@
                 $.getJSON("./zodiac.json").done((data) => {
                     resolve(data);
                 }).fail((err) => {
-                    // console.error('error while parsing json', err);
+                    console.error('error while parsing json', err);
                     reject(false);
                 });
             });
@@ -234,7 +261,7 @@
             // console.log("z_day_list", z_day_list);
             z_day_list = [...z_day_list, z_day_list[0]];
             // console.log("z_day_list", z_day_list);
-            let z_list = zoidac_list.info
+            let z_list = zoidac_list.info;
             let z_name_list = [];
             z_list.map((z) => {
                 z_name_list.push(z.name);

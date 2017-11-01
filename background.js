@@ -1,19 +1,29 @@
-'use strict';
-
-
+/*eslint-disable no-console*/
+"use strict";
+(function() {
+const TODAY = new Date();
+document.getElementById("today").innerHTML = TODAY;
 $(document).ready(() => {
     $('.tabcontent').eq(0).show();
     // works on top tabs to switch between tabs
-    $('.tab').on('click', '.tablinks', function() {
-        $('.section_output').hide();
+    $('ul.tab').on('click', '.tablinks', function() {
         let display = $(this).data('display');
-        let index = $(this).index();
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('#tab_data').children().hide();
-        $('#tab_data').children('#' + display).show();
+        $('#output').hide();
+        // console.log("display", $(this));
+        $(this).siblings().children().removeClass('active');
+        $(this).children(':button').addClass('active');
+        $('#input').children().hide();
+        $('#input').children('#'+ display).show();
     });
 });
+
+const _displayCurrentDate = () => {
+    setInterval(() => {
+        document.getElementById('today').innerHTML = new Date();
+    }, 1000);
+};
+
+_displayCurrentDate();
 
 // generator method
 function* range(start, end, step = 1) {
@@ -65,15 +75,21 @@ let _setYear = new Promise((resolve) => {
     resolve(yearList);
 });
 
-const populateData = async() => {
+
+
+const populateData = async () => {
     try {
         let [dayList, monthList, yearList] = await Promise.all([_setDay, _setMonth, _setYear]);
+        // let today = _getTodayDate();
+        // console.log("today", today);
         $('.select-date').append(dayList.join(''));
         $('.select-month').append(monthList.join(''));
         $('.select-year').append(yearList.join(''));
     } catch (e) {
         throw new Error('some promise not resolved', e);
-    };
+    }
 };
 
 populateData();
+
+})();
