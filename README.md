@@ -14,3 +14,5 @@ Added es6 features
 - arrow function
 - concat operator
 - spread operator
+- destructiong assignment
+- template literal
