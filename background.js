@@ -3,19 +3,24 @@
 (function() {
 const TODAY = new Date();
 document.getElementById("today").innerHTML = TODAY;
+// document.getElementById("output").style.display = 'none';
 $(document).ready(() => {
-    $('.tabcontent').eq(0).show();
+    $('.tabcontent').children('.input-form').eq(0).show();
     // works on top tabs to switch between tabs
-    $('ul.tab').on('click', '.tablinks', function() {
-        let display = $(this).data('display');
-        $('#output').hide();
+    $('ul.tab').on('click', 'li', function() {
         // console.log("display", $(this));
+        let tab_text = $(this).children('button').text();
+        $('.tab-title').html(tab_text);
+        $('#output').hide();
+        let idx =  $(this).index();
         $(this).siblings().children().removeClass('active');
         $(this).children(':button').addClass('active');
-        $('#input').children().hide();
-        $('#input').children('#'+ display).show();
+        $('.tabcontent').children('.input-form').hide();
+        $('.tabcontent').children('.input-form').eq(idx).show();
     });
 });
+
+ // let tab_header = ?'Age Calculator' : 'Date Difference'
 
 const _displayCurrentDate = () => {
     setInterval(() => {
@@ -38,11 +43,8 @@ let _setDay = new Promise((resolve) => {
     let dateArray = Array.from(range(1, 31));
     let dateList = [];
     $.each(dateArray, function(i, idx) {
-        // set first date auto selected
-        let selected = (i === 0) ? "selected='true'" : "";
-        dateList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
+        dateList.push(`<option value="${i+1}"  >${idx}</option>`);
     });
-    // console.log("dateList", dateList);
     resolve(dateList);
 });
 
@@ -51,9 +53,7 @@ let _setMonth = new Promise((resolve) => {
     const monthNameArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let monthList = [];
     $.each(monthNameArray, function(i, idx) {
-        // set first month auto selected
-        let selected = (i === 0) ? "selected='true'" : "";
-        monthList.push(`<option value="${i+1}" ${selected} >${idx}</option>`);
+        monthList.push(`<option value="${i+1}" >${idx}</option>`);
     });
     // console.log("monthList", monthList);
     resolve(monthList);
@@ -66,10 +66,8 @@ let _setYear = new Promise((resolve) => {
     const yearArray = Array.from(range(startYear, endYear));
     // console.log("yearArray", yearArray);
     let yearList = [];
-    $.each(yearArray, function(i, idx) {
-        // set current year auto selected
-        let selected = (i === yearArray.length-1) ? "selected='true'" : "";
-        yearList.push(`<option value="${idx}" ${selected} >${idx}</option>`);
+    $.each(yearArray.reverse(), function(i, idx) {
+        yearList.push(`<option value="${idx}" >${idx}</option>`);
     });
     // console.log("yearList", yearList);
     resolve(yearList);
@@ -82,9 +80,9 @@ const populateData = async () => {
         let [dayList, monthList, yearList] = await Promise.all([_setDay, _setMonth, _setYear]);
         // let today = _getTodayDate();
         // console.log("today", today);
-        $('.select-date').append(dayList.join(''));
-        $('.select-month').append(monthList.join(''));
-        $('.select-year').append(yearList.join(''));
+        $('.select-date').append(dayList.join('')).prop('selectedIndex', 0);
+        $('.select-month').append(monthList.join('')).prop('selectedIndex', 0);
+        $('.select-year').append(yearList.join('')).prop('selectedIndex', 0);
     } catch (e) {
         throw new Error('some promise not resolved', e);
     }

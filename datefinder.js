@@ -3,47 +3,46 @@
 (function() {
     const INTERVAL = 1000; // in milliseconds
     const DAY_IN_MS = 1000 * 60 * 60 * 24;
+
     class dateFinder {
         constructor() {
-            // console.log('this.startDate', this.startDate);
-            this.startDate;
-            this.endDate;
-            this.differenceObj = {};
-            this.ageFind = true; // for first tab
-            this.countdown = null;
+            console.log('constructor called');
         }
 
         init(formName) {
-            // console.log("init");
-            if (this.countdown) {
-                clearInterval(this.countdown);
+            let self = this;
+            if (self.countdown) {
+                clearInterval(self.countdown);
             }
             // other form name is 'secondForm'
             $('.date-swap').hide();
-            $('.date-input').show();
-            this.ageFind = (formName === 'firstForm') ? true : false;
+            $('.input-data').show();
+            self.ageFind = (formName === 'birthdayForm') ? true : false;
             let fd = new FormData(document.getElementById(formName));
             let form_startDay = fd.get('start_date');
             let form_startMonth = fd.get('start_month');
             let form_startYear = fd.get('start_year');
             // create Date('MM-DD-YYYY') object
-            this.startDate = new Date(`${form_startMonth}-${form_startDay}-${form_startYear}`);
+            // console.log("form_startYear, form_startMonth, form_startDay", form_startYear, form_startMonth, form_startDay);
+            self.startDate = new Date (`${form_startMonth}-${form_startDay}-${form_startYear}`);
+            self.endDate = new Date();
+
             // console.log("this.startDate", this.startDate);
             // edn date is current date in case of birthday calculation
-            this.endDate = new Date();
-            if (!this.ageFind) {
+            if (!self.ageFind) {
                 let form_endDay = fd.get('end_date');
                 let form_endMonth = fd.get('end_month');
                 let form_endYear = fd.get('end_year');
-                this.endDate = new Date(`${form_endMonth}-${form_endDay}-${form_endYear}`);
+                self.endDate = new Date (`${form_endMonth}-${form_endDay}-${form_endYear}`);
             }
+            // let dateObject = {self.startDate, self.endDate};
             this.calculateDifference();
         }
 
         // check date are valid and if start date is greater than end date than swap the dates
         isValidDate() {
-            // console.log("validateDate", this.startDate, this.endDate);
             let self = this;
+            // console.log("validateDate", self.startDate, self.endDate);
             return new Promise(function(resolve, reject) {
                 // console.log('inside promise', this.startDate, this.endDate, self.startDate, self.endDate);
                 if (isFinite(self.startDate) && isFinite(self.endDate)) {
@@ -66,7 +65,7 @@
         //@returns diffYears, diffMonths, diffWeeks, diffDays, diffHours, diffMinutes, diffSeconds
         //@param boolean diff=[true|false] false = TAB-1 (birth day) and true = TAB-2 (date diff)
         async calculateDifference() {
-            // console.log('calculateDifference', this);
+            console.log('calculateDifference');
             try {
                 await this.isValidDate();
                 // console.log("isValid", isValid);
@@ -87,10 +86,10 @@
                 this.displayRelativeDifference();
                 if (this.ageFind) {
                     this.nextBirthdayCountdown();
-                    this.displayZodiacInfo();
+                    // this.displayZodiacInfo();
                 }
             } catch (e) {
-                throw new Error('Invalid Date', e);
+                throw new Error('Invalid Date', e.message);
             }
         }
 
