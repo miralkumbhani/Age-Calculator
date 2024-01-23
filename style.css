@@ -1,0 +1,156 @@
+body {
+    background: linear-gradient(90deg, #d9a7c7, #fffcdc);
+    background-size: cover;
+}
+
+h1 {
+    font-weight: 200;
+    font-size: 30px;
+    text-align: center;
+    font-family: Andale Mono, monospace;
+    margin: 10px;
+}
+
+
+/*for TABS and their display*/
+
+ul.tab {
+    overflow: hidden;
+    display: inline-block;
+}
+
+.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    margin-left: 300px;
+    margin-top: 10px;
+    color: black;
+}
+
+.tab button:hover,
+.tab button.active {
+    background-color: #A9A9A9;
+    border-radius: 10px;
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+    transform: scale(1.2);
+}
+
+.hide {
+    display: none;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* for button */
+
+.button {
+    margin: 30px 0px 40px 565px;
+    position: relative;
+    overflow: hidden;
+    font-size: 17px;
+    display: inline;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    font-family: default;
+}
+
+.button:after {
+    content: "";
+    position: absolute;
+    top: -110%;
+    left: -210%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    transform: rotate(30deg);
+
+    background: rgba(255, 255, 255, 0.13);
+    background: linear-gradient( to right,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0.0) 100%);
+}
+
+.button:hover:after {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.7s, 0.7s, 0.15s;
+    transition-timing-function: ease;
+}
+
+.button:active:after {
+    opacity: 0;
+}
+
+
+.section_input {
+    margin: 20px;
+}
+
+/* for output display box */
+
+.section_output {
+    margin-top: 10px;
+}
+
+.none{
+    display: none;
+}
+
+/*.card{
+    margin-top: 10px;
+}*/
+
+.edit-label{
+    float: none;
+    width: 10em;
+    margin-right: 2em;
+    text-align: left;
+    font-weight: bold;
+}
+
+#flex-container{
+    display: flex;
+    flex-direction: row;
+}
+
+#flex-container > .card-data-item{
+    flex: auto;
+}
+
+#flex-container > .zodiac-data-item{
+    margin-left: 50px;
+}

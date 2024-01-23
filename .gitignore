@@ -1,0 +1,12 @@
+/node_modules/*
+/bower_components/*
+npm-debug.log
+.lesshintrc
+.eslintrc
+.jshintrc
+.editorconfig
+*.sublime-project
+*.sublime-workspace
+*.sublime-gulp.cache
+.editorconfig
+**/.DS_Store
