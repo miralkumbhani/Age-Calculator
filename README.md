@@ -13,4 +13,3 @@ Added es6 features
 - Prototyping
 - arrow function
 - concat operator
-- 
